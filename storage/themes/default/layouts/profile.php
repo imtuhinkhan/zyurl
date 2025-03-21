@@ -12,7 +12,7 @@
         <?php if(config('cookieconsent')->enabled): ?>
             <link rel="stylesheet" type="text/css" href="<?php echo assets('frontend/libs/cookieconsent/cookieconsent.css') ?>">
         <?php endif ?>
-        <link rel="stylesheet" href="<?php echo assets('style.min.css') ?>" id="stylesheet">
+        <link rel="stylesheet" href="<?php echo assets('style.min.css') ?>?v=1.1" id="stylesheet">
         <?php if(config('fonts') && !config('cookieconsent')->enabled): ?>
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=<?php echo str_replace(' ', '+', config('fonts')) ?>:wght@300;400;600" rel="stylesheet">

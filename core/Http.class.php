@@ -208,6 +208,7 @@ final class Http {
 			if(isset($this->_HTTPCURLPARAMS["headers"])){
 				$headers = [];
 				foreach ($this->_HTTPCURLPARAMS["headers"] as $name => $value) {
+					if(is_array($value)) continue;
 					$headers[] = "{$name}:{$value}";
 				}
 				curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -262,6 +263,7 @@ final class Http {
 			if(isset($this->_HTTPCURLPARAMS["headers"])){
 				$headers = [];
 				foreach ($this->_HTTPCURLPARAMS["headers"] as $name => $value) {
+					if(is_array($value)) continue;
 					$headers[] = "{$name}:{$value}";
 				}
 				curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);

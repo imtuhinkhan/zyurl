@@ -1068,7 +1068,7 @@ final class App {
 
         if($request->country) $name = $request->country;
 
-        $response = \Core\Http::url('https://countriesnow.space/api/v0.1/countries/states/q?country='.strtolower($name))->get(['timeout' => 3]);
+        $response = \Core\Http::url('https://countriesnow.space/api/v0.1/countries/states/q?country='.urlencode(strtolower($name)))->get(['timeout' => 3]);
 
         if($response){
             $states = $response->bodyObject();
@@ -1224,7 +1224,7 @@ final class App {
      * @return void
      */
     public static function languagelist($code = null, $lookup = false, $asArray = false){
-        $list = ['af' => 'Afrikaans','sq' => 'Albanian','ar' => 'Arabic','eu' => 'Basque','bg' => 'Bulgarian','be' => 'Belarusian','ca' => 'Catalan','zh' => 'Chinese','hr' => 'Croatian','cs' => 'Czech','da' => 'Danish','nl' => 'Dutch','en' => 'English','et' => 'Estonian','fo' => 'Faeroese','fa' => 'Farsi','fi' => 'Finnish','fr' => 'French','gd' => 'Gaelic','de' => 'German','el' => 'Greek','he' => 'Hebrew','hi' => 'Hindi','hu' => 'Hungarian','is' => 'Icelandic','id' => 'Indonesian','it' => 'Italian','ja' => 'Japanese','ko' => 'Korean','ko' => 'Korean','lv' => 'Latvian','lt' => 'Lithuanian','mk' => 'FYRO Macedonian ms Malaysian','mt' => 'Maltese','no' => 'Norwegian','no' => 'Norwegian','pl' => 'Polish','pt' => 'Portuguese','rm' => 'Rhaeto-Romanic','ro' => 'Romanian','ru' => 'Russian','sz' => 'Sami','sr' => 'Serbian','sr' => 'Serbian','sk' => 'Slovak','sl' => 'Slovenian','sb' => 'Sorbian','es' => 'Spanish','sx' => 'Sutu','sv' => 'Swedish','th' => 'Thai','ts' => 'Tsonga','tn' => 'Tswana','tr' => 'Turkish','uk' => 'Ukrainian','ur' => 'Urdu','ve' => 'Venda','vi' => 'Vietnamese','xh' => 'Xhosa','ji' => 'Yiddish','zu' => 'Zulu'];
+        $list = ['af' => 'Afrikaans','sq' => 'Albanian','ar' => 'Arabic','eu' => 'Basque','bg' => 'Bulgarian','be' => 'Belarusian','ca' => 'Catalan','zh' => 'Chinese','hr' => 'Croatian','cs' => 'Czech','da' => 'Danish','nl' => 'Dutch','en' => 'English','et' => 'Estonian','fo' => 'Faeroese','fa' => 'Farsi','fi' => 'Finnish','fr' => 'French','gd' => 'Gaelic','de' => 'German','el' => 'Greek','he' => 'Hebrew','hi' => 'Hindi','hu' => 'Hungarian','is' => 'Icelandic','id' => 'Indonesian','it' => 'Italian','ja' => 'Japanese','ko' => 'Korean','ko' => 'Korean','lv' => 'Latvian','lt' => 'Lithuanian','mk' => 'FYRO Macedonian ms Malaysian','mt' => 'Maltese','no' => 'Norwegian','no' => 'Norwegian','pl' => 'Polish','pt' => 'Portuguese','rm' => 'Rhaeto-Romanic','ro' => 'Romanian','ru' => 'Russian','sz' => 'Sami','sr' => 'Serbian','sr' => 'Serbian','sk' => 'Slovak','sl' => 'Slovenian','sb' => 'Sorbian','es' => 'Spanish','sx' => 'Sutu','sv' => 'Swedish','th' => 'Thai','ts' => 'Tsonga','tn' => 'Tswana','tr' => 'Turkish','uk' => 'Ukrainian','ur' => 'Urdu','ve' => 'Venda','vi' => 'Vietnamese','xh' => 'Xhosa','ji' => 'Yiddish','zu' => 'Zulu', 'jp' => 'Japanese'];
 
         if($asArray) return $list;
 
@@ -1525,5 +1525,26 @@ final class App {
             return round($number / 1000000, $precision) . 'M';
         }
         return $number;
+    }
+    /**
+     * INvert Color
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     * @param [type] $hex
+     * @return void
+     */
+    public static function invertColor($hex) {
+        $hex = str_replace('#', '', $hex);
+        if (strlen($hex) !== 6) {
+            return '#000000';
+        }
+        $new = '';
+        for ($i = 0; $i < 3; $i++) {
+            $rgbDigits = 255 - hexdec(substr($hex, (2 * $i), 2));
+            $hexDigits = ($rgbDigits < 0) ? 0 : dechex($rgbDigits);
+            $new .= (strlen($hexDigits) < 2) ? '0' . $hexDigits : $hexDigits;
+        }
+        return '#' . $new;
     }
 }

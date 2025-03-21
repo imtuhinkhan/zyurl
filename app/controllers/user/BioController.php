@@ -41,6 +41,7 @@ class Bio {
     public function __construct(){
 
         if(User::where('id', Auth::user()->rID())->first()->has('bio') === false){
+            request()->cookie('bioalias', '', -1*60);
 			return \Models\Plans::notAllowed();
 		}
     }
@@ -162,6 +163,8 @@ class Bio {
             return Response::factory(['error' => true, 'message' => e('You have reach the maximum limit for this feature.'), 'token' => csrf_token()])->json();
         }
 
+        Plugin::dispatch('bio.save', $request);
+
         if(!$request->name) return Response::factory(['error' => true, 'message' => e('Please enter a name for your profile.'), 'token' => csrf_token()])->json();
 
         if($request->custom){
@@ -264,7 +267,143 @@ class Bio {
             $url->save();
         }
 
+        Plugin::dispatch('bio.saved', $profile);
+
         return Response::factory(['error' => false, 'message' => e('Profile has been successfully created.'), 'token' => csrf_token(), 'html' => '<script>window.location="'.route('bio.edit', $profile->id).'"</script>'])->json();
+    }
+    /**
+     * Save Static
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     * @param \Core\Request $request
+     * @return void
+     */
+    public static function saveStatic(Request $request){
+
+        $user = Auth::user();
+
+        if(Auth::user()->teamPermission('bio.create') == false){            
+			return Helper::redirect()->to(route('dashboard'))->with('danger', e('You do not have this permission. Please contact your team administrator.'));
+		}
+
+        $count = DB::profiles()->where('userid', $user->rID())->count();
+
+        $total = $user->hasLimit('bio');
+
+        if($total > 0 && $count >= $total) {            
+            return Helper::redirect()->to(route('dashboard'))->with('danger', e('You have reach the maximum limit for this feature.'));
+        }
+
+        Plugin::dispatch('bio.save', $request);
+
+        $link = new self();
+
+        if(!$request->name) return Helper::redirect()->to(route('bio'))->with('danger', e('Please enter a name for your profile.'));
+
+        if($request->custom){
+            if(strlen($request->custom) < 3){                
+                return Helper::redirect()->to(route('bio'))->with('danger', e('Custom alias must be at least 3 characters.'));
+
+            }elseif($link->wordBlacklisted($request->custom)){                
+                return Helper::redirect()->to(route('bio'))->with('danger', e('Inappropriate aliases are not allowed.'));
+
+            }elseif(($request->domain == config('url') || !$request->domain) && DB::url()->where('custom', Helper::slug($request->custom))->whereRaw("(domain = '' OR domain IS NULL OR domain = '".config('url')."')")->first()){                
+                return Helper::redirect()->to(route('bio'))->with('danger', e('That alias is taken. Please choose another one.'));
+
+            }elseif(DB::url()->where('custom', Helper::slug($request->custom))->where('domain', $request->domain)->first()){                
+                return Helper::redirect()->to(route('bio'))->with('danger', e('That alias is taken. Please choose another one.'));
+
+            }elseif(DB::url()->where('alias', Helper::slug($request->custom))->whereRaw('(domain = ? OR domain = ?)', [$request->domain, ''])->first()){                
+                return Helper::redirect()->to(route('bio'))->with('danger', e('That alias is taken. Please choose another one.'));
+
+            }elseif($link->aliasReserved($request->custom)){                
+                return Helper::redirect()->to(route('bio'))->with('danger', e('That alias is reserved. Please choose another one.'));
+
+            }elseif($user && !$user->pro() && $link->aliasPremium($request->custom)){                
+                return Helper::redirect()->to(route('bio'))->with('danger', e('That is a premium alias and is reserved to only pro members.'));
+            }
+		}
+
+        $data = [];
+
+        $data['avatarenabled'] = 1;
+        $data['style']['bg'] = null;
+        $data['style']['font'] = null;
+        $data['style']['gradient'] = ['start' => null, 'stop' => null];
+        $data['style']['socialposition'] = null;
+        $data['style']['buttoncolor'] = null;
+        $data['style']['buttontextcolor'] = null;
+        $data['style']['buttonstyle'] = null;
+        $data['style']['textcolor'] = null;
+        $data['style']['custom'] = null;
+        $data['style']['mode'] = null;
+
+        $data['settings']['share'] = 0;
+        $data['settings']['sensitive'] = 0;
+        $data['settings']['cookie'] = 0;
+        $data['settings']['verified'] = $user->verified;
+
+        $data['links'] = [];
+
+        $alias = $request->custom ? $link->slug($request->custom) : $link->alias();
+
+        $url = DB::url()->create();
+        $url->userid = $user->rID();
+        $url->url = '';
+
+        if($request->domain && $link->validateDomainNames(trim($request->domain), $user, false)){
+            $url->domain = trim(clean($request->domain));
+        }
+
+        if((!$request->domain || $request->domain == config('url')) && !config("root_domain")) {
+
+            $sysdomains = array_map('trim', explode("\n", config("domain_names")));
+
+            if(!empty($sysdomains[0])){
+				$url->domain = trim(trim($sysdomains[0]));
+			}else{
+				$url->domain = trim(config("url"));
+			}
+		}
+
+        if(is_null($url->domain) && !config("root_domain")){
+            $sysdomains = array_map('trim', explode("\n", config("domain_names")));
+            $url->domain = trim($sysdomains[0]);
+        }
+
+        $url->alias = null;
+        $url->custom = $alias;
+        $url->date = Helper::dtime();
+
+        if($request->pass){
+            $url->pass = clean($request->pass);
+        }
+
+        $url->save();
+
+        $profile = DB::profiles()->create();
+        $profile->userid = $user->rID();
+        $profile->alias = $alias;
+        $profile->urlid = $url ? $url->id : null;
+        $profile->name = clean($request->name);
+        $profile->data = json_encode($data);
+        $profile->status = 1;
+        $profile->created_at = Helper::dtime();
+        $profile->save();
+
+        if(!empty($urlids) && is_array($urlids)){
+            DB::url()->where_in('id', $urlids)->update(['profileid' => $profile->id]);
+        }
+
+        if($url){
+            $url->profileid = $profile->id;
+            $url->save();
+        }
+
+        Plugin::dispatch('bio.saved', $profile);
+
+        return Helper::redirect()->to(route('bio'))->with('success', e('Profile has been successfully created.'));
     }
     /**
      * Delete Profile
@@ -538,8 +677,8 @@ class Bio {
         }
 
         $appConfig = appConfig('app');
-        $sizes = $appConfig['sizes'];
-        $extensions = $appConfig['extensions'];
+        $sizes = config('sizes');
+        $extensions = config('extensions');
 
         $url->meta_title = clean($request->title);
         $url->meta_description = clean($request->description);
@@ -587,7 +726,7 @@ class Bio {
 
         if($image = $request->file('avatar')){
 
-            if(!$image->mimematch || !in_array($image->ext, $extensions['bio']['avatar']) || $image->sizekb > $sizes['bio']['avatar']) return Response::factory(['error' => true, 'message' => e('Avatar must be either a PNG or a JPEG (Max 500kb).'), 'token' => csrf_token()])->json();
+            if(!$image->mimematch || !in_array($image->ext, explode(',', $extensions->bio->avatar)) || $image->sizekb > $sizes->bio->avatar) return Response::factory(['error' => true, 'message' => e('Avatar must be either a PNG or a JPEG (Max 500kb).'), 'token' => csrf_token()])->json();
 
             $filename = "profile_avatar".Helper::rand(6).str_replace(['#', ' '], '-', $image->name);
 
@@ -609,7 +748,7 @@ class Bio {
 
         if($image = $request->file('bgimage')){
 
-            if(!$image->mimematch || !in_array($image->ext, $extensions['bio']['background']) || $image->sizekb > $sizes['bio']['background']) return Response::factory(['error' => true, 'message' => e('Background must be either a PNG or a JPEG (Max 1mb).'), 'token' => csrf_token()])->json();
+            if(!$image->mimematch || !in_array($image->ext, explode(',', $extensions->bio->background)) || $image->sizekb > $sizes->bio->background) return Response::factory(['error' => true, 'message' => e('Background must be either a PNG or a JPEG (Max 1mb).'), 'token' => csrf_token()])->json();
 
             $filename = "profile_imagebg".Helper::rand(6).str_replace(['#', ' '], '-', $image->name);
 
@@ -629,7 +768,7 @@ class Bio {
 
         if($image = $request->file('layoutbanner')){
 
-            if(!$image->mimematch || !in_array($image->ext, ['jpg', 'png', 'jpeg']) || $image->sizekb > 1000) return Response::factory(['error' => true, 'message' => e('Background must be either a PNG or a JPEG (Max 1mb).'), 'token' => csrf_token()])->json();
+            if(!$image->mimematch || !in_array($image->ext, explode(',', $extensions->bio->banner)) || $image->sizekb > $sizes->bio->banner) return Response::factory(['error' => true, 'message' => e('Background must be either a PNG or a JPEG (Max 1mb).'), 'token' => csrf_token()])->json();
 
             $filename = "profile_layoutbanner".Helper::rand(6).str_replace(['#', ' '], '-', $image->name);
 
@@ -689,7 +828,7 @@ class Bio {
         $data['style']['buttontextcolor'] = clean($request->buttontextcolor, 3);
         $data['style']['shadow'] = clean($request->shadow, 3);
         $data['style']['shadowcolor'] = clean($request->shadowcolor, 3);
-        $data['style']['textcolor'] = clean($request->textcolor, 3);
+        $data['style']['textcolor'] = clean($request->textcolor, 3);    
 
         if($user->has('biocss')){
             $data['style']['custom'] = str_replace(['navbar-logo'], 'UnAuthorizedCSS', Helper::clean($request->customcss, 3));
@@ -744,8 +883,8 @@ class Bio {
         $data = json_decode($profile->data, true);
 
         $appConfig = appConfig('app');
-        $sizes = $appConfig['sizes'];
-        $extensions = $appConfig['extensions'];
+        $sizes = config('sizes');
+        $extensions = config('extensions');
 
         $links = [];
 
@@ -832,8 +971,8 @@ class Bio {
         }
 
         $appConfig = appConfig('app');
-        $sizes = $appConfig['sizes'];
-        $extensions = $appConfig['extensions'];
+        $sizes = config('sizes');
+        $extensions = config('extensions');
 
         if(!is_null($request->title)){
             $url->meta_title = clean($request->title);
@@ -852,7 +991,7 @@ class Bio {
             request()->move($image, $appConfig['storage']['images']['path'], $filename);
 
             if($url->meta_image){
-                \Helpers\App::delete( $appConfig['storage']['images']['path'].'/'.$url->meta_image);
+                \Helpers\App::delete($appConfig['storage']['images']['path'].'/'.$url->meta_image);
             }
             $url->meta_image = $filename;
         }
@@ -890,7 +1029,7 @@ class Bio {
 
         if($image = $request->file('avatar')){
 
-            if(!$image->mimematch || !in_array($image->ext, $extensions['bio']['avatar']) || $image->sizekb > $sizes['bio']['avatar']) return Response::factory(['error' => true, 'message' => e('Avatar must be either a PNG or a JPEG (Max 500kb).'), 'token' => csrf_token()])->json();
+            if(!$image->mimematch || !in_array($image->ext, explode(',', $extensions->bio->avatar)) || $image->sizekb > $sizes->bio->avatar) return Response::factory(['error' => true, 'message' => e('Avatar must be either a PNG or a JPEG (Max 500kb).'), 'token' => csrf_token()])->json();
 
             $filename = "profile_avatar".Helper::rand(6).str_replace(['#', ' '], '-', $image->name);
 
@@ -909,7 +1048,7 @@ class Bio {
 
         if($image = $request->file('bgimage')){
 
-            if(!$image->mimematch || !in_array($image->ext, $extensions['bio']['background']) || $image->sizekb > $sizes['bio']['background']) return Response::factory(['error' => true, 'message' => e('Background must be either a PNG or a JPEG (Max 1mb).'), 'token' => csrf_token()])->json();
+            if(!$image->mimematch || !in_array($image->ext, explode(',', $extensions->bio->background)) || $image->sizekb > $sizes->bio->background) return Response::factory(['error' => true, 'message' => e('Background must be either a PNG or a JPEG (Max 1mb).'), 'token' => csrf_token()])->json();
 
             $filename = "profile_imagebg".Helper::rand(6).str_replace(['#', ' '], '-', $image->name);
 
@@ -929,7 +1068,7 @@ class Bio {
 
         if($image = $request->file('layoutbanner')){
 
-            if(!$image->mimematch || !in_array($image->ext, ['jpg', 'png', 'jpeg']) || $image->sizekb > 1000) return Response::factory(['error' => true, 'message' => e('Background must be either a PNG or a JPEG (Max 1mb).'), 'token' => csrf_token()])->json();
+            if(!$image->mimematch || !in_array($image->ext, explode(',', $extensions->bio->banner)) || $image->sizekb > $sizes->bio->banner) return Response::factory(['error' => true, 'message' => e('Background must be either a PNG or a JPEG (Max 1mb).'), 'token' => csrf_token()])->json();
 
             $filename = "profile_layoutbanner".Helper::rand(6).str_replace(['#', ' '], '-', $image->name);
 
@@ -953,7 +1092,9 @@ class Bio {
                 $data['social'][$key] = clean($value);
             }
         }
-
+        if($request->iconstyle && in_array($request->iconstyle, ['normal', 'square'])){
+            $data['style']['iconstyle'] = $request->iconstyle;
+        }
         if($request->socialposition){
             $data['style']['socialposition'] = in_array($request->socialposition, ['off', 'top', 'bottom']) ? clean($request->socialposition) : 'off';
         }
@@ -1089,11 +1230,11 @@ class Bio {
 
         $data = json_decode($profile->data, true);
 
-        // try{
-        //     BioWidgets::delete($request, $data, $data[$blockid]);
-        // } catch(\Exception $e){
-        //     return Response::factory(['error' => true, 'message' => $e->getMessage(), 'token' => csrf_token()])->json();
-        // }
+        try{
+            BioWidgets::delete($data, $data['links'][$blockid]);
+        } catch(\Exception $e){
+            return Response::factory(['error' => true, 'message' => $e->getMessage(), 'token' => csrf_token()])->json();
+        }
 
         unset($data['links'][$blockid]);
 
@@ -1123,8 +1264,7 @@ class Bio {
 
         View::push(assets('biopages.min.css').'?v=1.1')->toHeader();
 
-        View::push('<style>body{min-height: 100vh;color: '.$profiledata['style']['textcolor'].';'.(isset($profiledata['style']['mode']) && $profiledata['style']['mode'] == 'singlecolor' ? 'background: '.$profiledata['style']['bg'].';' : '').''.(!isset($profiledata['style']['mode']) || $profiledata['style']['mode'] == 'gradient' ? 'background: linear-gradient('.(isset($profiledata['style']['gradient']['angle']) && is_numeric($profiledata['style']['gradient']['angle']) ? $profiledata['style']['gradient']['angle'] : '135').'deg,'.$profiledata['style']['gradient']['start'].' 0%, '.$profiledata['style']['gradient']['stop'].' 100%);' : '').'}.fa,.fab,.far,.fas,.fa-brands,.fa-solid{font-size: 1.5em}h1,h3,em,p,a{color: '.$profiledata['style']['textcolor'].' !important;}a:hover{color: '.$profiledata['style']['textcolor'].';opacity: 0.8;}.btn-custom,.btn-custom.active{font-weight:700; background: '.$profiledata['style']['buttoncolor'].';color: '.$profiledata['style']['buttontextcolor'].' !important;}a.btn-custom:hover,button.btn-custom:hover{opacity: 0.8;background: '.$profiledata['style']['buttoncolor'].';color: '.$profiledata['style']['buttontextcolor'].';}.btn-custom p, .btn-custom h3, .btn-custom span{color: '.$profiledata['style']['buttontextcolor'].' !important;}.rss{font-weight:400;background:'.$profiledata['style']['buttoncolor'].';color: '.$profiledata['style']['buttontextcolor'].';height:300px} .rss a{color:'.$profiledata['style']['buttontextcolor'].' !important}.item > h1,.item > h2,.item > h3,.item > h4,.item > h5,.item > h6{color:'.$profiledata['style']['textcolor'].';}.cc-floating.cc-type-info.cc-theme-classic .cc-btn{color:#000 !important}.modal-backdrop.show{opacity:0.85!important}#social a:first-child{margin-left: 0 !important}.form-control{background:#fff !important;color:#000 !important}.layout2 .d-block{height:150px;}.layout2 .useravatar{margin-top: -60px;}.card{background: '.$profiledata['style']['buttoncolor'].';color: '.$profiledata['style']['buttontextcolor'].' !important;}.card a, .card h6, .card p, .card .card-body {color: '.$profiledata['style']['buttontextcolor'].' !important;}.fa-animated .fa{transition: transform 0.2s linear;font-size: 18px !important}.fa-animated:not(.collapsed) .fa{transform: rotate(180deg);.btn-icon-only{width:36px;heigth:36px;}} .btn+.btn {margin-left: 0 !important}.btn-custom span{display:inline-block;max-width: 80%}.modal{color:#000 !important}.btn-custom img{max-width: 15%}.btn-custom .fa,.btn-custom .fab,.btn-custom .far,.btn-custom .fas,.btn-custom .fa-brands,.btn-custom .fa-solid{font-size:2.0em}.translate-middle-y{transform: translateY(-50%) !important;}.top-50{top: 50%;}</style>','custom')->toHeader();
-
+        View::push('<style>body{min-height: 100vh;color: '.$profiledata['style']['textcolor'].';'.(isset($profiledata['style']['mode']) && $profiledata['style']['mode'] == 'singlecolor' ? 'background: '.$profiledata['style']['bg'].';' : '').''.(!isset($profiledata['style']['mode']) || $profiledata['style']['mode'] == 'gradient' ? 'background: linear-gradient('.(isset($profiledata['style']['gradient']['angle']) && is_numeric($profiledata['style']['gradient']['angle']) ? $profiledata['style']['gradient']['angle'] : '135').'deg,'.$profiledata['style']['gradient']['start'].' 0%, '.$profiledata['style']['gradient']['stop'].' 100%);' : '').'}.fa,.fab,.far,.fas,.fa-brands,.fa-solid{font-size: 1.5em}h1,h3,em,p,a{color: '.$profiledata['style']['textcolor'].' !important;}a:hover{color: '.$profiledata['style']['textcolor'].';opacity: 0.8;}.btn-custom,.btn-custom.active{font-weight:700; background: '.$profiledata['style']['buttoncolor'].';color: '.$profiledata['style']['buttontextcolor'].' !important;}a.btn-custom:hover,button.btn-custom:hover{opacity: 0.8;background: '.$profiledata['style']['buttoncolor'].';color: '.$profiledata['style']['buttontextcolor'].';}.btn-custom p, .btn-custom h3, .btn-custom span{color: '.$profiledata['style']['buttontextcolor'].' !important;}.rss{font-weight:400;background:'.$profiledata['style']['buttoncolor'].';color: '.$profiledata['style']['buttontextcolor'].';height:300px} .rss a{color:'.$profiledata['style']['buttontextcolor'].' !important}.item > h1,.item > h2,.item > h3,.item > h4,.item > h5,.item > h6{color:'.$profiledata['style']['textcolor'].';}.cc-floating.cc-type-info.cc-theme-classic .cc-btn{color:#000 !important}.modal-backdrop.show{opacity:0.85!important}#social a:first-child{margin-left: 0 !important}.form-control{background:#fff !important;color:#000 !important}.layout2 .d-block{height:150px;}.layout2 .useravatar{margin-top: -60px;}.card{background: '.$profiledata['style']['buttoncolor'].';color: '.$profiledata['style']['buttontextcolor'].' !important;}.card a, .card h6, .card p, .card .card-body {color: '.$profiledata['style']['buttontextcolor'].' !important;}.fa-animated .fa{transition: transform 0.2s linear;font-size: 18px !important}.fa-animated:not(.collapsed) .fa{transform: rotate(180deg);.btn-icon-only{width:36px;heigth:36px;}} .btn+.btn {margin-left: 0 !important}.btn-custom span{display:inline-block;max-width: 80%}.modal{color:#000 !important}.btn-custom img{max-width: 15%}.btn-custom .fa,.btn-custom .fab,.btn-custom .far,.btn-custom .fas,.btn-custom .fa-brands,.btn-custom .fa-solid{font-size:2.0em}.translate-middle-y{transform: translateY(-50%) !important;}.top-50{top: 50%;}audio::-webkit-media-controls-panel{background: '.$profiledata['style']['buttoncolor'].';}.a{fill:'.$profiledata['style']['textcolor'].' !important;}.b,.c{fill:'.App::invertColor($profiledata['style']['textcolor']).' !important; opacity: 0.5}</style>','custom')->toHeader();
         if(isset($profiledata['style']['buttonstyle'])){
             if($profiledata['style']['buttonstyle'] == 'trec'){
                 View::push('<style>.btn-custom,.card{background-color:transparent;border:2px solid '.$profiledata['style']['buttoncolor'].';}</style>','custom')->toHeader();
@@ -1373,8 +1513,8 @@ class Bio {
         $data = json_decode($profile->data, true);
 
         $appConfig = appConfig('app');
-        $sizes = $appConfig['sizes'];
-        $extensions = $appConfig['extensions'];
+        $sizes = config('sizes');
+        $extensions = config('extensions');
 
         if(isset($data['avatar']) && !empty($data['avatar'])){
             $ext = Helper::extension($appConfig['storage']['profile']['path'].'/'.$data['avatar']);

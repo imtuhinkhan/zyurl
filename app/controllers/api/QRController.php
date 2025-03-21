@@ -35,8 +35,11 @@ class QR {
      * @version 6.0
      */
     public function __construct(){
+        $user = Auth::ApiUser();
 
-        if(!Auth::ApiUser()->has('qr')){
+        if(!$user->keyCan('qr')) return die(Response::factory(['error' => true, 'message' => 'You do not have access to this endpoint with this API key.'])->json());
+
+        if(!$user->has('qr')){
             die(Response::factory(['error' => 1, 'message' => 'You do not have permission to access this endpoint.'], 403)->json());
         }
     }

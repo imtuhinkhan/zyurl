@@ -206,6 +206,7 @@
             <li class="sidebar-item"><a class="sidebar-link" href="<?php echo route('admin.settings.config', ['link']) ?>"><?php ee('Link Settings') ?></a></li>
             <li class="sidebar-item"><a class="sidebar-link" href="<?php echo route('admin.settings.config', ['qr']) ?>"><?php ee('QR Settings') ?></a></li>
             <li class="sidebar-item"><a class="sidebar-link" href="<?php echo route('admin.settings.config', ['bio']) ?>"><?php ee('Bio Page Settings') ?></a></li>
+            <li class="sidebar-item"><a class="sidebar-link" href="<?php echo route('admin.settings.config', ['upload']) ?>"><?php ee('Upload Settings') ?></a></li>
             <li class="sidebar-item"><a class="sidebar-link" href="<?php echo route('admin.settings.config', ['advanced']) ?>"><?php ee('Advanced Settings') ?></a></li>
             <li class="sidebar-item"><a class="sidebar-link" href="<?php echo route('admin.settings.config', ['theme']) ?>"><?php ee('Themes Settings') ?></a></li>
             <li class="sidebar-item"><a class="sidebar-link" href="<?php echo route('admin.settings.config', ['security']) ?>"><?php ee('Security Settings') ?></a></li>
@@ -226,6 +227,11 @@
             <li class="sidebar-item"><a class="sidebar-link" href="<?php echo route('admin.data') ?>"><?php ee('Backup/Restore Data') ?></a></li>
         </ul>
     </li>
+    <li class="sidebar-item">
+        <a class="sidebar-link" href="<?php echo route('admin.oauth') ?>">
+            <i class="align-middle" data-feather="share-2"></i> <span class="align-middle"><?php ee('OAuth Applications') ?></span>
+        </a>
+    </li>    
     <li class="sidebar-item">
         <a class="sidebar-link" href="<?php echo route('admin.stats') ?>">
             <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle"><?php ee('Statistics') ?></span>

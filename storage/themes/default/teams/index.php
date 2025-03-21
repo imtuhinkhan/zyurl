@@ -19,12 +19,12 @@
                     <select name="permissions[]" class="form-control" placeholder="<?php echo e("Permissions") ?>" data-placeholder="<?php echo e("Permissions") ?>" multiple data-toggle="select">
                         <?php foreach($list as $type => $item): ?>
                             <?php if (!user()->has("qr")) continue; ?>
-                            <optgroup label="<?php echo $item['name'] ?>">    
+                            <optgroup label="<?php echo $item['name'] ?>">
                                 <?php foreach($item['permissions'] as $key => $name): ?>
                                     <option value="<?php echo $type ?>.<?php echo $key ?>"><?php echo $name ?></option>
                                 <?php endforeach ?>
                             </optgroup>
-                        <?php endforeach ?>                        
+                        <?php endforeach ?>
                     </select>
                 </div>
                 <div class="form-group ms-0 ms-sm-2">

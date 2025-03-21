@@ -108,7 +108,7 @@ class Stats {
         }
 
 		View::push(assets('Chart.min.js'), "script")->toHeader();
-		View::push(assets('charts.min.js')."?v=1.1", "script")->toFooter();
+		View::push(assets('charts.min.js')."?v=1.3", "script")->toFooter();
 
 		\Helpers\CDN::load("daterangepicker");
 
@@ -133,7 +133,8 @@ class Stats {
                     '".e("Last 30 Days")."': [moment().subtract(29, 'days'), moment()],
                     '".e("This Month")."': [moment().startOf('month'), moment().endOf('month')],
                     '".e("Last Month")."': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()]
+                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()],
+                    '".e("Last 12 Months")."': [moment().subtract(12, 'month').startOf('month'), moment()]
                 }
 			});			
 		});</script>", "custom")->toFooter();
@@ -285,7 +286,7 @@ class Stats {
         View::push(assets('frontend/libs/jsvectormap/dist/js/jsvectormap.min.js'), "script")->toFooter();
         View::push(assets('frontend/libs/jsvectormap/dist/maps/world.js'), "script")->toFooter();
         View::push(assets('frontend/libs/jsvectormap/dist/css/jsvectormap.min.css'), "css")->toHeader();
-        View::push(assets('charts.min.js')."?v=1.1", "script")->toFooter();
+        View::push(assets('charts.min.js')."?v=1.3", "script")->toFooter();
         \Helpers\CDN::load("daterangepicker");
 
 		View::push("<script>$(document).ready(function(){ 		
@@ -309,7 +310,8 @@ class Stats {
                     '".e("Last 30 Days")."': [moment().subtract(29, 'days'), moment()],
                     '".e("This Month")."': [moment().startOf('month'), moment().endOf('month')],
                     '".e("Last Month")."': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()]
+                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()],
+                    '".e("Last 12 Months")."': [moment().subtract(12, 'month').startOf('month'), moment()]
                 }
 			});			
 		});</script>", "custom")->toFooter();
@@ -318,10 +320,11 @@ class Stats {
     }
 
      /**
-     * Get Clicks Map
+     * Get Chart Data
      *
      * @author GemPixel <https://gempixel.com> 
      * @version 6.0
+     * @param integer $id
      * @return void
      */
     public function dataCountries(Request $request, int $id){
@@ -533,7 +536,7 @@ class Stats {
 		View::set("image", \Helpers\App::shortRoute($url->domain, $url->alias.$url->domain).'/i');	        
 
 		View::push(assets('Chart.min.js'), "script")->toFooter();
-		View::push(assets('charts.min.js')."?v=1.1", "script")->toFooter();
+		View::push(assets('charts.min.js')."?v=1.3", "script")->toFooter();
 
         \Helpers\CDN::load("daterangepicker");
 
@@ -558,7 +561,8 @@ class Stats {
                     '".e("Last 30 Days")."': [moment().subtract(29, 'days'), moment()],
                     '".e("This Month")."': [moment().startOf('month'), moment().endOf('month')],
                     '".e("Last Month")."': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()]
+                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()],
+                    '".e("Last 12 Months")."': [moment().subtract(12, 'month').startOf('month'), moment()]
                 }
 			});			
 		});</script>", "custom")->toFooter();
@@ -714,13 +718,14 @@ class Stats {
                     '".e("Last 30 Days")."': [moment().subtract(29, 'days'), moment()],
                     '".e("This Month")."': [moment().startOf('month'), moment().endOf('month')],
                     '".e("Last Month")."': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()]
+                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()],
+                    '".e("Last 12 Months")."': [moment().subtract(12, 'month').startOf('month'), moment()]
                 }
 			});			
 		});</script>", "custom")->toFooter();
 
 		View::push(assets('Chart.min.js'), "script")->toFooter();
-		View::push(assets('charts.min.js')."?v=1.1", "script")->toFooter();
+		View::push(assets('charts.min.js')."?v=1.3", "script")->toFooter();
 
 		return View::with('stats.browsers', compact('url', 'top'))->extend((!Auth::logged() && $url->public ? 'layouts.stats' : 'layouts.dashboard'));
     }
@@ -869,13 +874,14 @@ class Stats {
                     '".e("Last 30 Days")."': [moment().subtract(29, 'days'), moment()],
                     '".e("This Month")."': [moment().startOf('month'), moment().endOf('month')],
                     '".e("Last Month")."': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()]
+                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()],
+                    '".e("Last 12 Months")."': [moment().subtract(12, 'month').startOf('month'), moment()]
                 }
-			});			
+			});
 		});</script>", "custom")->toFooter();
 
 		View::push(assets('Chart.min.js'), "script")->toFooter();
-		View::push(assets('charts.min.js')."?v=1.1", "script")->toFooter();
+		View::push(assets('charts.min.js')."?v=1.3", "script")->toFooter();
 
 		return View::with('stats.languages', compact('url', 'top'))->extend((!Auth::logged() && $url->public ? 'layouts.stats' : 'layouts.dashboard'));
     }
@@ -997,6 +1003,14 @@ class Stats {
                             ->orderByDesc('count')
                             ->limit(10)
                             ->findArray();
+
+        // Calculate total count
+        $totalCount = array_sum(array_column($topReferrer, 'count'));
+
+        // Add percentage to each referrer
+        foreach ($topReferrer as &$referrer) {
+            $referrer['percentage'] = $totalCount > 0 ? round(($referrer['count'] / $totalCount) * 100, 2) : 0; 
+        }
         
         $social = [];
         $social[] = DB::stats()->where("urlid", $url->id)->whereRaw("(domain LIKE '%facebook.%' OR domain LIKE '%fb.%')")->count();
@@ -1018,7 +1032,7 @@ class Stats {
 		View::set("description", e("Country statistics page for the short URL")." ". \Helpers\App::shortRoute($url->domain, $url->alias.$url->domain));
 		View::set("image", \Helpers\App::shortRoute($url->domain, $url->alias.$url->domain).'/i');
         View::push(assets('Chart.min.js'), "script")->toFooter();
-        View::push(assets('charts.min.js')."?v=1.1", "script")->toFooter();
+        View::push(assets('charts.min.js')."?v=1.3", "script")->toFooter();
 
         View::push("<script>new Chart($('canvas'), {type: 'pie',data: {labels: ['Facebook', 'Twitter', 'Instagram', 'Linkedin'],datasets: [{data: ".json_encode($social).",borderWidth: 5,backgroundColor: ['#3b5998','#1DA1F2', '#fbad50', '#0077b5']}]},options: {responsive: !window.MSInputMethodContext,maintainAspectRatio: false,plugins:{legend: {position: 'bottom',display: true}},cutoutPercentage: 75}})</script>", 'custom')->toFooter();
 
@@ -1180,7 +1194,8 @@ class Stats {
                     '".e("Last 30 Days")."': [moment().subtract(29, 'days'), moment()],
                     '".e("This Month")."': [moment().startOf('month'), moment().endOf('month')],
                     '".e("Last Month")."': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()]
+                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()],
+                    '".e("Last 12 Months")."': [moment().subtract(12, 'month').startOf('month'), moment()]
                 }
 			});			
 		});</script>", "custom")->toFooter();

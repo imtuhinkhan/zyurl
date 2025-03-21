@@ -25,6 +25,7 @@ use Core\Auth;
 use Core\Response;
 use Core\Helper;
 use Core\Email;
+use Helpers\App;
 use Models\User;
 
 class Stats {	
@@ -70,7 +71,7 @@ class Stats {
         View::push(assets('frontend/libs/jsvectormap/dist/maps/world.js'), "script")->toFooter();
         View::push(assets('frontend/libs/jsvectormap/dist/css/jsvectormap.min.css'), "css")->toHeader();
         View::push(assets('Chart.min.js'), "script")->toFooter();
-        View::push(assets('charts.min.js')."?v=1.0", 'script')->toFooter();
+        View::push(assets('charts.min.js')."?v=1.3", 'script')->toFooter();
     
         return View::with('user.stats')->extend('layouts.dashboard');
     }
@@ -146,7 +147,7 @@ class Stats {
      */
     public function clicksMap(){
 
-        $countries = Helper::cacheGet("stats.countrymaps".Auth::user()->rID());
+        $countries = Helper::cacheGet("countrymaps".Auth::user()->rID());
 
         if($countries == null){
           $countries = DB::stats()->selectExpr('COUNT(country)', 'count')->selectExpr('country', 'country')->where("urluserid", Auth::user()->rID())->groupByExpr('country')->orderByDesc('count')->findArray();
@@ -170,8 +171,33 @@ class Stats {
             }
             $i++;
         }    
+        $cities = Helper::cacheGet("citiesmap".Auth::user()->rID());
 
-        return (new Response(['list' => $country, 'top' => $topCountries]))->json();  
+        if($cities == null){
+            $cities = DB::stats()
+                        ->selectExpr('COUNT(id)', 'count')
+                        ->selectExpr('city', 'city')
+                        ->selectExpr('country', 'country')
+                        ->where("urluserid", Auth::user()->rID())
+                        ->groupByExpr('city, country')
+                        ->orderByDesc('count')
+                        ->findArray();
+            Helper::cacheSet("citiesmap", $cities, 60*60);
+        }
+
+        foreach ($cities as $list) {
+
+            $name = $list["country"] ? Helper::Country(ucwords($list["country"]), false, true) : 'unknown';
+
+            if(empty($list["country"])) $list["country"] = e('Unknown');
+            if(empty($list["city"])) $list["city"] = e('Unknown');
+
+            $topCities[$list['city'].'-'.$name] = ['name' => ucwords($list['city']).', '.ucwords($list["country"]), 'country' => $name, 'count' => $list["count"]];
+
+            $i++;
+        }
+
+        return (new Response(['list' => $country, 'top' => $topCountries, 'cities' => $topCities]))->json();  
     }  
         /**
      * View Activity
@@ -256,5 +282,104 @@ class Stats {
         }
 
         return View::with('user.activity', compact('recentActivity'))->extend('layouts.dashboard');
-    }    
+    } 
+    /**
+     * Platforms
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     * @return void
+     */
+    public function clicksPlatforms(){
+
+        $platform = DB::stats()
+                    ->selectExpr('COUNT(id)', 'count')
+                    ->selectExpr('os', 'os')
+                    ->where("urluserid", Auth::user()->rID())
+                    ->groupByExpr('os')
+                    ->orderByDesc('count')
+                    ->findArray();
+
+        $response = [];
+        $top = [];
+        $i = 0;
+
+        foreach($platform as $os){
+            if($os['os'] == 'Windows 10') $os['os'] = 'Windows 10/11';
+            
+            $response[$os['os']] = $os['count'];
+
+            if($i <= 10){
+                if(!empty($os['os'])) $top[$os['os']] = $os["count"];
+            }
+            $i++;
+        }
+
+        return (new Response(['chart' => $response, 'top' => $top]))->json();  
+    }
+    /**
+     * Browsers
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     * @return void
+     */
+    public function clicksBrowsers(){
+
+        $browsers = DB::stats()
+                    ->selectExpr('COUNT(id)', 'count')
+                    ->selectExpr('browser', 'browser')
+                    ->where("urluserid", Auth::user()->rID())
+                    ->groupByExpr('browser')
+                    ->orderByDesc('count')
+                    ->findArray();
+
+        $response = [];
+        $top = [];
+        $i =0;
+
+        foreach($browsers as $browser){
+            $response[$browser['browser']] = $browser['count'];
+
+            if($i <= 10){
+                if(!empty($browser['browser'])) $top[$browser['browser']] = $browser["count"];
+            }
+            $i++;
+        }
+        return (new Response(['chart' => $response, 'top' => $top]))->json();  
+
+    }
+    /**
+     * Languages
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     * @return void
+     */
+    public function clicksLanguages(){
+
+        $languages = DB::stats()
+                    ->selectExpr('COUNT(id)', 'count')
+                    ->selectExpr('language', 'language')
+                    ->where("urluserid", Auth::user()->rID())
+                    ->groupByExpr('language')
+                    ->orderByDesc('count')
+                    ->findArray();
+
+        $response = [];
+        $top = [];
+        $i =0;
+
+        foreach($languages as $language){
+            if(empty($language['language'])) $language['language'] = e('Unknown');
+            $response[App::languagelist($language['language'], true)] = $language['count'];
+            
+            if($i <= 10){
+                if(!empty($language['language'])) $top[App::languagelist($language['language'], true)] = $language["count"];
+            }
+            $i++;
+        }
+        return (new Response(['chart' => $response, 'top' => $top]))->json();  
+
+    }
 }

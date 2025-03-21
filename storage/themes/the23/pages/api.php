@@ -9,6 +9,11 @@
                     <a href="#auth" data-trigger="scrollto" data-scrollto-offset="120" class="px-3 py-1 text-dark d-block mt-1">
                         <span><?php ee('Authentication') ?></span>
                     </a>
+                    <?php if(user() && user()->admin): ?>
+                    <a href="#auth" data-trigger="scrollto" data-scrollto-offset="120" class="px-3 py-1 text-dark d-block mt-1">
+                        <span><?php ee('OAuth Authentication') ?> <span class="badge bg-success small text-white">Admin</span></span>
+                    </a>
+                    <?php endif ?>
                     <a href="#rate" data-trigger="scrollto" data-scrollto-offset="120" class="px-3 py-1 text-dark d-block mt-1">
                         <span><?php ee('Rate Limit') ?></span>
                     </a>
@@ -143,6 +148,81 @@
                         </div>
                     </div>
                 </div>
+                <?php if(user() && user()->admin): ?>
+                <div class="mb-5" id="oauthauthentication">
+                    <div class="row mb-5">
+                        <div class="col-lg-7 text-start">
+                            <div class="card-header py-4">
+                                <h6 class="mb-0 fw-bolder" id="auth"><i class="fa fa-terminal me-3"></i><?php ee('OAuth Authentication') ?></h6>
+                            </div>
+                            <div class="card-body">
+                            <div class="mb-5">
+                                <p><?php ee('OAuth allows you to integrate our services into your application while letting users securely authenticate without sharing their passwords. The flow consists of three main steps:') ?></p>
+                                <ol>
+                                    <li><?php ee('Redirect users to our authorization page') ?></li>
+                                    <li><?php ee('Users approve your application access') ?></li>
+                                    <li><?php ee('Exchange the authorization code for an access token') ?></li>
+                                </ol>
+                            </div>
+
+                            <div class="mb-5">
+                                <h6 class="fw-bold mb-3"><?php ee('Step 1: Create OAuth Application') ?></h6>
+                                <p><?php ee('Before you begin, you need to create an OAuth application in your admin dashboard. You will receive:') ?></p>
+                                <ul>
+                                    <li><?php ee('Client ID') ?></li>
+                                    <li><?php ee('Client Secret') ?></li>
+                                </ul>
+                                <div class="alert alert-warning">
+                                    <?php ee('Keep your Client Secret secure and never share it publicly!') ?>
+                                </div>
+                            </div>
+
+                            <div class="mb-5">
+                                <h6 class="fw-bold mb-3"><?php ee('Step 2: Authorization Request') ?></h6>
+                                <p><?php ee('To begin the OAuth flow, redirect users to our authorization URL:') ?></p>
+                                
+                                <pre class="bg-dark text-white p-3 rounded">GET <?php echo route('oauth.authorize') ?>?clientid=YOUR_CLIENT_ID&redirect=YOUR_REDIRECT_URI</pre>
+                                
+                                <p class="mt-3"><?php ee('Parameters:') ?></p>
+                                <ul>
+                                    <li><code>clientid</code>: <?php ee('Your OAuth client ID') ?></li>
+                                    <li><code>redirect</code>: <?php ee('Must match the redirect URI you registered') ?></li>
+                                </ul>
+                            </div>
+
+                            <div class="mb-5">
+                                <h6 class="fw-bold mb-3"><?php ee('Step 3: Handle the Callback') ?></h6>
+                                <p><?php ee('After user authorization, we will redirect to your redirect_uri with an authorization code:') ?></p>
+                                
+                                <pre class="bg-dark text-white p-3 rounded">YOUR_REDIRECT_URI?code=AUTHORIZATION_CODE</pre>
+                            </div>
+
+                            <div class="mb-5">
+                                <h6 class="fw-bold mb-3"><?php ee('Step 4: Exchange Code for Token') ?></h6>
+                                <p><?php ee('Exchange the authorization code for an access token by making a POST request') ?></p>
+                                
+                                <pre class="bg-dark text-white p-3 rounded">POST <?php echo route('api.oauth.token') ?></br>Content-Type: application/json</br>{</br> "code": "AUTHORIZATION_CODE",</br> "secret": "YOUR_CLIENT_SECRET"</br>}</pre>
+
+                                <p class="mt-3"><?php ee('Successful response') ?></p>
+                                <pre class="bg-dark text-white p-3 rounded">{<br>"error": false,<br>"access_token": "YOUR_ACCESS_TOKEN",<br>"expires_at": 1234567890<br>}</pre>
+                            </div>
+
+                            <div class="mb-5">
+                                <h6 class="mb-3 fw-bold"><?php ee('Using the Access Token') ?></h6>
+                                <p><?php ee('Include the access token in the Authorization header for API requests:') ?></p>
+                                
+                                <pre class="bg-dark text-white p-3 rounded">GET /api/v2/account<br>Authorization: Bearer YOUR_ACCESS_TOKEN</pre>
+
+                                <div class="alert alert-info mt-3">
+                                    <?php ee('Access tokens expire after 1 year and will need to be refreshed by repeating the OAuth flow.') ?>
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endif ?>
                 <div id="ratelimit" class="row mb-5">
                     <div class="col-lg-7 text-start">
                         <div class="card-header py-4">

@@ -58,7 +58,7 @@ class QR {
         
         if($request->sort == "popular"){
             
-            $query = DB::qrs()->where('qrs.userid', Auth::user()->rID())->join(DBprefix.'url', [DBprefix.'qrs.urlid', '=', DBprefix.'url.id'])->orderByDesc('click');
+            $query = DB::qrs()->selectExpr(DBprefix.'qrs.*')->where('qrs.userid', Auth::user()->rID())->join(DBprefix.'url', [DBprefix.'qrs.urlid', '=', DBprefix.'url.id'])->orderByDesc('click');
 
         } else {
 

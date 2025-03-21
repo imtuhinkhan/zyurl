@@ -34,8 +34,11 @@ class Overlay {
      * @version 6.0
      */
     public function __construct(){
+        $user = Auth::ApiUser();
 
-        if(!Auth::ApiUser()->has('overlay')){
+        if(!$user->keyCan('cta')) return die(Response::factory(['error' => true, 'message' => 'You do not have access to this endpoint with this API key.'])->json());
+
+        if(!$user->has('overlay')){
             die(Response::factory(['error' => 1, 'message' => 'You do not have permission to access this endpoint.'], 403)->json());
         }        
     }

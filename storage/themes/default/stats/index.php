@@ -16,7 +16,7 @@
 <div class="card shadow-sm">
     <div class="card-body py-3">
         <div>
-            <canvas data-trigger="chart" data-url="<?php echo route('data.clicks', [$url->id]) ?>" height="400"></canvas>
+            <canvas data-trigger="chart" data-url="<?php echo route('data.clicks', [$url->id]) ?>" height="400" data-color-start="rgba(43, 130, 255, 0.5)" data-color-stop="rgba(255,255,255,0.1)" data-color-border="rgb(43, 130, 255)"></canvas>
         </div>
     </div>
 </div>

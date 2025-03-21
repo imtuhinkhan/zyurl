@@ -1,58 +1,45 @@
-<div class="row">
-    <div class="col-xl-2 col-lg-3 col-md-4 d-flex">
-        <div class="w-100">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="fw-bold mb-4"><?php ee('Links') ?></h5>
-                            <h1 class="mt-1 mb-3"><?php echo $count->links ?></h1>
-                            <div class="mb-1">
-                                <span class="text-success"> +<?php echo $count->linksToday ?></span>
-                                <span class="text-muted"><?php ee('Today') ?></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="fw-bold mb-4"><?php ee('Clicks') ?></h5>
-                            <h1 class="mt-1 mb-3"><?php echo $count->clicks ?></h1>
-                            <div class="mb-1">
-                                <span class="text-success"> +<?php echo $count->clicksToday ?></span>
-                                <span class="text-muted"><?php ee('Today') ?></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="d-flex align-items-center mb-4">
+    <h4 class="fw-bold mb-0"><?php ee('Traffic Overview') ?></h4>
+</div>
+<div class="card shadow-sm">
+    <div class="card-body py-3">
+        <div class="d-flex align-items-center mb-3">
+            <div class="pe-4 border-end">
+                <strong><?php ee('Total Clicks') ?></strong>
+                <h3 class="mt-2 mb-0 fw-bold"><?php echo $count->clicks ?></h3>
             </div>
-        </div>
-    </div>
-
-    <div class="col-xl-10 col-lg-9 col-md-8">
-        <div class="card shadow-sm">
-            <div class="card-header">
-                <h5 class="fw-bold mb-0"><?php ee('Recent Clicks') ?></h5>
+            <div class="px-4 border-end">
+                <strong><?php ee('Clicks') ?> <span class="text-muted"><?php ee('(Current Period)') ?></span></strong>
+                <h3 class="mt-2 mb-0 fw-bold" data-count="currentPeriodClicks">0</h3>
             </div>
-            <div class="card-body py-3">
-                <div class="chart chart-sm">
-                    <canvas data-trigger="chart" data-url="<?php echo route('user.clicks') ?>" data-color-start="#3B7DDD" data-color-stop="rgba(255,255,255,0.1)"></canvas>
-                </div>
+            <div class="px-4">
+                <strong><?php ee('Clicks') ?> <span class="text-muted"><?php ee('(Today)') ?></span></strong>
+                <h3 class="mt-2 mb-0 fw-bold"><?php echo $count->clicksToday ?></h3>
             </div>
+            <div class="ms-auto ml-auto mb-0 border rounded shadow-sm p-2 d-flex align-items-center">
+                <i data-feather="calendar"></i> <input type="text" name="customreport" data-action="customreport" class="form-control border-0 flex-fill" placeholder="<?php echo e("Choose a date range to update stats") ?>">
+            </div>
+        </div>        
+        <div class="chart chart-lg border-top pt-3">
+            <canvas data-trigger="chart" data-url="<?php echo route('user.clicks') ?>" data-color-start="rgba(43, 130, 255, 0.5)" data-color-stop="rgba(255,255,255,0.1)" data-color-border="rgb(43, 130, 255)"></canvas>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-lg-6 col-xl-7">
-        <?php if(user()->teamPermission('links.create')): ?>
-            <?php if(config('manualapproval') && !user()->verified): ?>
-                <div class="alert bg-dark rounded p-3 text-white"><?php ee('We are currently manually approving links. As soon as the link is approved, you will be able to start using it.') ?></div>
-            <?php endif ?>
-            <div class="card shadow-sm mb-5">
-                <div class="card-body">
-                    <?php view('partials.shortener') ?>
+        <div class="border rounded p-2 mb-4">
+            <h4 class="mb-4 fw-bold"><?php ee('Shorten Link') ?></h4>
+            <?php if(user()->teamPermission('links.create')): ?>
+                <?php if(config('manualapproval') && !user()->verified): ?>
+                    <div class="alert bg-dark rounded p-3 text-white"><?php ee('We are currently manually approving links. As soon as the link is approved, you will be able to start using it.') ?></div>
+                <?php endif ?>
+                <div class="card shadow-sm mb-0">
+                    <div class="card-body">
+                        <?php view('partials.shortener') ?>
+                    </div>
                 </div>
-            </div>
-        <?php endif ?>
+            <?php endif ?>
+        </div>
         <div class="border rounded p-2 mb-2">
             <div class="mb-2 d-flex align-items-center">
                 <h4 class="mb-3 fw-bold"><?php ee('Recent Links') ?></h4>
@@ -134,7 +121,7 @@
         </div>
     </div>
     <div class="col-lg-6 col-xl-5">
-        <div class="border rounded p-2">            
+        <div class="border rounded p-2">
             <div class="d-flex">
                 <h4 class="mb-3 fw-bold"><?php ee('Recent Activity') ?></h4>
                 <div class="ms-auto">

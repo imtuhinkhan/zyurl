@@ -102,5 +102,5 @@ return [
         'css'=> [
             assets('frontend/libs/coloris/coloris.min.css')
         ]
-    ],
+    ]
 ];

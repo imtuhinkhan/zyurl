@@ -230,8 +230,7 @@
         <?php if(config('api') && $user->has('api') && $user->teamPermission('api.create')): ?>
 			<div class="card card-body shadow-sm">
 				<h4 class="mb-3 fw-bold"><?php echo e("Developer API Key") ?></h4>
-                <code class="bg-dark text-white p-3 rounded mb-3 position-relative d-block"><?php echo $user->api ?> <a href="#" class="btn btn-success btn-sm position-absolute top-0 mt-2 me-2 end-0 copy" data-clipboard-text="<?php echo $user->api ?>"><?php ee('Copy') ?></a></code>
-				<p><a href="#" class="btn btn-primary" data-bs-toggle="modal" data-trigger="modalopen" data-bs-target="#apiModal"><?php echo e("Regenerate") ?></a></p>
+				<p><a href="<?php echo route('apikeys') ?>" class="btn btn-primary"><?php echo e("API Keys") ?></a></p>
 			</div>
 		<?php endif ?>
         <?php if(config('allowdelete')): ?>
@@ -270,26 +269,6 @@
   </div>
 </div>
 
-<div class="modal fade" id="apiModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold"><?php ee('Developer API Key') ?></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form action="<?php echo route('regenerateapi') ?>" method="post">
-        <div class="modal-body">
-            <p><?php echo ee('If you regenerate your key, the current key will be revoked and your applications might stop working until you update the api key with the new one.') ?></p>
-            <?php echo csrf() ?>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php ee('Cancel') ?></button>
-            <button type="submit" class="btn btn-success"><?php ee('Regenerate') ?></button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 <?php if($secret): ?>
 <div class="modal fade" id="twofaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">

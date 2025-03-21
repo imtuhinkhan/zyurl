@@ -157,7 +157,7 @@ final class Auth extends Gem {
 			session_regenerate_id();
 			// Set Session
 			$data = Helper::encrypt(json_encode(["loggedin" => true, "key" => $user->auth_key.$user->id]));
-			request() ->session(Auth::COOKIE, $data);
+			request()->session(Auth::COOKIE, $data);
 
 			return true;
 			
@@ -168,15 +168,26 @@ final class Auth extends Gem {
 	/**
 	 * Auth user via API
 	 * @author GemPixel <https://gempixel.com> 
-	 * @version 6.0
+	 * @version 7.6
 	 * @param string|null $key
 	 * @return void
 	 */
 	public static function ApiUser(?string $key = null){
 				
 		if(!self::$user){
-			if(!$user = User::where('api', clean($key))->first()){
-				return false;
+			if(preg_match('/^[a-z0-9]+-\d{5}-[a-z]+-\d{5}$/i', $key)) {
+				if(!$token = DB::oauth_access_tokens()->where('token', clean($key))->first()) return false;
+
+				$user = User::where('id', clean($token->user_id))->first();
+			}else{
+				if(!$user = User::where('api', clean($key))->first()){
+					if($key = DB::apikeys()->where('apikey', clean($key))->first()){
+						$user = User::where('id', $key->userid)->first();
+						request()->session('customkey', $key->apikey);
+					}else {
+						return false;
+					}
+				}
 			}
 			self::$user = $user;
 		}

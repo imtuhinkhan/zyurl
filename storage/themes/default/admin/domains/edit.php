@@ -19,7 +19,7 @@
                             </div>	
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group mb-4">
+                            <div class="form-group input-select mb-4">
                                 <label for="status" class="form-label fw-bold"><?php ee('Status') ?></label>
                                 <select name="status" id="status" class="form-control p-2" data-toggle="select">
                                     <option value="0" <?php echo $domain->status == '0' ? 'selected' : '' ?>><?php ee('Disabled') ?></option>
@@ -29,7 +29,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group mb-4">
+                    <div class="form-group input-select mb-4">
                         <label for="user" class="form-label fw-bold"><?php ee('Assign to User') ?></label>
                         <select name="user" id="user" class="form-control" data-trigger="userlist" data-route="<?php echo route('admin.users.list') ?>">
                             <option value="<?php echo $user->id ?>" selected="selected"><?php echo $user->id ?> - <?php echo $user->email ?></option>

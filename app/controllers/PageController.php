@@ -542,7 +542,20 @@ class Page {
      * @version 6.0
      * @return void
      */
-    public function bio(){
+    public function bio(Request $request){
+
+        if($request->alias){
+            if(strlen($request->alias) < 3){
+                return Response::factory(['available' => false, 'message' => e('Custom alias must be at least 3 characters.')])->json();
+
+            }elseif(DB::url()->where('custom', Helper::slug($request->alias))->where('domain', config('url'))->first()){
+                return Response::factory(['available' => false, 'message' => e('That alias is taken. Please choose another one.')])->json();
+
+            }elseif(DB::url()->where('alias', Helper::slug($request->alias))->whereRaw('(domain = ? OR domain = ?)', [$request->domain, ''])->first()){
+                return Response::factory(['available' => false, 'message' => e('That alias is taken. Please choose another one.')])->json();
+            }
+            return Response::factory(['available' => true])->json();
+        }
 
         View::set('title', e('Bio Pages'));
         

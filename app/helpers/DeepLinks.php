@@ -38,14 +38,23 @@ class DeepLinks {
     public static function list(){
 
         $list = [
-            'youtube' => [
-                'icon' => assets('images/youtube.svg'),
-                'title' => e('Youtube'),
-                'ios' => 'https://apps.apple.com/us/app/youtube-watch-listen-stream/id544007664',
-                'android' => 'https://play.google.com/store/apps/details?id=com.google.android.youtube',
-                'domains' => '(youtube.com|youtu.be)',
-                'supports' => ['channels', 'video', 'profile'],
-                'deeplink' => [DeepLinks::class, 'youtube'],
+            'airbnb' => [
+                'icon' => assets('images/airbnb.svg'),
+                'title' => e('Airbnb'),
+                'ios' => 'https://apps.apple.com/us/app/airbnb/id401626263',
+                'android' => 'https://play.google.com/store/apps/details?id=com.airbnb.android',
+                'domains' => 'airbnb.(.*)',
+                'supports' => ['room'],
+                'deeplink' => [DeepLinks::class, 'airbnb'],
+            ],
+            'aliexpress' => [
+                'icon' => assets('images/aliexpress.svg'),
+                'title' => e('AliExpress'),
+                'ios' => 'https://apps.apple.com/us/app/aliexpress/id436672029',
+                'android' => 'https://play.google.com/store/apps/details?id=com.alibaba.aliexpresshd',
+                'domains' => 'aliexpress.(.*)',
+                'supports' => ['product', 'category'],
+                'deeplink' => [DeepLinks::class, 'aliexpress'],
             ],
             'amazon' => [
                 'icon' => assets('images/amazon.png'),
@@ -56,6 +65,15 @@ class DeepLinks {
                 'supports' => ['category', 'product'],
                 'deeplink' => [DeepLinks::class, 'amazon'],
             ],
+            'applemusic' => [
+                'icon' => assets('images/itunes.svg'),
+                'title' => e('Apple Music'),
+                'ios' => 'https://apps.apple.com/us/app/apple-music/id1108187390',
+                'android' => 'https://play.google.com/store/apps/details?id=com.apple.android.music',
+                'domains' => 'music.apple.com',
+                'supports' => ['album', 'artist', 'song'],
+                'deeplink' => [DeepLinks::class, 'applemusic'],
+            ],
             'facebook' => [
                 'icon' => assets('images/facebook.svg'),
                 'title' => e('Facebook'),
@@ -64,6 +82,15 @@ class DeepLinks {
                 'domains' => 'facebook.(?:com|co.uk|ca|de|es|fe|it|co.jp|in|cn|com.sg|com.mx|ae|com.br|nl|com.au|com.tr|sa|se|pl)',
                 'supports' => ['videos', 'profile', 'page', 'event', 'post', 'group'],
                 'deeplink' => [DeepLinks::class, 'facebook'],
+            ],
+            'grubhub' => [
+                'icon' => assets('images/grubhub.png'),
+                'title' => e('GrubHub'),
+                'ios' => 'https://apps.apple.com/us/app/grubhub-food-delivery/id302920553',
+                'android' => 'https://play.google.com/store/apps/details?id=com.grubhub.android&hl=en_CA',
+                'domains' => 'grubhub.com',
+                'supports' => ['restaurant'],
+                'deeplink' => [DeepLinks::class, 'grubhub'],
             ],
             'instagram' => [
                 'icon' => assets('images/instagram.svg'),
@@ -74,23 +101,14 @@ class DeepLinks {
                 'supports' => ['post','tv','profile'],
                 'deeplink' => [DeepLinks::class, 'instagram'],
             ],
-            'spotify' => [
-                'icon' => assets('images/spotify.svg'),
-                'title' => e('Spotify'),
-                'ios' => 'https://apps.apple.com/us/app/spotify-music-and-podcasts/id324684580',
-                'android' => 'https://play.google.com/store/apps/details?id=com.spotify.music',
-                'domains' => 'open.spotify.com',
-                'supports' => ['album','artist','episode','playlist','show','track'],
-                'deeplink' => [DeepLinks::class, 'spotify'],
-            ],
-            'whatsapp' => [
-                'icon' => assets('images/whatsapp.svg'),
-                'title' => e('Whatsapp'),
-                'ios' => 'https://apps.apple.com/us/app/whatsapp-messenger/id310633997',
-                'android' => 'https://play.google.com/store/apps/details?id=com.whatsapp',
-                'domains' => '(whatsapp.com|wa.me)',
-                'supports' => null,
-                'deeplink' => [DeepLinks::class, 'whatsapp'],
+            'linkedin' => [
+                'icon' => assets('images/linkedin.svg'),
+                'title' => e('LinkedIn'),
+                'ios' => 'https://apps.apple.com/us/app/linkedin/id288429040',
+                'android' => 'https://play.google.com/store/apps/details?id=com.linkedin.android',
+                'domains' => 'linkedin.(.*)',
+                'supports' => ['company', 'job','message', 'profile'],
+                'deeplink' => [DeepLinks::class, 'linkedin'],
             ],
             'messenger' => [
                 'icon' => assets('images/messenger.png'),
@@ -101,41 +119,14 @@ class DeepLinks {
                 'supports' => null,
                 'deeplink' => [DeepLinks::class, 'messenger'],
             ],
-            'tiktok' => [
-                'icon' => assets('images/tiktok.svg'),
-                'title' => e('TikTok'),
-                'ios' => 'https://apps.apple.com/us/app/tiktok/id835599320',
-                'android' => 'https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically',
-                'domains' => 'tiktok.com',
-                'supports' => ['profile', 'songs', 'video'],
-                'deeplink' => [DeepLinks::class, 'tiktok'],
-            ],
-            'snapchat' => [
-                'icon' => assets('images/snapchat.svg'),
-                'title' => e('Snapchat'),
-                'ios' => 'https://apps.apple.com/us/app/snapchat/id447188370',
-                'android' => 'https://play.google.com/store/apps/details?id=com.snapchat.android',
-                'domains' => 'snapchat.com',
-                'supports' => ['business', 'profile'],
-                'deeplink' => [DeepLinks::class, 'snapchat'],
-            ],
-            'applemusic' => [
-                'icon' => assets('images/itunes.svg'),
-                'title' => e('Apple Music'),
-                'ios' => 'https://apps.apple.com/us/app/apple-music/id1108187390',
-                'android' => 'https://play.google.com/store/apps/details?id=com.apple.android.music',
-                'domains' => 'music.apple.com',
-                'supports' => ['album', 'artist', 'song'],
-                'deeplink' => [DeepLinks::class, 'applemusic'],
-            ],
-            'telegram' => [
-                'icon' => assets('images/telegram.png'),
-                'title' => e('Telegram'),
-                'ios' => 'https://apps.apple.com/us/app/telegram-messenger/id686449807',
-                'android' => 'https://play.google.com/store/apps/details?id=org.telegram.messenger',
-                'domains' => 't.me',
-                'supports' => ['chat', 'messenger'],
-                'deeplink' => [DeepLinks::class, 'telegram'],
+            'netflix' => [
+                'icon' => assets('images/netflix.svg'),
+                'title' => e('Netflix'),
+                'ios' => 'https://apps.apple.com/us/app/netflix/id363590051',
+                'android' => 'https://play.google.com/store/apps/details?id=com.netflix.mediaclient',
+                'domains' => 'netflix.com',
+                'supports' => ['episode', 'genre', 'show'],
+                'deeplink' => [DeepLinks::class, 'netflix'],
             ],
             'pinterest' => [
                 'icon' => assets('images/pinterest.svg'),
@@ -146,32 +137,41 @@ class DeepLinks {
                 'supports' => ['pin', 'profile'],
                 'deeplink' => [DeepLinks::class, 'pinterest'],
             ],
-            'linkedin' => [
-                'icon' => assets('images/linkedin.svg'),
-                'title' => e('LinkedIn'),
-                'ios' => 'https://apps.apple.com/us/app/linkedin/id288429040',
-                'android' => 'https://play.google.com/store/apps/details?id=com.linkedin.android',
-                'domains' => 'linkedin.(.*)',
-                'supports' => ['company', 'job','message', 'profile'],
-                'deeplink' => [DeepLinks::class, 'linkedin'],
+            'snapchat' => [
+                'icon' => assets('images/snapchat.svg'),
+                'title' => e('Snapchat'),
+                'ios' => 'https://apps.apple.com/us/app/snapchat/id447188370',
+                'android' => 'https://play.google.com/store/apps/details?id=com.snapchat.android',
+                'domains' => 'snapchat.com',
+                'supports' => ['business', 'profile'],
+                'deeplink' => [DeepLinks::class, 'snapchat'],
             ],
-            'walmart' => [
-                'icon' => assets('images/walmart.png'),
-                'title' => e('Walmart'),
-                'ios' => 'https://apps.apple.com/us/app/walmart-shopping-grocery/id338137227',
-                'android' => 'https://play.google.com/store/apps/details?id=com.walmart.android',
-                'domains' => 'walmart.com',
-                'supports' => ['category', 'brand', 'product', 'search'],
-                'deeplink' => [DeepLinks::class, 'walmart'],
+            'spotify' => [
+                'icon' => assets('images/spotify.svg'),
+                'title' => e('Spotify'),
+                'ios' => 'https://apps.apple.com/us/app/spotify-music-and-podcasts/id324684580',
+                'android' => 'https://play.google.com/store/apps/details?id=com.spotify.music',
+                'domains' => 'open.spotify.com',
+                'supports' => ['album','artist','episode','playlist','show','track'],
+                'deeplink' => [DeepLinks::class, 'spotify'],
             ],
-            'netflix' => [
-                'icon' => assets('images/netflix.svg'),
-                'title' => e('Netflix'),
-                'ios' => 'https://apps.apple.com/us/app/netflix/id363590051',
-                'android' => 'https://play.google.com/store/apps/details?id=com.netflix.mediaclient',
-                'domains' => 'netflix.com',
-                'supports' => ['episode', 'genre', 'show'],
-                'deeplink' => [DeepLinks::class, 'netflix'],
+            'telegram' => [
+                'icon' => assets('images/telegram.png'),
+                'title' => e('Telegram'),
+                'ios' => 'https://apps.apple.com/us/app/telegram-messenger/id686449807',
+                'android' => 'https://play.google.com/store/apps/details?id=org.telegram.messenger',
+                'domains' => 't.me',
+                'supports' => ['chat', 'messenger'],
+                'deeplink' => [DeepLinks::class, 'telegram'],
+            ],
+            'tiktok' => [
+                'icon' => assets('images/tiktok.svg'),
+                'title' => e('TikTok'),
+                'ios' => 'https://apps.apple.com/us/app/tiktok/id835599320',
+                'android' => 'https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically',
+                'domains' => 'tiktok.com',
+                'supports' => ['profile', 'songs', 'video'],
+                'deeplink' => [DeepLinks::class, 'tiktok'],
             ],
             'twitch' => [
                 'icon' => assets('images/twitch.svg'),
@@ -182,15 +182,6 @@ class DeepLinks {
                 'supports' => ['streaming', 'gaming'],
                 'deeplink' => [DeepLinks::class, 'twitch'],
             ],
-            'zoom' => [
-                'icon' => assets('images/zoom.svg'),
-                'title' => e('Zoom'),
-                'ios' => 'https://apps.apple.com/us/app/zoom-cloud-meetings/id546505307',
-                'android' => 'https://play.google.com/store/apps/details?id=us.zoom.videomeetings',
-                'domains' => '(.*).zoom.us',
-                'supports' => ['video conferencing', 'online meetings'],
-                'deeplink' => [DeepLinks::class, 'zoom'],
-            ],
             'twitter' => [
                 'icon' => assets('images/x.svg'),
                 'title' => e('X'),
@@ -199,6 +190,24 @@ class DeepLinks {
                 'domains' => '(?:twitter|x).com',
                 'supports' => ['post','tv','profile'],
                 'deeplink' => [DeepLinks::class, 'twitter'],
+            ],
+            'walmart' => [
+                'icon' => assets('images/walmart.png'),
+                'title' => e('Walmart'),
+                'ios' => 'https://apps.apple.com/us/app/walmart-shopping-grocery/id338137227',
+                'android' => 'https://play.google.com/store/apps/details?id=com.walmart.android',
+                'domains' => 'walmart.com',
+                'supports' => ['category', 'brand', 'product', 'search'],
+                'deeplink' => [DeepLinks::class, 'walmart'],
+            ],
+            'whatsapp' => [
+                'icon' => assets('images/whatsapp.svg'),
+                'title' => e('Whatsapp'),
+                'ios' => 'https://apps.apple.com/us/app/whatsapp-messenger/id310633997',
+                'android' => 'https://play.google.com/store/apps/details?id=com.whatsapp',
+                'domains' => '(whatsapp.com|wa.me)',
+                'supports' => null,
+                'deeplink' => [DeepLinks::class, 'whatsapp'],
             ],
             'wolt' => [
                 'icon' => assets('images/wolt.png'),
@@ -218,15 +227,24 @@ class DeepLinks {
                 'supports' => ['biz'],
                 'deeplink' => [DeepLinks::class, 'yelp'],
             ],
-            'grubhub' => [
-                'icon' => assets('images/grubhub.png'),
-                'title' => e('GrubHub'),
-                'ios' => 'https://apps.apple.com/us/app/grubhub-food-delivery/id302920553',
-                'android' => 'https://play.google.com/store/apps/details?id=com.grubhub.android&hl=en_CA',
-                'domains' => 'grubhub.com',
-                'supports' => ['restaurant'],
-                'deeplink' => [DeepLinks::class, 'grubhub'],
-            ]                        
+            'youtube' => [
+                'icon' => assets('images/youtube.svg'),
+                'title' => e('Youtube'),
+                'ios' => 'https://apps.apple.com/us/app/youtube-watch-listen-stream/id544007664',
+                'android' => 'https://play.google.com/store/apps/details?id=com.google.android.youtube',
+                'domains' => '(youtube.com|youtu.be)',
+                'supports' => ['channels', 'video', 'profile'],
+                'deeplink' => [DeepLinks::class, 'youtube'],
+            ],
+            'zoom' => [
+                'icon' => assets('images/zoom.svg'),
+                'title' => e('Zoom'),
+                'ios' => 'https://apps.apple.com/us/app/zoom-cloud-meetings/id546505307',
+                'android' => 'https://play.google.com/store/apps/details?id=us.zoom.videomeetings',
+                'domains' => '(.*).zoom.us',
+                'supports' => ['video conferencing', 'online meetings'],
+                'deeplink' => [DeepLinks::class, 'zoom'],
+            ]
         ];
 
         if($extended = \Core\Plugin::dispatch('deeplinks.extend')){
@@ -247,7 +265,7 @@ class DeepLinks {
      */
     public static function convert(string $url){
 
-        $host = Helper::parseUrl(clean($url), 'host');
+        $host = Helper::parseUrl(urldecode(clean($url)), 'host');
 
         $domain = strtolower(str_replace('www.', '', $host));
 
@@ -307,7 +325,7 @@ class DeepLinks {
         return $deeplink;
     }
     /**
-     * Amazon Linkshttps://wolt.onelink.me/Uy67?af_adset=not-available-web-to-app&af_keywords=not-available-web-to-app&af_r=https%3A%2F%2Fitunes.apple.com%2Ffi%2Fapp%2Fwolt%2Fid943905271%3Fmt%3D8&af_sub1=not-available-web-to-app&af_sub2=%2F&c=not-available-web-to-app&pid=not-available-web-to-app
+     * Amazon Links
      *
      * @author GemPixel <https://gempixel.com>
      * @version 1.0
@@ -656,38 +674,6 @@ class DeepLinks {
     }
 
     /**
-     * telegram
-     *
-     * @author GemPixel <https://gempixel.com>
-     * @version 7.4
-     * @param string $url
-     * @return void
-     */
-    public static function telegram(string $url){
-        $deeplink = ['provider' => 'telegram', 'ios' => '', 'android' => ''];
-
-        $supportFormats = [
-            't.me\/{*}',
-        ];
-
-        foreach($supportFormats as $i => $format){
-
-            $regex = str_replace('{*}', '(.*)', $format);
-
-            preg_match("/{$regex}/i", $url, $matches);
-
-            $tag = end($matches);
-
-            if($tag && !empty($tag)){
-                $deeplink['ios'] = 'tg://resolve?domain='.$tag;
-                $deeplink['android'] = 'intent://resolve?domain='.$tag.'#Intent;package=org.telegram.messenger;scheme=tg;end';
-                return $deeplink;
-            }
-        }
-
-        return $deeplink;
-    }
-    /**
      * pinterest
      *
      * @author GemPixel <https://gempixel.com>
@@ -920,7 +906,7 @@ class DeepLinks {
      */
     public static function wolt(string $url){
 
-        $deeplink = ['provider' => 'netflix', 'ios' => '', 'android' => ''];
+        $deeplink = ['provider' => 'wolt', 'ios' => '', 'android' => ''];
 
         $supportFormats = [
             'wolt.com\/{*}',
@@ -952,7 +938,7 @@ class DeepLinks {
      */
     public static function yelp(string $url){
 
-        $deeplink = ['provider' => 'netflix', 'ios' => '', 'android' => ''];
+        $deeplink = ['provider' => 'yelp', 'ios' => '', 'android' => ''];
 
         $supportFormats = [
             'yelp.com\/biz\/{*}',
@@ -985,7 +971,7 @@ class DeepLinks {
      */
     public static function grubhub(string $url){
 
-        $deeplink = ['provider' => 'netflix', 'ios' => '', 'android' => ''];
+        $deeplink = ['provider' => 'airbnb', 'ios' => '', 'android' => ''];
 
         $supportFormats = [
             'grubhub.com\/restaurant\/{*}',
@@ -1003,6 +989,71 @@ class DeepLinks {
                 $deeplink['ios'] = 'grubhubapp://restaurant/'.$tag;
                 $query = explode('?', $url);
                 $deeplink['android'] = str_replace(['https://', 'http://', 'https://www.', 'http://www.'], 'intent://', $query[0]).'#Intent;package=com.yelp.android;scheme=https;end?'.$query[1];
+                return $deeplink;
+            }
+        }
+        return $deeplink;
+    }
+    /**
+     * Airbnb
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     * @param string $url
+     * @return void
+     */
+    public static function airbnb(string $url){
+
+        $deeplink = ['provider' => 'airbnb', 'ios' => '', 'android' => ''];
+
+        $supportFormats = [
+            'airbnb.{*}\/rooms\/{*}',
+        ];
+
+        foreach($supportFormats as $i => $format){
+
+            $regex = str_replace('{*}', '(.*)', $format);
+
+            preg_match("/{$regex}/i", $url, $matches);
+
+            $tag = end($matches);
+
+            if($tag && !empty($tag)){
+                $deeplink['ios'] = 'airbnb://rooms/'.$tag;
+                $deeplink['android'] = str_replace(['https://', 'http://', 'https://www.', 'http://www.'], 'intent://', $url).'#Intent;package=com.airbnb.android;scheme=https;end';
+                return $deeplink;
+            }
+        }
+        return $deeplink;
+    }
+    /**
+     * Ali Express
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     * @param string $url
+     * @return void
+     */
+    public static function aliexpress(string $url){
+
+        $deeplink = ['provider' => 'aliexpress', 'ios' => '', 'android' => ''];
+
+        $supportFormats = [
+            'aliexpress.{*}\/item\/{*}'
+        ];
+
+        foreach($supportFormats as $i => $format){
+
+            $regex = str_replace('{*}', '(.*)', $format);
+
+            preg_match("/{$regex}/i", $url, $matches);
+
+            $tag = end($matches);
+
+            if($tag && !empty($tag)){
+                $tag = str_replace('.html?', '&', $tag);
+                $deeplink['ios'] = 'aliexpress://product/detail?productId='.$tag;
+                $deeplink['android'] = 'aliexpress://product/detail?productId='.$tag;
                 return $deeplink;
             }
         }

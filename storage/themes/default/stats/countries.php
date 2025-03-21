@@ -29,7 +29,7 @@
                     <a href="#top-cities"  data-bs-parent="#countrylist" class="btn flex-fill"><?php ee('Cities') ?></a>
                 </div>                
             </div>
-            <div class="card-body px-4" id="countrylist">
+            <div class="card-body px-3" id="countrylist">
                 <ul id="top-countries" class="list-unstyled collapse show"></ul>
                 <ul id="top-cities" class="list-unstyled collapse"></ul>
             </div>

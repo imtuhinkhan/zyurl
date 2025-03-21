@@ -114,11 +114,11 @@
             <button type="button" class="btn btn-primary w-100" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="settings"></i> <span class="align-middle ms-2"><?php ee('Customize') ?></span></button>
             <ul class="dropdown-menu dropdown-nav">
                 <li><a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#metatags"><i data-feather="edit-3"></i> <?php ee('Meta Tags') ?></a></li>
-                <?php if(config("geotarget") && \Core\Auth::user()->has("geo") !== false):?>
-                    <li><a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#geo"><i data-feather="map-pin"></i> <?php ee('Geo Targeting') ?></a></li>
-                <?php endif ?>
                 <?php if(\Core\Auth::user()->has("deeplink") !== false && config("devicetarget") && \Core\Auth::user()->has("device") !== false):?>
                     <li><a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#deeplink,#device"><i data-feather="git-branch"></i> <?php ee('Deep Linking') ?></a></li>
+                <?php endif ?>
+                <?php if(config("geotarget") && \Core\Auth::user()->has("geo") !== false):?>
+                    <li><a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#geo"><i data-feather="map-pin"></i> <?php ee('Geo Targeting') ?></a></li>
                 <?php endif ?>
                 <?php if(config("devicetarget") && \Core\Auth::user()->has("device") !== false):?>
                     <li><a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#device"><i data-feather="smartphone"></i> <?php ee('Device Targeting') ?></a></li>
@@ -186,9 +186,7 @@
                             <span class="input-group-text bg-white"><i data-feather="globe"></i></span>
                             <select name="state[]" class="form-select border-start-0 ps-0" data-toggle="select">
                                 <option value="0"><?php ee('All States') ?></option>
-                                <?php foreach(\Helpers\App::states('United States') as $state): ?>
-                                    <option value="<?php echo strtolower($state->name) ?>"><?php echo $state->name ?></option>
-                                <?php endforeach ?>
+                                <?php foreach(\Helpers\App::states('United States') as $state): ?><option value="<?php echo strtolower($state->name) ?>"><?php echo $state->name ?></option><?php endforeach ?>
                             </select>
                         </div>
                     </div>

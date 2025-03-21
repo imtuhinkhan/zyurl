@@ -141,19 +141,19 @@ class Splash {
         ];
         
         $appConfig = appConfig('app');
-        $sizes = $appConfig['sizes'];
-        $extensions = $appConfig['extensions'];
+        $sizes = config('sizes');
+        $extensions = config('extensions');
 
-        if(!$image = $request->file('avatar')) return Helper::redirect()->back()->with('danger', e('Avatar must be one the following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['avatar']), 's' => $sizes['splash']['avatar']]));
+        if(!$image = $request->file('avatar')) return Helper::redirect()->back()->with('danger', e('Avatar must be one the following formats {f} and be less than {s}kb.', null, ['f' => $extensions->splash->avatar, 's' => $sizes->splash->avatar]));
 			
-        if(!$image->mimematch || !in_array($image->ext, $extensions['splash']['avatar'])) return Helper::redirect()->back()->with('danger', e('Avatar must be the one following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['avatar']), 's' => $sizes['splash']['avatar']]));
+        if(!$image->mimematch || !in_array($image->ext, explode(',', $extensions->splash->avatar))) return Helper::redirect()->back()->with('danger', e('Avatar must be the one following formats {f} and be less than {s}kb.', null, ['f' => $extensions->avatar, 's' => $sizes->splash->avatar]));
 
-        if($image->sizekb >= $sizes['splash']['avatar']) return back()->with("danger", e('Avatar must be the one following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['avatar']), 's' => $sizes['splash']['avatar']]));
+        if($image->sizekb >= $sizes->splash->avatar) return back()->with("danger", e('Avatar must be the one following formats {f} and be less than {s}kb.', null, ['f' => $extensions->splash->avatar, 's' => $sizes->splash->avatar]));
 
         [$width, $height] = getimagesize($image->location);
         
-        if(($width > 1000 || $height > 1000)) return back()->with("danger", e('Avatar must be the one following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['avatar']), 's' => $sizes['splash']['avatar']]));
-        
+        if(($width > 1000 || $height > 1000)) return Helper::redirect()->back()->with('danger', e('Avatar must be the one following formats {f} and be less than {s}kb.', null, ['f' => $extensions->splash->avatar, 's' => $sizes->splash->avatar]));
+
         $filename = "customsplash_avatar_".Helper::rand(6).str_replace(' ', '-', $image->name);
 
         $request->move($image, $appConfig['storage']['uploads']['path'], $filename);
@@ -164,15 +164,15 @@ class Splash {
 
         $array['avatar'] = $filename;
 
-        if(!$image = $request->file('banner')) return Helper::redirect()->back()->with('danger', e('Banner must be the one following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['banner']), 's' => $sizes['splash']['banner']]));
+        if(!$image = $request->file('banner')) return Helper::redirect()->back()->with('danger', e('Banner must be the one following formats {f} and be less than {s}kb.', null, ['f' => $extensions->splash->banner, 's' => $sizes->splash->banner]));
 			
-        if(!$image->mimematch || !in_array($image->ext, $extensions['splash']['banner'])) return Helper::redirect()->back()->with('danger', e('Banner must be the one following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['banner']), 's' => $sizes['splash']['banner']]));
+        if(!$image->mimematch || !in_array($image->ext, explode(',', $extensions->splash->banner))) return Helper::redirect()->back()->with('danger', e('Banner must be the one following formats {f} and be less than {s}kb.', null, ['f' => $extensions->splash->banner, 's' => $sizes->splash->banner]));
 
-        if($image->sizekb >= $sizes['splash']['banner']) return back()->with("danger", e('Banner must be the one following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['banner']), 's' => $sizes['splash']['banner']]));
+        if($image->sizekb >= $sizes->splash->banner) return back()->with("danger", e('Banner must be the one following formats {f} and be less than {s}kb.', null, ['f' => $extensions->splash->banner, 's' => $sizes->splash->banner]));
 
         [$width, $height] = getimagesize($image->location);
         
-        if($width < 980 || $width > 3000 || $height < 250 || $height > 1500) return back()->with("danger", e('Banner must be the one following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['banner']), 's' => $sizes['splash']['banner']]));
+        if($width < 980 || $width > 3000 || $height < 250 || $height > 1500) return back()->with("danger", e('Banner must be the one following formats {f} and be less than {s}kb.', null, ['f' => $extensions->banner, 's' => $sizes->splash->banner]));
         
         $filename = "customsplash_banner_".Helper::rand(6).str_replace(' ', '-', $image->name);
 
@@ -263,14 +263,14 @@ class Splash {
         ];
         
         $appConfig = appConfig('app');
-        $sizes = $appConfig['sizes'];
-        $extensions = $appConfig['extensions'];
+        $sizes = config('sizes');
+        $extensions = config('extensions');
 
         if($image = $request->file('avatar')){
 			
-			if(!$image->mimematch || !in_array($image->ext, $extensions['splash']['avatar'])) return Helper::redirect()->back()->with('danger', e('Avatar must be one the following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['avatar']), 's' => $sizes['splash']['avatar']]));
+			if(!$image->mimematch || !in_array($image->ext, explode(',', $extensions->splash->avatar))) return Helper::redirect()->back()->with('danger', e('Avatar must be one the following formats {f} and be less than {s}kb.', null, ['f' => $extensions->splash->avatar, 's' => $sizes->splash->avatar]));
 
-            if($image->sizekb >= $sizes['splash']['avatar']) return back()->with("danger", e('Avatar must be one the following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['avatar']), 's' => $sizes['splash']['avatar']]));
+            if($image->sizekb >= $sizes->splash->avatar) return back()->with("danger", e('Avatar must be one the following formats {f} and be less than {s}kb.', null, ['f' => $extensions->splash->avatar, 's' => $sizes->splash->avatar]));
 
             [$width, $height] = getimagesize($image->location);
             
@@ -291,9 +291,9 @@ class Splash {
 
         if($image = $request->file('banner')){
 			
-			if(!$image->mimematch || !in_array($image->ext, $extensions['splash']['banner'])) return Helper::redirect()->back()->with('danger', e('Banner must be one the following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['banner']), 's' => $sizes['splash']['banner']]));
+			if(!$image->mimematch || !in_array($image->ext, explode(',', $extensions->splash->banner))) return Helper::redirect()->back()->with('danger', e('Banner must be one the following formats {f} and be less than {s}kb.', null, ['f' =>  $extensions->splash->banner, 's' => $sizes->splash->banner]));
 
-            if($image->sizekb >= $sizes['splash']['banner']) return back()->with("danger", e('Banner must be one the following formats {f} and be less than {s}kb.', null, ['f' => implode(', ', $extensions['splash']['banner']), 's' => $sizes['splash']['banner']]));
+            if($image->sizekb >= $sizes->splash->banner) return back()->with("danger", e('Banner must be one the following formats {f} and be less than {s}kb.', null, ['f' => $extensions->splash->banner, 's' => $sizes->splash->banner]));
 
             [$width, $height] = getimagesize($image->location);
             

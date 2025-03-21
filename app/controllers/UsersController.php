@@ -347,6 +347,11 @@ class Users {
 
         if(!$request->terms) return Helper::redirect()->back()->with('danger', e('You must agree to our terms of service.'));
 
+
+        if($request->bioalias){
+            $request->cookie('bioalias', clean($request->bioalias), 2*24*60);
+        }
+
         // @group Plugin
         \Core\Plugin::dispatch('register.verify', $request);
 
@@ -394,6 +399,10 @@ class Users {
                 $affiliate->referred_on = Helper::dtime();
                 $affiliate->save();
             }
+        }
+
+        if($request->bioalias){
+            $request->cookie('bioalias', clean($request->bioalias), 2*24*60);
         }
 
         if(config('user_activate')){

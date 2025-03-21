@@ -21,7 +21,8 @@
                         <div id="social" class="text-center my-4">
                             <?php foreach($profiledata['social'] as $key => $social): ?>
                                 <?php if(empty($social['link'])) continue ?>
-                                <a href="<?php echo $social['link'] ?>" class="ml-3 ms-3" target="_blank" data-toggle="tooltip" data-bs-toggle="tooltip" data-placement="top" title="<?php echo $social['name'] ?>" rel="nofollow"><?php echo $social['icon'] ?></a>
+                                <?php if($key == 'envelope') $social['link'] = 'mailto:'.str_replace('mailto:', '', $social['link']) ?>
+                                <a href="<?php echo $social['link'] ?>" class="ml-3 ms-3" target="_blank" data-toggle="tooltip" data-bs-toggle="tooltip" data-placement="top" title="<?php echo $social['name'] ?>" rel="nofollow"><?php echo (isset($profiledata['style']['iconstyle']) && $profiledata['style']['iconstyle'] == 'square' && isset($social['square']) ? $social['square'] : $social['icon']) ?></a>
                             <?php endforeach ?>
                         </div>
                     <?php endif ?>
@@ -50,7 +51,8 @@
                             <div id="social" class="text-center my-4">
                                 <?php foreach($profiledata['social'] as $key => $social): ?>
                                     <?php if(empty($social['link'])) continue ?>
-                                    <a href="<?php echo $social['link'] ?>" class="ml-3 ms-3" target="_blank" data-toggle="tooltip" data-bs-toggle="tooltip" data-placement="top" title="<?php echo $social['name'] ?>" rel="nofollow"><?php echo $social['icon'] ?></a>
+                                    <?php if($key == 'envelope') $social['link'] = 'mailto:'.str_replace('mailto:', '', $social['link']) ?>
+                                    <a href="<?php echo $social['link'] ?>" class="ml-3 ms-3" target="_blank" data-toggle="tooltip" data-bs-toggle="tooltip" data-placement="top" title="<?php echo $social['name'] ?>" rel="nofollow"><?php echo (isset($profiledata['style']['iconstyle']) && $profiledata['style']['iconstyle'] == 'square' && isset($social['square']) ? $social['square'] : $social['icon']) ?></a>
                                 <?php endforeach ?>
                             </div>
                         <?php endif ?>
@@ -82,7 +84,8 @@
                                         <div id="social" class="text-start text-left mt-4">
                                             <?php foreach($profiledata['social'] as $key => $social): ?>
                                                 <?php if(empty($social['link'])) continue ?>
-                                                <a href="<?php echo $social['link'] ?>" class="ml-3 ms-3" target="_blank" data-toggle="tooltip" data-bs-toggle="tooltip" data-placement="top" title="<?php echo $social['name'] ?>" rel="nofollow"><?php echo $social['icon'] ?></a>
+                                                <?php if($key == 'envelope') $social['link'] = 'mailto:'.str_replace('mailto:', '', $social['link']) ?>
+                                                <a href="<?php echo $social['link'] ?>" class="ml-3 ms-3" target="_blank" data-toggle="tooltip" data-bs-toggle="tooltip" data-placement="top" title="<?php echo $social['name'] ?>" rel="nofollow"><?php echo (isset($profiledata['style']['iconstyle']) && $profiledata['style']['iconstyle'] == 'square' && isset($social['square']) ? $social['square'] : $social['icon']) ?></a>
                                             <?php endforeach ?>
                                         </div>
                                     <?php endif ?>
@@ -107,7 +110,8 @@
             <div id="social" class="text-center mt-5">
                 <?php foreach($profiledata['social'] as $key => $social): ?>
                     <?php if(empty($social['link'])) continue ?>
-                    <a href="<?php echo $social['link'] ?>" class="ml-3 ms-3" target="_blank" data-toggle="tooltip" data-bs-toggle="tooltip" data-placement="top" title="<?php echo $social['name'] ?>" rel="nofollow"><?php echo $social['icon'] ?></a>
+                    <?php if($key == 'envelope') $social['link'] = 'mailto:'.str_replace('mailto:', '', $social['link']) ?>
+                    <a href="<?php echo $social['link'] ?>" class="ml-3 ms-3" target="_blank" data-toggle="tooltip" data-bs-toggle="tooltip" data-placement="top" title="<?php echo $social['name'] ?>" rel="nofollow"><?php echo (isset($profiledata['style']['iconstyle']) && $profiledata['style']['iconstyle'] == 'square' && isset($social['square']) ? $social['square'] : $social['icon']) ?></a>
                 <?php endforeach ?>
             </div>
             <?php endif ?>

@@ -54,12 +54,12 @@
     </div>
     <div class="col-md-4">
         <?php if($user->admin || $user->pro() || $user->planid): ?>
+        <h4 class="mb-3 fw-bold"><?php ee('Current Plan') ?></h4>
         <div class="card shadow-sm position-relative">
-            <span class="badge bg-success text-white position-absolute start-50 translate-middle top-0 px-3"><?php ee('Current Plan') ?></span>
             <div class="card-body">
                 <div class="text-center">
                     <h5 class="mb-3 fw-bold"><?php echo $plan['name'] ?></h5>
-                    <?php if($subscription = \Core\DB::subscription()->where('userid', user()->id)->where('status', 'Active')->first()):?>
+                    <?php if(\Helpers\App::possible() && $subscription = \Core\DB::subscription()->where('userid', user()->id)->where('status', 'Active')->first()):?>
                         <?php if($subscription->plan != 'lifetime'): ?>
                         <h5 class="mb-3"><?php ee('Expiration') ?>: <?php echo date('d F, Y', strtotime($user->expiration)) ?></h5>
                         <?php endif ?>
@@ -69,11 +69,12 @@
                     <ul class="list-unstyled mb-4 text-left text-sm">
                         <li class="mb-1"><span data-feather="check-circle" class="mr-1 text-success"></span> <?php echo $plan["urls"] == "0" ? e("Unlimited") : $plan["urls"].($plan['ismonthly'] ? e('/mo') : '') ?> <?php echo e("URLs allowed") ?></li>
                         <li class="mb-1"><span data-feather="check-circle" class="mr-1 text-success"></span> <?php echo $plan["clicks"] == "0" ? e("Unlimited") : $plan["clicks"] ?> <?php echo e("Clicks per month") ?></li>                     
+                        <li class="mb-1"><span data-feather="check-circle" class="mr-1 text-success"></span> <?php echo $plan["retention"] == "0" ? e("Unlimited") : $plan["retention"].' '.e('days') ?> <?php ee("Data Retention") ?></li>
                         <?php if($features = \Helpers\App::features()): ?>
                             <?php foreach($features as $slug => $feature): ?>
                                 <?php if($feature['count']): ?>
                                     <?php if($slug == 'apirate'): ?>
-                                        <li class="mb-1"><?php echo isset($plan["permission"]->$slug->enabled) && $plan["permission"]->$slug->enabled ? '<span data-feather="check-circle" class="mr-1 text-success"></span>' : '<span data-feather="x-circle" class="text-danger mr-1"></span>' ?>  <?php if(isset($plan["permission"]->$slug->enabled) && $plan["permission"]->$slug->count > 0): ?><?php echo ($plan["permission"]->$slug->count == "0" ? e("Unlimited").e('/min') : $plan["permission"]->$slug->count.e('/min'))?><?php endif ?><?php echo $feature['name'] ?></li>
+                                        <li class="mb-1"><?php echo isset($plan["permission"]->$slug->enabled) && $plan["permission"]->$slug->enabled ? '<span data-feather="check-circle" class="mr-1 text-success"></span>' : '<span data-feather="x-circle" class="text-danger mr-1"></span>' ?>  <?php if(isset($plan["permission"]->$slug->enabled) && $plan["permission"]->$slug->count > 0): ?> <?php echo ($plan["permission"]->$slug->count == "0" ? e("Unlimited").e('/min') : $plan["permission"]->$slug->count.e('/min'))?><?php endif ?>  <?php echo $feature['name'] ?></li>
                                     <?php else: ?>
                                         <li class="mb-1"><?php echo isset($plan["permission"]->$slug->enabled) && $plan["permission"]->$slug->enabled ? '<span data-feather="check-circle" class="mr-1 text-success"></span>' : '<span data-feather="x-circle" class="text-danger mr-1"></span>' ?>  <?php if(isset($plan["permission"]->$slug->enabled)): ?><?php echo ($plan["permission"]->$slug->count == "0" ? e("Unlimited") : $plan["permission"]->$slug->count)." ".$feature['name']; ?><?php endif ?></li>
                                     <?php endif ?>
@@ -85,7 +86,7 @@
                         <li class="mb-1"><?php echo $plan["free"]  ? '<span data-feather="x-circle" class="mr-1 text-danger"></span>' : '<span data-feather="check-circle" class="text-success"></span>' ?> <?php echo e("Advertisement-Free") ?></li>
                         <?php echo $plan["permission"]->custom  ? '<li class="mb-1"><span data-feather="check-circle" class="text-success"></span> '.$plan["permission"]->custom.'</li>' : '' ?>
                     </ul>
-                    <a href="<?php echo route('pricing') ?>" class="btn btn-primary"><?php ee('Change plan') ?></a>
+                    <a href="<?php echo route('pricing') ?>" class="btn btn-primary w-100"><?php ee('Change plan') ?></a>
                 </div>
             </div>
         </div>
@@ -116,7 +117,7 @@
                         </div>
                     </div>
                 <?php endif ?>
-                <?php if($subscription = \Core\DB::subscription()->where('userid', user()->id)->where('status', 'Active')->first()):?>
+                <?php if(\Helpers\App::possible() && $subscription = \Core\DB::subscription()->where('userid', user()->id)->where('status', 'Active')->first()):?>
                     <?php if($subscription->plan != 'lifetime'): ?>
                         <div class="card shadow-sm">
                             <div class="card-header">

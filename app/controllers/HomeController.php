@@ -24,6 +24,7 @@ use Core\Response;
 use Core\Localization;
 use Core\DB;
 use Core\Plugin;
+use Helpers\CDN;
 
 class Home {
     /**

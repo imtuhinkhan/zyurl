@@ -258,8 +258,7 @@ final class FrameGenerator{
         $fontY = 0.87*$size;
         $length = strlen($text);
         
-        if($length > 9){
-            
+        if($length > 9){            
             if($length < 15) {
                 $fontY = 0.99*$fontY;
                 $fontsize =  0.8 * $fontsize;

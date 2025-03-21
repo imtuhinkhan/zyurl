@@ -52,6 +52,9 @@ Gem::post($prefix.'/report/send', 'Page@reportSend')->middleware('BlockBot')->mi
 Gem::get($prefix.'/developers', 'Page@api')->name('apidocs')->middleware('CheckDomain')->middleware('CheckMaintenance')->middleware('CheckPrivate');
 Gem::get($prefix.'/consent', 'Page@consent')->name('consent');
 
+Gem::get($prefix.'/oauth/authorize', 'API\OAuth@authorize')->name('oauth.authorize');
+Gem::post($prefix.'/oauth/authorize/proceed', 'API\OAuth@proceed')->name('oauth.proceed');
+
 Gem::route(['GET', 'POST'], $prefix.'/verify/links', 'Link@verify')->name('links.verify');
 
 // Blog Group
@@ -163,6 +166,10 @@ Gem::group($prefix.'/user', function(){
     Gem::post('/settings/api/regenerate', 'User\Account@regenerateApi')->name('regenerateapi');
     Gem::get('/twofa/{action}/{nonce}', 'User\Account@twoFA')->name('2fa');
 
+    Gem::get('/developers/apikeys', 'User\Developers@keys')->name('apikeys');
+    Gem::post('/developers/apikeys/create', 'User\Developers@keyCreate')->name('apikeys.create');
+    Gem::get('/developers/apikeys/{id}/revoke/{nonce}', 'User\Developers@keyRevoke')->name('apikeys.revoke');
+
     Gem::route(['GET', 'POST'], '/security', 'User\Account@security')->name('user.security');
 
     Gem::get('/splash/', 'User\Splash@index')->name('splash');
@@ -237,6 +244,9 @@ Gem::group($prefix.'/user', function(){
     Gem::get('/statistics/alllinks', 'User\Stats@statsLinks')->name('user.stats.links');
     Gem::get('/statistics/allclicks', 'User\Stats@statsClicks')->name('user.stats.clicks');
     Gem::get('/statistics/map', 'User\Stats@clicksMap')->name('user.stats.map');
+    Gem::get('/statistics/platforms', 'User\Stats@clicksPlatforms')->name('user.stats.platforms');    
+    Gem::get('/statistics/browsers', 'User\Stats@clicksBrowsers')->name('user.stats.browsers');    
+    Gem::get('/statistics/languages', 'User\Stats@clicksLanguages')->name('user.stats.languages');    
     Gem::get('/statistics/clicks', 'User\Dashboard@statsClicks')->name('user.clicks');
     Gem::get('/statistics/recent', 'User\Stats@recent')->name('user.stats.recent');
 
@@ -493,6 +503,12 @@ Gem::group(appConfig('app.adminroute'), function(){
     Gem::get('/settings/cdnsync/{token}', 'Admin\Settings@cdnsync')->name('admin.settings.cdnsync');
     Gem::get('/settings/{config}', 'Admin\Settings@config')->name('admin.settings.config');
 
+    Gem::get('/oauth', 'Admin\OAuth@index')->name('admin.oauth');
+    Gem::get('/oauth/{id}/list', 'Admin\OAuth@list')->name('admin.oauth.list');
+    Gem::route(['GET', 'POST'], '/oauth/create', 'Admin\OAuth@create')->name('admin.oauth.create');
+    Gem::get('/oauth/{id}/delete/{nonce}', 'Admin\OAuth@delete')->name('admin.oauth.delete');
+    Gem::get('/oauth/token/{id}/delete', 'Admin\OAuth@deleteToken')->name('admin.oauth.token.delete');
+
     // Languages
     Gem::get('/languages', 'Admin\Languages@index')->name('admin.languages');
     Gem::get('/languages/new', 'Admin\Languages@new')->name('admin.languages.new');
@@ -536,6 +552,8 @@ Gem::group(appConfig('app.adminroute'), function(){
 
 // API
 Gem::group(appConfig('app.apiroute'), function(){
+
+    Gem::post('/oauth/token', 'API\OAuth@token');
 
     Gem::setMiddleware(['Auth@api', 'Throttle', 'CheckDomain']);
 
@@ -676,6 +694,9 @@ Gem::get('/{id}/qr[/{size}]', 'Link@qr')->name('link.qr');
 Gem::get('/{id}/qr/download/{format}[/{size}]', 'Link@qrDownload')->name('link.qrDownload');
 
 Gem::route(['GET', 'POST'], '/{alias}', 'Link@redirect')->name('redirect');
+
+// Discord Bot Routes
+Gem::get('/discord/interaction', 'Discord@interaction')->name('discord.interaction');
 
 // Gem::get('/compile/1a589a9d55e6fff984', function(){
 //     \Core\View::compile([

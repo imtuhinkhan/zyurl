@@ -33,11 +33,14 @@ class Pixels {
      * Check if is admin
      *
      * @author GemPixel <https://gempixel.com> 
-     * @version 6.0
+     * @version 7.6
      */
     public function __construct(){
+        $user = Auth::ApiUser();
 
-        if(!Auth::ApiUser()->has('pixels')){
+        if(!$user->keyCan('pixels')) return die(Response::factory(['error' => true, 'message' => 'You do not have access to this endpoint with this API key.'])->json());
+
+        if(!$user->has('pixels')){
             die(Response::factory(['error' => 1, 'message' => 'You do not have permission to access this endpoint.'], 403)->json());
         }        
     }

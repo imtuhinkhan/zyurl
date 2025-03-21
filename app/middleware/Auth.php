@@ -121,7 +121,7 @@ final class Auth {
 
 		if(strpos($key, 'Bearer ') === false) die(Response::factory(['error' => 1, 'message' => 'A valid API key is required to use this service.'], 403)->json());
 
-        $key = str_replace('Bearer ', '', $key);
+        $key = str_replace('Bearer ', '', $key);		
 
         $user =  \Core\Auth::ApiUser($key);
 

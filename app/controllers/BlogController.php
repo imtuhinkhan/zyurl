@@ -284,7 +284,7 @@ class Blog {
 
         View::push('<script type="application/ld+json">'.json_encode($json).'</script>', 'custom')->toFooter();
 
-        View::push(assets('content-style.min.css'), 'style')->toHeader();
+        View::push(assets('content-style.min.css'), 'css')->toHeader();
 
         // @group Plugin
         Plugin::dispatch('blog.single');

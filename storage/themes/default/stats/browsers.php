@@ -24,7 +24,7 @@
             <div class="p-3">
                 <h5 class="card-title mb-0 fw-bold"><?php ee('Top Browsers') ?></h5>
             </div>
-            <div class="card-body px-4">
+            <div class="card-body px-3">
                 <ul id="top-browsers" class="list-unstyled d-block"></ul>
             </div>
         </div>

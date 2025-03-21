@@ -271,7 +271,13 @@ $(document).ready(function(){
 		} else {
 			$("#company").addClass('d-none');
 		}
-	})
+	});
+	if($(".card-carousel-inner").length > 0){
+		$(".card-carousel-inner").each(function(){ 
+			let h = $(this).html(); 
+			$(this).after('<div class="card-carousel-inner" aria-hidden>'+h+'</div>');
+		});
+	}
 });
 
 function setDark(el){

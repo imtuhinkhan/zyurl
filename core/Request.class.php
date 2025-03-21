@@ -651,6 +651,19 @@ final class Request {
 			}
 		}
 		setcookie($name, $value, time()+($time*60), "/", "", false, true);
+	}
+	/**
+	 * Clear Cookie
+	 *
+	 * @author GemPixel <https://gempixel.com> 
+	 * @version 7.6
+	 * @param [type] $name
+	 * @param string $value
+	 * @param integer $time
+	 * @return void
+	 */
+	public function cookieClear($name){
+		setcookie($name, $value, -1000, "/", "", false, true);
 	}	
   /**
    * Read/Write Session

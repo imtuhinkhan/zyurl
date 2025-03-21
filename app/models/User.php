@@ -348,4 +348,32 @@ class User extends Model {
 		}
 		return false;
 	}
+	/**
+	 * Check if key has endpoint access
+	 *
+	 * @author GemPixel <https://gempixel.com> 
+	 * @version 7.6
+	 * @param [type] $permission
+	 * @return void
+	 */
+	public function keyCan($permission){
+		$customkey = request()->session('customkey');
+
+		if($customkey) {		
+
+			$key = \Core\DB::apikeys()->where('apikey', clean($customkey))->where('userid', $this->id)->first();
+
+			if(!$key) return false;
+
+			$permissions = json_decode($key->permissions, true);
+
+			if(in_array('all', $permissions)) return true;
+	
+			if(in_array($permission, $permissions)) return true;
+
+			return false;
+		}
+
+		return true;
+	}
 }

@@ -3,6 +3,15 @@
 		<?php echo message() ?>
 		<div class="row g-lg-5 py-10">
 			<div class="col-lg-7 text-center text-lg-start">
+				<?php if($count->users): ?>
+					<span class="bg-primary py-2 px-3 rounded-pill text-muted fw-bold">
+						<?php if($count->users > 100): ?>
+							<?php _ee('Trusted by {n} worldwide', ['n' => '<strong class="gradient-primary clip-text fw-bolder">'.$count->users.' '.e('customers').'</strong>']) ?>
+						<?php else: ?>
+							<?php _ee('Trusted by {n} worldwide', ['n' => '<strong class="gradient-primary clip-text fw-bolder">'.e('thousands of users').'</strong>']) ?>
+						<?php endif ?>
+					</span>
+				<?php endif ?>
 				<h1 class="display-4 fw-bolder my-4">
 				<strong><?php echo isset(config('theme_config')->homeheader) && !empty(config('theme_config')->homeheader) ? config('theme_config')->homeheader : ee('Intuitive, Secure<br>& Dynamic').'<br> <span class="gradient-primary clip-text" data-toggle="typed" data-list="'.(implode(',', [e('Links').'.',e('QR Codes').'.', e('Bio Pages').'.'])).'"></span>' ?></strong>
 				</h1>
@@ -53,9 +62,9 @@
 					<a href="<?php echo route('register') ?>" class="btn btn-primary px-4 py-3 fw-bold mb-1"><?php ee('Get Started for Free') ?></a>
 					<p>
 						<ul class="list-unstyled mb-2 text-muted small">
-							<li class="mb-1"><i class="fa fa-check me-2"></i> <?php ee('Start free, upgrade later') ?></li>
-							<li class="mb-1"><i class="fa fa-check me-2"></i> <?php ee('No credit card required') ?></li>
-							<li class="mb-1"><i class="fa fa-check me-2"></i> <?php ee('Easy to use') ?></li>
+							<li class="mb-1"><i class="fa fa-check text-success me-2"></i> <?php ee('Start free, upgrade later') ?></li>
+							<li class="mb-1"><i class="fa fa-check text-success me-2"></i> <?php ee('No credit card required') ?></li>
+							<li class="mb-1"><i class="fa fa-check text-success me-2"></i> <?php ee('Easy to use') ?></li>
 						</ul>
 					</p>
 				<?php else: ?>
@@ -63,9 +72,9 @@
 						<a href="<?php echo route('pricing') ?>" class="btn btn-primary px-4 py-3 fw-bold mb-1"><?php ee('Get Started') ?></a>
 						<p>
 							<ul class="list-unstyled mb-2 text-muted small">
-								<li class="mb-1"><i class="fa fa-check me-2"></i> <?php ee('Start with a free trial') ?></li>
-								<li class="mb-1"><i class="fa fa-check me-2"></i> <?php ee('No credit card required') ?></li>
-								<li class="mb-1"><i class="fa fa-check me-2"></i> <?php ee('Easy to use') ?></li>
+								<li class="mb-1"><i class="fa fa-check text-success me-2"></i> <?php ee('Start with a free trial') ?></li>
+								<li class="mb-1"><i class="fa fa-check text-success me-2"></i> <?php ee('No credit card required') ?></li>
+								<li class="mb-1"><i class="fa fa-check text-success me-2"></i> <?php ee('Easy to use') ?></li>
 							</ul>
 						</p>
 					<?php else: ?>
@@ -103,7 +112,7 @@
 										</h3>
 										<span class="fs-6 d-block text-muted ms-auto fw-bold"><?php echo $rand ?>M <?php ee('Clicks') ?></span>
 									</div>
-									<svg height="auto" class="rounded" viewBox="0 0 2000 1400" xmlns="http://www.w3.org/2000/svg"><path d="M0 1383.803c21-9.972 63-30.067 105-49.86s63-36.615 105-49.107c42-12.492 63 17.422 105-13.354 42-30.777 63-125.032 105-140.528 42-15.495 63 88.592 105 63.05 42-25.543 63-144.923 105-190.761 42-45.838 63-56.416 105-38.43 42 17.987 63 142.285 105 128.363 42-13.92 63-148.434 105-197.97 42-49.534 63-51.791 105-49.705 42 2.086 63 83.56 105 60.136 42-23.425 63-127.997 105-177.258 42-49.262 63-62.948 105-69.05 42-6.102 63 90.824 105 38.54s63-274.834 105-299.962c42-25.13 63 170.32 105 174.318 42 3.999 63-66.754 105-154.324 42-87.57 63-207.459 105-283.526 42-76.068 84-77.45 105-96.811L2000 1400H0Z" fill="rgba(var(--bs-primary-rgb), 1)"/><path d="M0 1383.803c21-9.972 63-30.067 105-49.86s63-36.615 105-49.107c42-12.492 63 17.422 105-13.354 42-30.777 63-125.032 105-140.528 42-15.495 63 88.592 105 63.05 42-25.543 63-144.923 105-190.761 42-45.838 63-56.416 105-38.43 42 17.987 63 142.285 105 128.363 42-13.92 63-148.434 105-197.97 42-49.534 63-51.791 105-49.705 42 2.086 63 83.56 105 60.136 42-23.425 63-127.997 105-177.258 42-49.262 63-62.948 105-69.05 42-6.102 63 90.824 105 38.54s63-274.834 105-299.962c42-25.13 63 170.32 105 174.318 42 3.999 63-66.754 105-154.324 42-87.57 63-207.459 105-283.526 42-76.068 84-77.45 105-96.811" fill="none" stroke="var(--bs-primary)" stroke-width="4"/><g fill="var(--bs-primary)" opacity="0.2"><circle cx="1575" cy="397.907" r="30"/></g><g fill="var(--bs-primary)"><circle cx="105" cy="1333.943" r="8"/><circle cx="210" cy="1284.836" r="8"/><circle cx="315" cy="1271.482" r="8"/><circle cx="420" cy="1130.954" r="8"/><circle cx="525" cy="1194.003" r="8"/><circle cx="630" cy="1003.243" r="8"/><circle cx="735" cy="964.814" r="8"/><circle cx="840" cy="1093.176" r="8"/><circle cx="945" cy="895.207" r="8"/><circle cx="1050" cy="845.501" r="8"/><circle cx="1155" cy="905.637" r="8"/><circle cx="1260" cy="728.379" r="8"/><circle cx="1365" cy="659.329" r="8"/><circle cx="1470" cy="697.869" r="8"/><circle cx="1575" cy="397.907" r="8"/><circle cx="1680" cy="572.225" r="8"/><circle cx="1785" cy="417.901" r="8"/><circle cx="1890" cy="134.375" r="8"/><text x="1480" y="300" class="fw-bold display-2"><?php echo round(mt_rand() / mt_getrandmax() * 2, 2) ?>K</text></g></svg>
+									<svg class="rounded" viewBox="0 0 2000 1400" xmlns="http://www.w3.org/2000/svg"><path d="M0 1383.803c21-9.972 63-30.067 105-49.86s63-36.615 105-49.107c42-12.492 63 17.422 105-13.354 42-30.777 63-125.032 105-140.528 42-15.495 63 88.592 105 63.05 42-25.543 63-144.923 105-190.761 42-45.838 63-56.416 105-38.43 42 17.987 63 142.285 105 128.363 42-13.92 63-148.434 105-197.97 42-49.534 63-51.791 105-49.705 42 2.086 63 83.56 105 60.136 42-23.425 63-127.997 105-177.258 42-49.262 63-62.948 105-69.05 42-6.102 63 90.824 105 38.54s63-274.834 105-299.962c42-25.13 63 170.32 105 174.318 42 3.999 63-66.754 105-154.324 42-87.57 63-207.459 105-283.526 42-76.068 84-77.45 105-96.811L2000 1400H0Z" fill="rgba(var(--bs-primary-rgb), 1)"/><path d="M0 1383.803c21-9.972 63-30.067 105-49.86s63-36.615 105-49.107c42-12.492 63 17.422 105-13.354 42-30.777 63-125.032 105-140.528 42-15.495 63 88.592 105 63.05 42-25.543 63-144.923 105-190.761 42-45.838 63-56.416 105-38.43 42 17.987 63 142.285 105 128.363 42-13.92 63-148.434 105-197.97 42-49.534 63-51.791 105-49.705 42 2.086 63 83.56 105 60.136 42-23.425 63-127.997 105-177.258 42-49.262 63-62.948 105-69.05 42-6.102 63 90.824 105 38.54s63-274.834 105-299.962c42-25.13 63 170.32 105 174.318 42 3.999 63-66.754 105-154.324 42-87.57 63-207.459 105-283.526 42-76.068 84-77.45 105-96.811" fill="none" stroke="var(--bs-primary)" stroke-width="4"/><g fill="var(--bs-primary)" opacity="0.2"><circle cx="1575" cy="397.907" r="30"/></g><g fill="var(--bs-primary)"><circle cx="105" cy="1333.943" r="8"/><circle cx="210" cy="1284.836" r="8"/><circle cx="315" cy="1271.482" r="8"/><circle cx="420" cy="1130.954" r="8"/><circle cx="525" cy="1194.003" r="8"/><circle cx="630" cy="1003.243" r="8"/><circle cx="735" cy="964.814" r="8"/><circle cx="840" cy="1093.176" r="8"/><circle cx="945" cy="895.207" r="8"/><circle cx="1050" cy="845.501" r="8"/><circle cx="1155" cy="905.637" r="8"/><circle cx="1260" cy="728.379" r="8"/><circle cx="1365" cy="659.329" r="8"/><circle cx="1470" cy="697.869" r="8"/><circle cx="1575" cy="397.907" r="8"/><circle cx="1680" cy="572.225" r="8"/><circle cx="1785" cy="417.901" r="8"/><circle cx="1890" cy="134.375" r="8"/><text x="1480" y="300" class="fw-bold display-2"><?php echo round(mt_rand() / mt_getrandmax() * 2, 2) ?>K</text></g></svg>
 								</div>
 							</div>
 							<div class="card border-0 shadow-lg mb-3 position-absolute top-0 start-0 me-5 animate-float outer-left">
@@ -116,7 +125,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="card border-0 shadow-lg mb-3 position-absolute top-50 end-0 mt-5 animate-float outer-right">
+							<div class="card border-0 shadow-lg mb-3 position-absolute top-50 end-0 mt-5 me-4 animate-float outer-right">
 								<div class="position-relative p-2">
 									<span class="shadow-0 rounded p-2 px-3 d-inline-block gradient-primary text-white position-absolute top-0 start-50 translate-middle">
 										<i class="fa fa-mobile"></i>
@@ -136,6 +145,100 @@
 							</div>
 						</div>
 					<?php endif ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section id="mainfeatures">
+	<div class="container">
+		<div class="bg-dark shadow rounded p-5">
+			<div class="d-sm-flex align-items-center">
+				<h2 class="text-white fw-bolder display-5 lh-lg"><?php ee('<span class="gradient-primary clip-text fw-bolder gradient-bottom">Supercharge</span> <span class="thunder-animation fa fa-bolt text-warning"></span> your productivity') ?></h2>
+				<a href="<?php echo route('register') ?>" class="btn btn-light text-dark fw-bold mt-2 rounded-pill ms-auto px-5"><?php ee('Get Started') ?><i class="fa fa-chevron-right fa-xs align-middle ps-3"></i></a>
+			</div>			
+			<div class="row align-items-center gy-5 pt-5" id="blurred">
+				<div class="col-md-4">
+					<div class="card border-0 overflow-hidden">
+						<div class="gradient-primary">
+							<div class="m-3 rounded-pill px-3 py-2 bg-white">
+								<i class="fa fa-link gradient-primary clip-text me-2"></i> <strong>https://dmn.co/<span class="gradient-primary clip-text" data-toggle="typed" data-list="app,store,profile,page"></span></strong>
+							</div>
+							<div class="mt-3 card-carousel">
+								<div class="card-carousel-inner">
+									<small class="card-carousel-item bg-white shadow-sm py-1 px-2 fit-content rounded-pill text-dark"><?php ee('Branded Domains')?></small>
+									<small class="card-carousel-item bg-white shadow-sm py-1 px-2 fit-content rounded-pill text-dark"><?php ee('Quick Analytics')?></small>
+									<small class="card-carousel-item bg-white shadow-sm py-1 px-2 fit-content rounded-pill text-dark"><?php ee('Custom Alias')?></small> 
+									<small class="card-carousel-item bg-white shadow-sm py-1 px-2 fit-content rounded-pill text-dark"><?php ee('Advanced Targeting')?></small>									
+								</div>
+							</div>
+							<div class="mt-2 mb-4 card-carousel ps-5">
+								<div class="card-carousel-inner">
+									<small class="card-carousel-item bg-white shadow-sm py-1 px-2 fit-content rounded-pill text-dark"><?php ee('Deep Links')?></small>
+									<small class="card-carousel-item bg-white shadow-sm py-1 px-2 fit-content rounded-pill text-dark"><?php ee('Custom Parameters')?></small>
+									<small class="card-carousel-item bg-white shadow-sm py-1 px-2 fit-content rounded-pill text-dark"><?php ee('A/B Testing')?></small>
+									<small class="card-carousel-item bg-white shadow-sm py-1 px-2 fit-content rounded-pill text-dark"><?php ee('Custom Meta Tags')?></small> 							
+								</div>
+							</div>
+						</div>
+						<div class="p-4">
+							<h4 class="fw-bold mb-3"><?php ee('URL Shortener') ?></h4>
+							<p class="">
+								<?php ee('Transform long, complex URLs into memorable short links. Perfect for social media, marketing campaigns, and keeping your brand consistent.') ?>							
+							</p>
+							<a href="#features" class="btn btn-transparent text-dark fw-bold mt-2 rounded-pill border"><?php ee('Learn more') ?></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card border-0 overflow-hidden">
+						<div class="gradient-primary p-3 text-center">
+							<span class="rounded-circle mb-1 d-block bg-white mx-auto opacity-8" style="width:40px;height:40px"><img src="<?php echo assets('images/avatar-f1.jpg') ?>" class="img-fluid rounded-circle"></span>
+							<h6 class="text-white fw-bold"><span><?php echo config('title') ?></span></h6></em>
+							<div id="social" class="text-center mt-2">
+								<a href="<?php echo config('facebook') ?>" target="_blank" class="mx-2 text-white" data-bs-toggle="tooltip" title="Facebook"><i class="fab fa-facebook"></i></a>
+								<a href="<?php echo config('twitter') ?>" target="_blank" class="mx-2 text-white" data-bs-toggle="tooltip" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+							</div>
+							<div id="content" class="mt-2">
+								<a href="#" class="btn btn-sm d-block btn-light text-primary shadow-sm rounded-pill"><small>🔥 <?php ee('Shop') ?></small></a>
+							</div>
+						</div>
+						<div class="p-4">
+							<h4 class="fw-bold mb-3"><?php ee('Bio Pages') ?></h4>
+							<p class="">
+								<?php ee('Create stunning, mobile-optimized landing pages that showcase all your important links in one place. Perfect for social media profiles.') ?>
+							</p>
+							<a href="<?php echo route('page.bio') ?>" class="btn btn-transparent text-dark fw-bold mt-2 rounded-pill border"><?php ee('Learn more') ?></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card border-0 overflow-hidden">
+						<div class="gradient-primary p-3 text-center">
+							<div class="position-relative">							
+								<div class="position-relative qr-code-animation">                        
+									<?php echo \Helpers\QR::factory(url('pricing'), 138, 2)->module('circle')->eye('circle', 'rounded')->color('rgb(0,0,0)', 'rgb(255,255,255)','rgb(255,255,0)', 'rgb(255,0,255)')->format('svg')->string() ?>
+								</div>
+								<div class="z-n1 mt-2 mb-4 card-carousel ps-5 position-absolute top-50 start-50 translate-middle">
+									<div class="card-carousel">
+										<div class="card-carousel-inner">
+											<small class="card-carousel-item bg-dark shadow-sm py-1 px-2 fit-content rounded-pill text-white"><?php ee('Gradient Color')?></small>
+											<small class="card-carousel-item bg-dark shadow-sm py-1 px-2 fit-content rounded-pill text-white"><?php ee('QR Styles')?></small>
+											<small class="card-carousel-item bg-dark shadow-sm py-1 px-2 fit-content rounded-pill text-white"><?php ee('Dynamic QR Codes')?></small>
+											<small class="card-carousel-item bg-dark shadow-sm py-1 px-2 fit-content rounded-pill text-white"><?php ee('Custom Frames')?></small>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="p-4">
+							<h4 class="fw-bold mb-3"><?php ee('QR Codes') ?></h4>
+							<p class="">
+								<?php ee('Generate dynamic QR codes that can be customized with your brand colors and tracked in real-time.') ?>							
+							</p>
+							<a href="<?php echo route('page.qr') ?>" class="btn btn-transparent text-dark fw-bold mt-2 rounded-pill border"><?php ee('Learn more') ?></a>							
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -277,113 +380,86 @@
 	</div>
 </section>
 <section class="bg-primary py-15 text-dark">
-  	<div class="container">
-		<div class="text-center mb-5 px-3">
-			<h2 class="fw-bolder display-5 mb-3"><strong><?php ee("Features that<br>you'll <span class=\"gradient-primary clip-text\">ever need</span>") ?></strong></h2>
-			<p class="lead"><?php ee('We provide you with all the tools you need to increase your productivity.') ?></p>
-		</div>
-		<div class="row gy-4 py-5 mt-sm-5 justify-content-center text-start">
-			<div class="col-xs-12 col-md-6 col-lg-4">
-				<div class="h-100 card shadow-sm border-0">
-					<div class="card-body p-4 p-sm-5">
-						<i class="fa fa-spinner fa-2x gradient-primary clip-text"></i>
-						<h4 class="fw-bold my-3"><?php ee('Custom Landing Page') ?></h4>
-						<p>
-							<?php ee('Create a custom landing page to promote your product or service on forefront and engage the user in your marketing campaign.') ?>
-						</p>
-					</div>
+	<div class="text-center mb-5 px-3">
+		<h2 class="fw-bolder display-5 mb-3"><strong><?php ee("Features that<br>you'll <span class=\"gradient-primary clip-text\">ever need</span>") ?></strong></h2>
+		<p class="lead"><?php ee('We provide you with all the tools you need to increase your productivity.') ?></p>
+	</div>
+	<div class="py-5 mt-sm-5 card-carousel">
+		<div class="card-carousel-inner pe-2">
+			<div class="card-carousel-item item-lg item-animate h-100 card shadow-sm border-0">
+				<div class="card-body p-4 p-sm-5">
+					<i class="fa fa-spinner fa-2x gradient-primary clip-text"></i>
+					<h4 class="fw-bold my-3"><?php ee('Custom Landing Page') ?></h4>
+					<p>
+						<?php ee('Create a custom landing page to promote your product or service on forefront and engage the user in your marketing campaign.') ?>
+					</p>
 				</div>
 			</div>
-			<div class="col-xs-12 col-md-6 col-lg-4">
-				<div class="h-100 card shadow-sm border-0">
-					<div class="card-body p-4 p-sm-5">
-						<i class="fa fa-layer-group fa-2x gradient-primary clip-text"></i>
-						<h4 class="fw-bold my-3"><?php ee('CTA Overlays') ?></h4>
-						<p>
-							<?php ee('Use our overlay tool to display unobtrusive notifications, polls or even a contact on the target website. Great for campaigns.') ?>
-						</p>
-					</div>
+			<div class="card-carousel-item item-lg item-animate h-100 card shadow-sm border-0">
+				<div class="card-body p-4 p-sm-5">
+					<i class="fa fa-layer-group fa-2x gradient-primary clip-text"></i>
+					<h4 class="fw-bold my-3"><?php ee('CTA Overlays') ?></h4>
+					<p>
+						<?php ee('Use our overlay tool to display unobtrusive notifications, polls or even a contact on the target website. Great for campaigns.') ?>
+					</p>
 				</div>
 			</div>
-			<div class="col-xs-12 col-md-6 col-lg-4">
-				<div class="h-100 card shadow-sm border-0">
-					<div class="card-body p-4 p-sm-5">
-						<i class="fa fa-compass fa-2x gradient-primary clip-text"></i>
-						<h4 class="fw-bold my-3"><?php ee('Event Tracking') ?></h4>
-						<p>
-							<?php ee('Add your custom pixel from providers such as Facebook and track events right when they are happening.') ?>
-						</p>
-					</div>
+			<div class="card-carousel-item item-lg item-animate h-100 card shadow-sm border-0">
+				<div class="card-body p-4 p-sm-5">
+					<i class="fa fa-compass fa-2x gradient-primary clip-text"></i>
+					<h4 class="fw-bold my-3"><?php ee('Event Tracking') ?></h4>
+					<p>
+						<?php ee('Add your custom pixel from providers such as Facebook and track events right when they are happening.') ?>
+					</p>
 				</div>
 			</div>
-			<div class="col-xs-12 col-md-6 col-lg-4">
-				<div class="h-100 card shadow-sm border-0">
-					<div class="card-body p-4 p-sm-5">
-						<i class="fa fa-bullseye fa-2x gradient-primary clip-text"></i>
-						<h4 class="fw-bold my-3"><?php ee('Smart Targeting') ?></h4>
-						<p>
-							<?php ee('Easily apply restrictions to your links and target users in specific countries & languages using specific devices.') ?>
-						</p>
-					</div>
+			<div class="card-carousel-item item-lg item-animate h-100 card shadow-sm border-0">
+				<div class="card-body p-4 p-sm-5">
+					<i class="fa fa-bullseye fa-2x gradient-primary clip-text"></i>
+					<h4 class="fw-bold my-3"><?php ee('Smart Targeting') ?></h4>
+					<p>
+						<?php ee('Easily apply restrictions to your links and target users in specific countries & languages using specific devices.') ?>
+					</p>
 				</div>
 			</div>
-			<div class="col-xs-12 col-md-6 col-lg-4">
-				<div class="h-100 card shadow-sm border-0">
-					<div class="card-body p-4 p-sm-5">
-					<i class="fa fa-mouse-pointer fa-2x gradient-primary clip-text"></i>
-						<h4 class="fw-bold my-3"><?php ee('Track Everything') ?></h4>
-						<p>
-							<?php ee('Track users with our advanced reporting tool and know exactly which city & country your users are based.') ?>
-						</p>
-					</div>
+			<div class="card-carousel-item item-lg item-animate h-100 card shadow-sm border-0">
+				<div class="card-body p-4 p-sm-5">
+					<i class="fa fa-users fa-2x gradient-primary clip-text"></i>
+					<h4 class="fw-bold my-3"><?php ee('Team Management') ?></h4>
+					<p>
+						<?php ee('Invite your team members and assign them specific privileges to manage everything and collaborate together.') ?>
+					</p>
 				</div>
 			</div>
-			<div class="col-xs-12 col-md-6 col-lg-4">
-				<div class="h-100 card shadow-sm border-0">
-					<div class="card-body p-4 p-sm-5">
-						<i class="fa fa-users fa-2x gradient-primary clip-text"></i>
-						<h4 class="fw-bold my-3"><?php ee('Team Management') ?></h4>
-						<p>
-							<?php ee('Invite your team members and assign them specific privileges to manage everything and collaborate together.') ?>
-						</p>
-					</div>
+			<div class="card-carousel-item item-lg item-animate h-100 card shadow-sm border-0">
+				<div class="card-body p-4 p-sm-5">
+					<i class="fa fa-globe fa-2x gradient-primary clip-text"></i>
+					<h4 class="fw-bold my-3"><?php ee('Branded Domain Names') ?></h4>
+					<p>
+						<?php ee("Easily add your own domain name for short links and take control of your brand name and your users' trust.") ?>
+					</p>
 				</div>
 			</div>
-			<div class="col-xs-12 col-md-6 col-lg-4">
-				<div class="h-100 card shadow-sm border-0">
-					<div class="card-body p-4 p-sm-5">
-						<i class="fa fa-globe fa-2x gradient-primary clip-text"></i>
-						<h4 class="fw-bold my-3"><?php ee('Branded Domain Names') ?></h4>
-						<p>
-							<?php ee("Easily add your own domain name for short links and take control of your brand name and your users' trust.") ?>
-						</p>
-					</div>
+			<div class="card-carousel-item item-lg item-animate h-100 card shadow-sm border-0">
+				<div class="card-body p-4 p-sm-5">
+					<i class="fa fa-box fa-2x gradient-primary clip-text"></i>
+					<h4 class="fw-bold my-3"><?php ee('Campaigns & Channels') ?></h4>
+					<p>
+						<?php ee('Group and organize your Links, Bio Pages and QR Codes. With Campaigns, you can also get aggregated stats.') ?>
+					</p>
 				</div>
 			</div>
-			<div class="col-xs-12 col-md-6 col-lg-4">
-				<div class="h-100 card shadow-sm border-0">
-					<div class="card-body p-4 p-sm-5">
-						<i class="fa fa-box fa-2x gradient-primary clip-text"></i>
-						<h4 class="fw-bold my-3"><?php ee('Campaigns & Channels') ?></h4>
-						<p>
-							<?php ee('Group and organize your Links, Bio Pages and QR Codes. With Campaigns, you can also get aggregated stats.') ?>
-						</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-12 col-md-6 col-lg-4">
-				<div class="h-100 card shadow-sm border-0">
-					<div class="card-body p-4 p-sm-5">
-						<i class="fa fa-terminal fa-2x gradient-primary clip-text"></i>
-						<h4 class="fw-bold my-3"><?php ee('Developer API') ?></h4>
-						<p>
-							<?php ee('Use our powerful API to build custom applications or extend your own application with our powerful tools.') ?>
-						</p>
-					</div>
+			<div class="card-carousel-item item-lg item-animate h-100 card shadow-sm border-0">
+				<div class="card-body p-4 p-sm-5">
+					<i class="fa fa-terminal fa-2x gradient-primary clip-text"></i>
+					<h4 class="fw-bold my-3"><?php ee('Developer API') ?></h4>
+					<p>
+						<?php ee('Use our powerful API to build custom applications or extend your own application with our powerful tools.') ?>
+					</p>
 				</div>
 			</div>
 		</div>
-  	</div>
+	</div>
 </section>
 <section class="py-10">
 	<div class="container">
@@ -453,7 +529,7 @@
 						<span class="text-muted"><?php ee('Invite your teammates & work together') ?></span>
 						<div class="d-block mt-3"><strong><?php ee('Members') ?></strong> <small class="text-muted">(3/5)</small></div>
 						<div class="d-flex my-2">
-							<img alt="<?php ee('Invite your teammates & work together') ?>" src="<?php echo assets('images/avatar-f1.svg') ?>" class="avatar-sm rounded-circle mr-3">
+							<img alt="<?php ee('Invite your teammates & work together') ?>" src="<?php echo assets('images/avatar-f1.jpg') ?>" class="avatar-sm rounded-circle mr-3">
 							<div class="ms-3 mt-2">
 								<h6 class="fw-bold mb-1"><?php ee('Jane Doe') ?></h6>
 								<div class="h6 mb-0 text-sm">
@@ -462,7 +538,7 @@
 							</div>
 						</div>
 						<div class="d-flex my-2">
-							<img alt="<?php ee('Invite your teammates & work together') ?>" src="<?php echo assets('images/avatar-m2.svg') ?>" class="avatar-sm rounded-circle mr-3">
+							<img alt="<?php ee('Invite your teammates & work together') ?>" src="<?php echo assets('images/avatar-m2.jpg') ?>" class="avatar-sm rounded-circle mr-3">
 							<div class="ms-3 mt-2">
 								<h6 class="fw-bold mb-1"><?php ee('Barry Tone') ?></h6>
 								<div class="h6 mb-0 text-sm">
@@ -474,7 +550,7 @@
 							</div>
 						</div>
 						<div class="d-flex my-2">
-							<img alt="<?php ee('Invite your teammates & work together') ?>" src="<?php echo assets('images/avatar-m1.svg') ?>" class="avatar-sm rounded-circle mr-3">
+							<img alt="<?php ee('Invite your teammates & work together') ?>" src="<?php echo assets('images/avatar-m1.jpg') ?>" class="avatar-sm rounded-circle mr-3">
 							<div class="ms-3 mt-2">
 								<h6 class="fw-bold mb-1"><?php ee('John Doe') ?></h6>
 								<div class="h6 mb-0 text-sm">
@@ -608,7 +684,7 @@
 									<i class="fa fa-bell fa-2x gradient-primary clip-text"></i>
 									<h4 class="fw-bold my-3"><?php ee('Notifications') ?></h4>
 									<p>
-										<?php ee('Get notified when users use your links via various channels such Slack and webhook services like Zapier.') ?>
+										<?php ee('Get notified when users use your links via various channels such as Slack and webhook services like Zapier.') ?>
 									</p>
 								</div>
 							</div>
@@ -750,3 +826,29 @@
 	</div>
 </div>
 <?php endif ?>
+<style>
+#blurred, #blurred > div {
+    transition: all 1s;
+}
+
+#blurred:hover > div {
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    filter: blur(10px);
+    opacity: 0.8;
+    -webkit-transform: scale(0.95);
+}
+
+#blurred:hover > div:hover {
+    -webkit-filter: blur(0);
+    -moz-filter: blur(0);
+    -o-filter: blur(0);
+    -ms-filter: blur(0);
+    filter: blur(0);
+    opacity: 1;
+    -webkit-transform: scale(1.05);
+}
+
+</style>

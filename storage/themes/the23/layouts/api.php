@@ -12,7 +12,7 @@
         <?php if(config('cookieconsent')->enabled): ?>
             <link rel="stylesheet" type="text/css" href="<?php echo assets('frontend/libs/cookieconsent/cookieconsent.css') ?>">
         <?php endif ?>
-        <link rel="stylesheet" href="<?php echo assets('style.min.css') ?>" id="stylesheet">
+        <link rel="stylesheet" href="<?php echo assets('style.min.css') ?>?v=1.1" id="stylesheet">
         <script>
             var appurl = '<?php echo url() ?>';
         </script>

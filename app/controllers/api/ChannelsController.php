@@ -35,7 +35,11 @@ class Channels {
      */
     public function __construct(){
 
-        if(!Auth::ApiUser()->has('channels')){
+        $user = Auth::ApiUser();
+
+        if(!$user->keyCan('channels')) return die(Response::factory(['error' => true, 'message' => 'You do not have access to this endpoint with this API key.'])->json());
+
+        if(!$user->has('channels')){
             die(Response::factory(['error' => 1, 'message' => 'You do not have permission to access this endpoint.'], 403)->json());
         }        
     }

@@ -27,6 +27,17 @@ use \Models\User;
 
 class Account {
     /**
+     * Check if key has access
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     */
+    public function __construct(){
+        $user = Auth::ApiUser();
+
+        if(!$user->keyCan('account')) die(Response::factory(['error' => true, 'message' => 'You do not have access to this endpoint with this API key.'])->json());
+    }
+    /**
      * Get User
      *
      * @author GemPixel <https://gempixel.com> 

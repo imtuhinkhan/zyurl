@@ -576,7 +576,7 @@ final class Helper {
    * @return boolean
    */
   public static function isURL($url){
-	  if (preg_match("#(?i)\b(?:https?:\/\/|www\d{0,3}\.)?([a-z0-9.-]+\.[a-z]{2,4}|localhost)|\b(?:https?:\/\/)?(?:www\d{0,3}\.)?(?:[a-z0-9-]+\.[a-z]{2,4}|(?:\d{1,3}\.){3}\d{1,3})(?:\/[^\s()<>]*)?(?:\([^\s()<>]*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’])*#", $url)){
+	  if (preg_match("#(?i)\b(?:https?:\/\/|www\d{0,3}\.)?([a-z0-9.-\x{1F300}-\x{1F9FF}]+\.[a-z]{2,63}|localhost)|\b(?:https?:\/\/)?(?:www\d{0,3}\.)?(?:[a-z0-9-\x{1F300}-\x{1F9FF}]+\.[a-z]{2,63}|(?:\d{1,3}\.){3}\d{1,3})(?:\/[^\s()<>]*)?(?:\([^\s()<>]*\)|[^\s`!()\[\]{};:'\".,<>?«»\"\"''])*#u", $url)){
 		  return true;
 	  }
 	  return false;
@@ -680,9 +680,9 @@ final class Helper {
    * @return  string extenstion of the input
    */
   public static function extension(string $input) : string {
-	$ext = strrchr($input, ".");
-	$next = explode("?", $ext);
-	return trim($next[0], ".");
+    $ext = strrchr($input, ".");
+    $next = explode("?", $ext);
+    return strtolower(trim($next[0], "."));
   }
   /**
    * Return Cache Instance

@@ -1168,3 +1168,137 @@ article h3 {
         opacity: 1
     }
 }
+.gradient-bottom {
+    position: relative;
+}
+.gradient-bottom:after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background: var(--bs-primary);
+    background: -moz-linear-gradient(135deg, var(--bs-primary) 0, var(--bs-secondary) 100%);
+    background: -webkit-linear-gradient(135deg, var(--bs-primary) 0, var(--bs-secondary) 100%);
+    background: linear-gradient(135deg, var(--bs-primary) 0, var(--bs-secondary) 100%);
+    left: 0;
+    bottom: -10px;
+    border-radius:5px;
+}
+@keyframes thunder {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    25% {
+        transform: scale(1.2) rotate(5deg);
+        opacity: 0.9;
+    }
+    50% {
+        transform: scale(0.95) rotate(-5deg);
+        opacity: 0.8;
+    }
+    75% {
+        transform: scale(1.1) rotate(3deg);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+.thunder-animation {
+    display: inline-block;
+    animation: thunder 1.5s ease infinite;
+    transform-origin: center;
+}
+
+.card-carousel {
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+}
+.card-carousel .card-carousel-item {
+    width: 100%;
+    transition: transform 0.1s linear;
+}
+.card-carousel .card-carousel-item.item-animate:hover {
+    transform: translateY(-10px);
+}
+.card-carousel-item.fit-content{
+    min-width: max-content;
+}
+.card-carousel .card-carousel-item.item-lg{
+    min-width: 320px;
+    min-height: 200px;
+}
+.card-carousel-inner {
+    display: flex;
+    gap: 20px;
+    padding-right: 20px;
+    will-change: transform;
+    animation: scrolling 20s linear infinite;
+}
+.card-carousel:hover .card-carousel-inner {
+    animation-play-state: paused;
+}
+@keyframes scrolling {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+}
+section#mainfeatures .card{
+    min-height: 405px;
+}
+.qr-code-animation{
+    z-index: 2;    
+}
+.qr-code-animation svg {
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.qr-code-animation svg g > path:first-child{
+    fill: blue;
+    animation: colorCycle 10s infinite;
+}
+.qr-code-animation svg g > path:nth-child(2){
+    fill: green;
+    animation: colorCycle2 10s infinite;
+}
+@keyframes colorCycle {
+    0%, 100% {
+        fill: #4e67eb;
+    }
+    20% {
+        fill: #2fad50;
+    }
+    40% {
+        fill: #e2626b;
+    }
+    60% {
+        fill: #0088ff;
+    }
+    80% {
+        fill: #ff0090;
+    }
+}
+@keyframes colorCycle2 {
+    0%, 100% {
+        fill: #4f46e5;
+    }
+    20% {
+        fill: #ff3c00;
+    }
+    40% {
+        fill: #7c3aed;
+    }
+    60% {
+        fill: #c4b922;
+    }
+    80% {
+        fill: #e90ecc;
+    }
+}

@@ -77,6 +77,8 @@ class themeSettings {
             $option->colors->scrollbar = '#0088ff';
         }
 
+        if(!isset($optiion->colors->darkbg)) $option->colors->darkbg = '#030122';
+
         CDN::load('coloris');
         View::push("<script>
                     Coloris.setInstance('#primary', {
@@ -103,6 +105,12 @@ class themeSettings {
                         alpha: false,
                         swatches: ['#fef6f5','#f5f8ff','#f5fff6','#f7f9fc','#e3e5ea','#f4ebf9']
                     });
+                    Coloris.setInstance('#darkbg', {
+                        theme: 'polaroid',
+                        themeMode: 'dark',
+                        alpha: false,
+                        swatches: ['#3d1718','#131b3d','#0c2d15','#030122','#010615','#330025']
+                    });                    
                     Coloris.setInstance('#scrollbar', {
                         theme: 'polaroid',
                         themeMode: 'dark',
@@ -160,6 +168,10 @@ class themeSettings {
                                         <div class="form-group my-3">
                                             <label for="primarybg" class="form-label mb-3">'.e('Primary Background Color (Light color)').'</label><br>
                                             <input type="text" value="'.$option->colors->primarybg.'" id="primarybg" name="colors[primarybg]" class="form-control" data-coloris>
+                                        </div>
+                                        <div class="form-group my-3">
+                                            <label for="primarybg" class="form-label mb-3">'.e('Dark Background Color (Dark color)').'</label><br>
+                                            <input type="text" value="'.$option->colors->darkbg.'" id="darkbg" name="colors[darkbg]" class="form-control" data-coloris>
                                         </div>
                                         <div class="form-group my-3">
                                             <label for="scrollbar" class="form-label mb-3">'.e('Scrollbar Color').'</label><br>
@@ -325,6 +337,7 @@ class themeSettings {
             'primaryalt' => '#0065bd',
             'secondary' => '#22cfff',
             'primarybg' => '#f7f9fc',
+            'darkbg' => '#030122',
             'scrollbar' => '#0088ff'
         ];
 
@@ -406,8 +419,9 @@ class themeSettings {
     private static function cssVariables(array $variables){
 
         $variables['primarybgrgb'] = implode(', ', sscanf($variables['primarybg'], "#%02x%02x%02x"));
+        $variables['darkbgrgb'] = implode(', ', sscanf($variables['darkbg'], "#%02x%02x%02x"));
 
-        $data = ":root{--body: #fff;--body-color: #343f52;--hamburger-color: #343f52;--bs-primary: {$variables['primary']};--bs-primary-alt: {$variables['primaryalt']};--bs-secondary: {$variables['secondary']};--bg-primary: {$variables['primarybg']};--bg-secondary: #fff;--bs-primary-rgb: {$variables['primarybgrgb']};--scrollbar-color: {$variables['scrollbar']};--bg-header: #fff;--bs-link-color: var(--bs-primary);--bs-link-hover-color: var(--bs-primary-alt);}";
+        $data = ":root{--body: #fff;--body-color: #343f52;--hamburger-color: #343f52;--bs-primary: {$variables['primary']};--bs-primary-alt: {$variables['primaryalt']};--bs-secondary: {$variables['secondary']};--bg-primary: {$variables['primarybg']};--bg-secondary: #fff;--bs-primary-rgb: {$variables['primarybgrgb']};--scrollbar-color: {$variables['scrollbar']};--bg-header: #fff;--bs-link-color: var(--bs-primary);--bs-link-hover-color: var(--bs-primary-alt);--bs-dark-rgb:{$variables['darkbgrgb']};}";
 
         file_put_contents(PUB.'/content/variables.css', $data);
     }

@@ -32,7 +32,7 @@ class PaddleBilling {
     /**
      * API URL
      */
-    const API = "https://sandbox-api.paddle.com";
+    const API = "https://api.paddle.com";
 
     /**
      * Admin Settings
@@ -78,7 +78,7 @@ class PaddleBilling {
                     </div>
                     <div class="form-group">
                         <label for="webhooksecret" class="form-label">'.e('Webhook Secret Key').'</label>
-                        <input type="text" class="form-control" id="webhooksecret" name="paddlebilling[webhooksecret]" value="'.$config->webhooksecret.'">
+                        <input type="text" class="form-control" id="webhooksecret" name="paddlebilling[webhooksecret]" value="'.($config->webhooksecret ?? '').'">
                         <p class="form-text">'.e('You can find this when creating a notification webhook in your Paddle dashboard').'</p>
                     </div>
                 </div>';
@@ -128,7 +128,6 @@ class PaddleBilling {
                             }
                         }
                     });
-                    Paddle.Environment.set('sandbox');
                     Paddle.Checkout.open({
                         'customer': {
                             'email': '".user()->email."'
@@ -544,10 +543,7 @@ class PaddleBilling {
         try {
             // Get webhook data
             $payload = $request->getJSON();
-
-            \GemError::log('Paddle Billing Webhook: '.json_encode($payload));
-            \GemError::log('Paddle Billing Webhook: '.json_encode($_SERVER));
-
+            
             // Verify webhook signature
             if(!$signature = $_SERVER['HTTP_PADDLE_SIGNATURE']){
                 \GemError::log('Paddle Billing Error: Invalid signature');
@@ -599,6 +595,8 @@ class PaddleBilling {
 
 
             $subscription = DB::subscription()->where('userid', $user->id)->orderByDesc('id')->first();
+
+            if(isset($data->id) && $data->id && DB::payment()->where('cid', $data->id)->first()) return;
 
             if($payload->event_type == 'transaction.completed'){
 

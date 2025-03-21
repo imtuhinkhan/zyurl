@@ -57,6 +57,17 @@ class BioWidgets {
     public static function widgets($type = null, $action = null, $override = false){
 
         $list = [
+                'link' => [
+                    'category' => 'content',
+                    'icon' => '<h1><i class="fa fa-link"></i></h1>',
+                    'title' => e('Link'),
+                    'description' => e('Add a trackable button to a link'),
+                    'setup' => [BioWidgets::class, 'linkSetup'],
+                    'save' => [BioWidgets::class, 'linkSave'],
+                    'delete' => null,
+                    'block' => [BioWidgets::class, 'linkBlock'],
+                    'processor' => [BioWidgets::class, 'linkProcessor'],
+                ],            
                 'tagline' => [
                     'category' => 'content',
                     'icon' => '<h1><i class="fa fa-info-circle"></i></h1>',
@@ -64,6 +75,7 @@ class BioWidgets {
                     'description' => e('Add a tagline under your profile name'),
                     'setup' => [BioWidgets::class, 'taglineSetup'],
                     'save' => [BioWidgets::class, 'taglineSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'taglineBlock'],
                     'processor' => null,
                 ],
@@ -74,6 +86,7 @@ class BioWidgets {
                     'description' => e('Add a heading with different sizes'),
                     'setup' => [BioWidgets::class, 'headingSetup'],
                     'save' => [BioWidgets::class, 'headingSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'headingBlock'],
                     'processor' => null,
                 ],
@@ -84,6 +97,7 @@ class BioWidgets {
                     'description' => e('Add a text body to your page'),
                     'setup' => [BioWidgets::class, 'textSetup'],
                     'save' => [BioWidgets::class, 'textSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'textBlock'],
                     'processor' => null,
                 ],
@@ -94,18 +108,9 @@ class BioWidgets {
                     'description' => e('Separate your content with a line'),
                     'setup' => [BioWidgets::class, 'dividerSetup'],
                     'save' => [BioWidgets::class, 'dividerSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'dividerBlock'],
                     'processor' => null,
-                ],
-                'link' => [
-                    'category' => 'content',
-                    'icon' => '<h1><i class="fa fa-link"></i></h1>',
-                    'title' => e('Link'),
-                    'description' => e('Add a trackable button to a link'),
-                    'setup' => [BioWidgets::class, 'linkSetup'],
-                    'save' => [BioWidgets::class, 'linkSave'],
-                    'block' => [BioWidgets::class, 'linkBlock'],
-                    'processor' => [BioWidgets::class, 'linkProcessor'],
                 ],
                 'html' => [
                     'category' => 'content',
@@ -114,6 +119,7 @@ class BioWidgets {
                     'description' => e('Add custom HTML code. Script codes are not accepted'),
                     'setup' => [BioWidgets::class, 'htmlSetup'],
                     'save' => [BioWidgets::class, 'htmlSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'htmlBlock'],
                     'processor' => null,
                 ],
@@ -124,6 +130,7 @@ class BioWidgets {
                     'description' => e('Upload an image or 2 images in a row'),
                     'setup' => [BioWidgets::class, 'imageSetup'],
                     'save' => [BioWidgets::class, 'imageSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'imageBlock'],
                     'processor' => null,
                 ],
@@ -134,6 +141,7 @@ class BioWidgets {
                     'description' => e('Set your phone number to call directly'),
                     'setup' => [BioWidgets::class, 'phoneSetup'],
                     'save' => [BioWidgets::class, 'phoneSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'phoneBlock'],
                     'processor' => null,
                 ],
@@ -145,6 +153,7 @@ class BioWidgets {
                     'description' => e('Add a downloadable vCard'),
                     'setup' => [BioWidgets::class, 'vcardSetup'],
                     'save' => [BioWidgets::class, 'vcardSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'vcardBlock'],
                     'processor' => [BioWidgets::class, 'vcardProcessor'],
                 ],
@@ -155,6 +164,7 @@ class BioWidgets {
                     'description' => e('Generate a PayPal button to accept payments'),
                     'setup' => [BioWidgets::class, 'paypalSetup'],
                     'save' => [BioWidgets::class, 'paypalSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'paypalBlock'],
                     'processor' => null,
                 ],
@@ -165,6 +175,7 @@ class BioWidgets {
                     'description' => e('Add button to initiate a Whatsapp call'),
                     'setup' => [BioWidgets::class, 'whatsappcallSetup'],
                     'save' => [BioWidgets::class, 'whatsappcallSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'whatsappcallBlock'],
                     'processor' => null,
                 ],
@@ -175,6 +186,7 @@ class BioWidgets {
                     'description' => e('Add button to send a Whatsapp message'),
                     'setup' => [BioWidgets::class, 'whatsappSetup'],
                     'save' => [BioWidgets::class, 'whatsappSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'whatsappBlock'],
                     'processor' => null,
                 ],
@@ -185,6 +197,7 @@ class BioWidgets {
                     'description' => e('Add a dynamic RSS feed widget'),
                     'setup' => [BioWidgets::class, 'rssSetup'],
                     'save' => [BioWidgets::class, 'rssSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'rssBlock'],
                     'processor' => null,
                 ],
@@ -195,6 +208,7 @@ class BioWidgets {
                     'description' => e('Add a newsletter form to store emails'),
                     'setup' => [BioWidgets::class, 'newsletterSetup'],
                     'save' => [BioWidgets::class, 'newsletterSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'newsletterBlock'],
                     'processor' => [BioWidgets::class, 'newsletterProcessor'],
                 ],
@@ -205,6 +219,7 @@ class BioWidgets {
                     'description' => e('Add a contact form to receive emails'),
                     'setup' => [BioWidgets::class, 'contactSetup'],
                     'save' => [BioWidgets::class, 'contactSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'contactBlock'],
                     'processor' => [BioWidgets::class, 'contactProcessor'],
                 ],
@@ -215,6 +230,7 @@ class BioWidgets {
                     'description' => e('Add a widget of questions and answers'),
                     'setup' => [BioWidgets::class, 'faqsSetup'],
                     'save' => [BioWidgets::class, 'faqsSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'faqsBlock'],
                     'processor' => null,
                 ],
@@ -225,6 +241,7 @@ class BioWidgets {
                     'description' => e('Add a widget to a product on your site'),
                     'setup' => [BioWidgets::class, 'productSetup'],
                     'save' => [BioWidgets::class, 'productSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'productBlock'],
                     'processor' => null,
                 ],
@@ -235,6 +252,7 @@ class BioWidgets {
                     'description' => e('Add a dynamic widget for all of your music or booking links'),
                     'setup' => [BioWidgets::class, 'musiclinkSetup'],
                     'save' => [BioWidgets::class, 'musiclinkSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'musiclinkBlock'],
                     'processor' => [BioWidgets::class, 'linkProcessor'],
                 ],
@@ -245,6 +263,7 @@ class BioWidgets {
                     'description' => e('Embed a Youtube video or a playlist'),
                     'setup' => [BioWidgets::class, 'youtubeSetup'],
                     'save' => [BioWidgets::class, 'youtubeSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'youtubeBlock'],
                     'processor' => null,
                 ],
@@ -255,6 +274,7 @@ class BioWidgets {
                     'description' => e('Embed a Spotify music or playlist widget'),
                     'setup' => [BioWidgets::class, 'spotifySetup'],
                     'save' => [BioWidgets::class, 'spotifySave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'spotifyBlock'],
                     'processor' => null,
                 ],
@@ -265,6 +285,7 @@ class BioWidgets {
                     'description' => e('Embed an Apple music widget'),
                     'setup' => [BioWidgets::class, 'itunesSetup'],
                     'save' => [BioWidgets::class, 'itunesSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'itunesBlock'],
                     'processor' => null,
                 ],
@@ -275,6 +296,7 @@ class BioWidgets {
                     'description' => e('Embed a tiktok video'),
                     'setup' => [BioWidgets::class, 'tiktokSetup'],
                     'save' => [BioWidgets::class, 'tiktokSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'tiktokBlock'],
                     'processor' => null,
                 ],
@@ -285,6 +307,7 @@ class BioWidgets {
                     'description' => e('Embed your NFT from OpenSea'),
                     'setup' => [BioWidgets::class, 'openseaSetup'],
                     'save' => [BioWidgets::class, 'openseaSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'openseaBlock'],
                     'processor' => null,
                 ],
@@ -295,6 +318,7 @@ class BioWidgets {
                     'description' => e('Embed your latest tweets'),
                     'setup' => [BioWidgets::class, 'twitterSetup'],
                     'save' => [BioWidgets::class, 'twitterSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'twitterBlock'],
                     'processor' => null,
                 ],
@@ -305,6 +329,7 @@ class BioWidgets {
                     'description' => e('Embed a SoundCloud track'),
                     'setup' => [BioWidgets::class, 'soundcloudSetup'],
                     'save' => [BioWidgets::class, 'soundcloudSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'soundcloudBlock'],
                     'processor' => null,
                 ],
@@ -315,6 +340,7 @@ class BioWidgets {
                     'description' => e('Embed a Facebook post'),
                     'setup' => [BioWidgets::class, 'facebookSetup'],
                     'save' => [BioWidgets::class, 'facebookSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'facebookBlock'],
                     'processor' => null,
                 ],
@@ -325,6 +351,7 @@ class BioWidgets {
                     'description' => e('Embed an Instagram post'),
                     'setup' => [BioWidgets::class, 'instagramSetup'],
                     'save' => [BioWidgets::class, 'instagramSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'instagramBlock'],
                     'processor' => null,
                 ],
@@ -335,6 +362,7 @@ class BioWidgets {
                     'description' => e('Embed a Typeform form'),
                     'setup' => [BioWidgets::class, 'typeformSetup'],
                     'save' => [BioWidgets::class, 'typeformSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'typeformBlock'],
                     'processor' => null
                 ],
@@ -345,6 +373,7 @@ class BioWidgets {
                     'description' => e('Embed a Pinterest board'),
                     'setup' => [BioWidgets::class, 'pinterestSetup'],
                     'save' => [BioWidgets::class, 'pinterestSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'pinterestBlock'],
                     'processor' => null,
                 ],
@@ -355,6 +384,7 @@ class BioWidgets {
                     'description' => e('Embed a Reddit profile'),
                     'setup' => [BioWidgets::class, 'redditSetup'],
                     'save' => [BioWidgets::class, 'redditSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'redditBlock'],
                     'processor' => null,
                 ],
@@ -365,6 +395,7 @@ class BioWidgets {
                     'description' => e('Schedule booking & appointments'),
                     'setup' => [BioWidgets::class, 'calendlySetup'],
                     'save' => [BioWidgets::class, 'calendlySave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'calendlyBlock'],
                     'processor' => [BioWidgets::class, 'calendlyProcessor'],
                 ],
@@ -375,6 +406,7 @@ class BioWidgets {
                     'description' => e('Display a Threads post'),
                     'setup' => [BioWidgets::class, 'threadsSetup'],
                     'save' => [BioWidgets::class, 'threadsSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'threadsBlock'],
                     'processor' => null,
                 ],
@@ -385,6 +417,7 @@ class BioWidgets {
                     'description' => e('Display your profile'),
                     'setup' => [BioWidgets::class, 'tiktokprofileSetup'],
                     'save' => [BioWidgets::class, 'tiktokprofileSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'tiktokprofileBlock'],
                     'processor' => null,
                 ],
@@ -395,6 +428,7 @@ class BioWidgets {
                     'description' => e('Add a pin to your location on Google Maps'),
                     'setup' => [BioWidgets::class, 'googlemapsSetup'],
                     'save' => [BioWidgets::class, 'googlemapsSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'googlemapsBlock'],
                     'processor' => null,
                 ],
@@ -405,6 +439,7 @@ class BioWidgets {
                     'description' => e('Allow visitors to easily book a table'),
                     'setup' => [BioWidgets::class, 'opentableSetup'],
                     'save' => [BioWidgets::class, 'opentableSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'opentableBlock'],
                     'processor' => null,
                 ],
@@ -415,6 +450,7 @@ class BioWidgets {
                     'description' => e('Allow visitors to easily book an event'),
                     'setup' => [BioWidgets::class, 'eventbriteSetup'],
                     'save' => [BioWidgets::class, 'eventbriteSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'eventbriteBlock'],
                     'processor' => null,
                 ],
@@ -425,6 +461,7 @@ class BioWidgets {
                     'description' => e('Add a Snapchat widget on your page'),
                     'setup' => [BioWidgets::class, 'snapchatSetup'],
                     'save' => [BioWidgets::class, 'snapchatSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'snapchatBlock'],
                     'processor' => null,
                 ],
@@ -435,7 +472,29 @@ class BioWidgets {
                     'description' => e('Display a LinkedIn post'),
                     'setup' => [BioWidgets::class, 'linkedinSetup'],
                     'save' => [BioWidgets::class, 'linkedinSave'],
+                    'delete' => null,
                     'block' => [BioWidgets::class, 'linkedinBlock'],
+                    'processor' => null,
+                ],
+                'video' => [
+                    'category' => 'content',
+                    'icon' => '<h1><i class="fa fa-video text-warning"></i></h1>',
+                    'title' => e('Video'),
+                    'description' => e('Upload a video'),
+                    'setup' => [BioWidgets::class, 'videoSetup'],
+                    'save' => [BioWidgets::class, 'videoSave'],
+                    'delete' => [BioWidgets::class, 'videoDelete'],
+                    'block' => [BioWidgets::class, 'videoBlock'],
+                    'processor' => null,
+                ],
+                'audio' => [
+                    'category' => 'content',
+                    'icon' => '<h1><i class="fa fa-music text-primary"></i></h1>',
+                    'title' => e('Audio'),
+                    'description' => e('Upload an MP3 audio file'),
+                    'setup' => [BioWidgets::class, 'audioSetup'],
+                    'save' => [BioWidgets::class, 'audioSave'],
+                    'block' => [BioWidgets::class, 'audioBlock'],
                     'processor' => null,
                 ],
             ];
@@ -477,18 +536,22 @@ class BioWidgets {
             'facebook' => [
                 'name' => e('Facebook'),
                 'icon' => '<i class="fab fa-facebook"></i>',
+                'square' => '<i class="fab fa-square-facebook"></i>',
             ],
             'twitter' => [
                 'name' => e('Twitter'),
                 'icon' => '<i class="fab fa-twitter"></i>',
+                'square' => '<i class="fab fa-square-twitter"></i>'
             ],
             'x' => [
                 'name' => e('X'),
                 'icon' => '<i class="fab fa-x-twitter"></i>',
+                'square' => '<i class="fab fa-square-x-twitter"></i>'
             ],
             'instagram' => [
                 'name' => e('Instagram'),
                 'icon' => '<i class="fab fa-instagram"></i>',
+                'square' => '<i class="fab fa-square-instagram"></i>',
             ],
             'threads' => [
                 'name' => e('Threads'),
@@ -501,10 +564,12 @@ class BioWidgets {
             'linkedin' => [
                 'name' => e('Linkedin'),
                 'icon' => '<i class="fab fa-linkedin"></i>',
+                'square' => '<i class="fab fa-square-linkedin"></i>'
             ],
             'youtube' => [
                 'name' => e('Youtube'),
                 'icon' => '<i class="fab fa-youtube"></i>',
+                'square' => '<i class="fab fa-square-youtube"></i>'
             ],
             'telegram' => [
                 'name' => e('Telegram'),
@@ -513,6 +578,7 @@ class BioWidgets {
             'snapchat' => [
                 'name' => e('Snapchat'),
                 'icon' => '<i class="fab fa-snapchat"></i>',
+                'square' => '<i class="fab fa-square-snapchat"></i>'
             ],
             'discord' => [
                 'name' => e('Discord'),
@@ -525,6 +591,7 @@ class BioWidgets {
             'pinterest' => [
                 'name' => e('Pinterest'),
                 'icon' => '<i class="fab fa-pinterest"></i>',
+                'square' => '<i class="fab fa-square-pinterest"></i>'
             ],
             'shopify' => [
                 'name' => e('Shopify'),
@@ -541,6 +608,7 @@ class BioWidgets {
             'whatsapp' => [
                 'name' => e('Whatsapp'),
                 'icon' => '<i class="fab fa-whatsapp"></i>',
+                'square' => '<i class="fab fa-square-whatsapp"></i>',
             ],
             'viber' => [
                 'name' => e('Viber'),
@@ -553,14 +621,17 @@ class BioWidgets {
             'github' => [
                 'name' => e('Github'),
                 'icon' => '<i class="fab fa-github"></i>',
+                'square' => '<i class="fab fa-square-github"></i>'
             ],
             'behance' => [
                 'name' => e('Behance'),
                 'icon' => '<i class="fab fa-behance"></i>',
+                'square' => '<i class="fab fa-square-behance"></i>'
             ],
             'dribbble' => [
                 'name' => e('Dribbble'),
                 'icon' => '<i class="fab fa-dribbble"></i>',
+                'square' => '<i class="fab fa-square-dribbble"></i>'
             ],
             'envelope' => [
                 'name' => e('Mail'),
@@ -601,6 +672,7 @@ class BioWidgets {
             'vimeo' => [
                 'name' => e('Vimeo'),
                 'icon' => '<i class="fab fa-vimeo"></i>',
+                'square' => '<i class="fab fa-square-vimeo"></i>'
             ],
             'imdb' => [
                 'name' => e('IMDB'),
@@ -610,6 +682,24 @@ class BioWidgets {
                 'name' => e('Unsplash'),
                 'icon' => '<i class="fab fa-unsplash"></i>',
             ],
+            'mastodon' => [
+                'name' => e('Mastodon'),
+                'icon' => '<i class="fab fa-mastodon"></i>',
+            ],
+            'bluesky' => [
+                'name' => e('Bluesky'),
+                'icon' => '<i class="fab fa-bluesky"></i>',
+                'square' => '<i class="fab fa-square-bluesky"></i>',
+            ],
+            'upwork' => [
+                'name' => e('Upwork'),
+                'icon' => '<i class="fab fa-upwork"></i>',
+                'square' => '<i class="fab fa-square-upwork"></i>',
+            ],
+            'onlyfans' => [
+                'name' => e('OnlyFans'),
+                'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="align-top" width="20" height="20" viewBox="0 0 400 400"><defs><style>.a{fill:#000;}.b,.c{fill:#fff;}.b{opacity:0.8;}</style></defs><rect class="a" width="400" height="400" rx="200"/><path class="b" d="M156.25,125a87.5,87.5,0,1,0,87.5,87.5A87.53,87.53,0,0,0,156.25,125Zm0,113.75A26.25,26.25,0,1,1,182.5,212.5,26.21,26.21,0,0,1,156.25,238.75Z"/><path class="c" d="M254.6,190.62c22.23,6.4,48.48,0,48.48,0-7.62,33.25-31.77,54.07-66.59,56.61A87.33,87.33,0,0,1,156.25,300l26.25-83.43c27-85.76,40.81-91.57,104.81-91.57h43.94C323.9,157.37,298.57,182.11,254.6,190.62Z"/></svg>'
+            ]      
         ];
 
         if($extended = \Core\Plugin::dispatch('biosocials.extend')){
@@ -618,9 +708,7 @@ class BioWidgets {
 			}
 		}
 
-		if($key){
-            return $list[$key] ?? false;
-        }
+		if($key) return $list[$key] ?? false;
 
         asort($list);
 
@@ -716,6 +804,21 @@ class BioWidgets {
         if(!isset($data['languages'])) $data['languages'] = [];
         if($class = self::widgets($data['type'], 'save')){
             return call_user_func($class, $request, $profiledata, $data);
+        }
+    }
+    /**
+     * Delete Block
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     * @param \Core\Request $request
+     * @param [type] $profiledata
+     * @param [type] $data
+     * @return void
+     */
+    public static function delete($profiledata, $data){
+        if($class = self::widgets($data['type'], 'delete')){
+            return call_user_func($class, $profiledata, $data);
         }
     }
     /**
@@ -1041,6 +1144,8 @@ class BioWidgets {
             var blockpreview = text;
 
             if(did == null) did = (Math.random() + 1).toString(36).substring(2);
+
+            if(did == 'bio-tag') did = 'tagline';
 
             let html = '".self::format(self::generateTemplate('<div class="row" id="container-\'+did+\'">
                         <div class="col-md-6">
@@ -3477,8 +3582,7 @@ class BioWidgets {
                     <div class="form-group mt-2">
                         <label class="form-label fw-bold">'.self::e('Label').'</label>
                         <input type="text" class="form-control p-2" name="data[\'+slug(did)+\'][button]" value="\'+button+\'">
-                    </div>
-                    <div class="border p-2 rounded mt-2">
+                    </div>                    <div class="border p-2 rounded mt-2">
                         <div class="d-flex mb-2">
                             <div><strong>'.self::e('Custom Links').'</strong></div>
                             <a href="#" data-trigger="addcustomlink" class="btn btn-sm btn-primary ms-auto">+ '.self::e('Add').'</a>
@@ -4804,7 +4908,7 @@ class BioWidgets {
      */
     public static function calendlyProcessor($id, $value){
         View::push('https://assets.calendly.com/assets/external/widget.css', 'css')->toHeader();
-        View::push('https://assets.calendly.com/assets/external/widget.js', 'script')->toFooter();
+        View::push('https://assets.calendly.com/assets/external/widget.js', 'script')->toHeader();
     }
     /**
      * Calendly Block
@@ -5755,5 +5859,338 @@ class BioWidgets {
             $html .= '<a href="'.$value['link'].'" class="btn btn-sm btn-custom border text-muted m-1 shadow-none" target="_blank">'.e('View on LinkedIn').'</a>';
         $html .= '</div>';
         return $html;
+    }
+    /**
+     * Video Setup
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @category Content
+     * @version 7.6
+     * @return void
+     */
+    public static function videoSetup(){
+        $type = 'video';
+        
+        return "function fnvideo(el, content = null, did = null){
+
+            var blockpreview = '';
+
+            if(did == null) did = (Math.random() + 1).toString(36).substring(2);
+
+            let html = '".self::format(self::generateTemplate('<div id="container-\'+did+\'">
+                    <div class="form-group">
+                        <label class="form-label fw-bold d-block">'.self::e('Video File').'</label>
+                        <input type="file" class="form-control p-2" name="\'+slug(did)+\'" accept="video/mp4">
+                        <p class="form-text">'.self::e('Acceptable file: MP4 - Max size 10MB').'</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label fw-bold d-block">'.self::e('Poster Image').'</label>
+                        <input type="file" class="form-control p-2" name="\'+slug(did)+\'-poster" accept="image/*">
+                        <p class="form-text">'.self::e('Acceptable files: JPG, JPEG, PNG - Max size 2MB').'</p>
+                    </div>
+                </div>', $type))."';
+
+            $('#linkcontent').append(html);
+            countryInit(did, content);
+            languageInit(did, content);
+
+        }";
+    }
+
+    /**
+     * Video Save
+     *
+     * @author GemPixel <https://gempixel.com>
+     * @version 7.6
+     * @param [type] $request
+     * @param [type] $profiledata
+     * @param [type] $data
+     * @return void
+     */
+    public static function videoSave($request, $profiledata, $data){
+        
+        $appConfig = appConfig('app');
+        $key = $data['id'];
+        
+        if($video = $request->file($key)){
+            
+            if($video->ext !== 'mp4' || $video->sizekb > 10000) {
+                throw new Exception(e('Video must be MP4 format and maximum 10MB in size.'));
+            }
+
+            $directory = $appConfig['storage']['profile']['path'].'/'.date('Y-m-d');
+
+            if(!file_exists($directory)){
+                mkdir($directory, 0775);
+
+                $f = fopen($directory.'/index.html', 'w');
+                fwrite($f, '');
+                fclose($f);
+            }
+
+            $filename = date('Y-m-d')."/profile_video".Helper::rand(6).str_replace(['#', ' '], '-', $video->name);
+
+            $request->move($video, $appConfig['storage']['profile']['path'], $filename);
+
+            if(isset($profiledata['links'][$key]['video']) && $profiledata['links'][$key]['video']){
+                App::delete($appConfig['storage']['profile']['path'].'/'.$profiledata['links'][$key]['video']);
+            }
+
+            $data['video'] = $filename;
+
+        } else {
+            if(isset($profiledata['links'][$key]['video'])) $data['video'] = $profiledata['links'][$key]['video'];
+        }
+
+        if($poster = $request->file($key.'-poster')){
+            if(!$poster->mimematch || !in_array($poster->ext, ['jpg', 'jpeg', 'png']) || $poster->sizekb > 2000) {
+                throw new Exception(e('Poster image must be either a PNG or a JPEG (Max 2MB).'));
+            }
+
+            $directory = $appConfig['storage']['profile']['path'].'/'.date('Y-m-d');
+
+            if(!file_exists($directory)){
+                mkdir($directory, 0775);
+                $f = fopen($directory.'/index.html', 'w');
+                fwrite($f, '');
+                fclose($f);
+            }
+
+            $filename = date('Y-m-d')."/profile_poster".Helper::rand(6).str_replace(['#', ' '], '-', $poster->name);
+            $request->move($poster, $appConfig['storage']['profile']['path'], $filename);
+
+            if(isset($profiledata['links'][$key]['poster']) && $profiledata['links'][$key]['poster']){
+                App::delete($appConfig['storage']['profile']['path'].'/'.$profiledata['links'][$key]['poster']);
+            }
+
+            $data['poster'] = $filename;
+        } else {
+            if(isset($profiledata['links'][$key]['poster'])) $data['poster'] = $profiledata['links'][$key]['poster'];
+        }
+
+        return $data;
+    }
+
+    /**
+     * Video Block
+     *
+     * @author GemPixel <https://gempixel.com>
+     * @version 7.6
+     * @param [type] $id
+     * @param [type] $value
+     * @return void
+     */
+    public static function videoBlock($id, $value){
+        if(!isset($value['video']) || !$value['video']) return;
+        $id = Helper::rand(5);
+        return '<video id="'.$id.'" class="w-100 rounded shadow-sm" controls'.
+               (isset($value['poster']) && $value['poster'] ? ' poster="'.uploads($value['poster'], 'profile').'"' : '').'>
+            <source src="'.uploads($value['video'], 'profile').'" type="video/mp4">
+            '.e('Your browser does not support the video tag.').'
+        </video>';
+    }
+    /**
+     * Delete Video
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     * @param [type] $id
+     * @param [type] $value
+     * @return void
+     */
+    public static function videoDelete($id, $value){
+        
+        if(isset($value['video']) && $value['video']){
+            App::delete(appConfig('app')['storage']['profile']['path'].'/'.$value['video']);
+        }
+        if(isset($value['poster']) && $value['poster']){
+            App::delete(appConfig('app')['storage']['profile']['path'].'/'.$value['poster']);
+        }
+    }
+
+    /**
+     * Audio Setup
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @category Content
+     * @version 7.6
+     * @return void
+     */
+    public static function audioSetup(){
+        $type = 'audio';
+    
+        return "function fnaudio(el, content = null, did = null){
+            if(content){
+                var title = content['title'] || '';
+                var artist = content['artist'] || '';
+            } else {
+                var title = '';
+                var artist = '';
+            }
+            var blockpreview = title;
+
+            if(did == null) did = (Math.random() + 1).toString(36).substring(2);
+    
+            let html = '".self::format(self::generateTemplate('<div id="container-\'+did+\'">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label fw-bold">'.self::e('Title').'</label>
+                                <input type="text" class="form-control p-2" name="data[\'+slug(did)+\'][title]" value="\'+title+\'">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label fw-bold">'.self::e('Artist').'</label>
+                                <input type="text" class="form-control p-2" name="data[\'+slug(did)+\'][artist]" value="\'+artist+\'">
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <div class="form-group">
+                                <label class="form-label fw-bold d-block">'.self::e('Audio File').'</label>
+                                <input type="file" class="form-control p-2" name="\'+slug(did)+\'" accept="audio/mp3">
+                                <p class="form-text">'.self::e('Acceptable file: MP3 - Max size 5MB').'</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <div class="form-group">
+                                <label class="form-label fw-bold d-block">'.self::e('Album Cover').'</label>
+                                <input type="file" class="form-control p-2" name="\'+slug(did)+\'-cover" accept=".jpg,.jpeg,.png">
+                                <p class="form-text">'.self::e('Acceptable files: JPG, JPEG, PNG - Max size 2MB').'</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>', $type))."';
+    
+            $('#linkcontent').append(html);
+            countryInit(did, content);
+            languageInit(did, content);
+        }";
+    }
+
+    /**
+     * Audio Save
+     *
+     * @author GemPixel <https://gempixel.com>
+     * @version 7.6
+     * @param [type] $request
+     * @param [type] $profiledata
+     * @param [type] $data
+     * @return void
+     */
+    public static function audioSave($request, $profiledata, $data){
+        
+        $appConfig = appConfig('app');
+        $key = $data['id'];
+
+        // Handle audio file upload
+        if($audio = $request->file($key)){
+            if($audio->ext !== 'mp3' || $audio->sizekb > 5000) {
+                throw new Exception(e('Audio must be MP3 format and maximum 5MB in size.'));
+            }
+
+            $directory = $appConfig['storage']['profile']['path'].'/'.date('Y-m-d');
+
+            if(!file_exists($directory)){
+                mkdir($directory, 0775);
+                $f = fopen($directory.'/index.html', 'w');
+                fwrite($f, '');
+                fclose($f);
+            }
+
+            $filename = date('Y-m-d')."/profile_audio".Helper::rand(6).str_replace(['#', ' '], '-', $audio->name);
+            $request->move($audio, $appConfig['storage']['profile']['path'], $filename);
+
+            if(isset($profiledata['links'][$key]['audio']) && $profiledata['links'][$key]['audio']){
+                App::delete($appConfig['storage']['profile']['path'].'/'.$profiledata['links'][$key]['audio']);
+            }
+
+            $data['audio'] = $filename;
+        } else {
+            if(isset($profiledata['links'][$key]['audio'])) $data['audio'] = $profiledata['links'][$key]['audio'];
+        }
+
+        // Handle cover image upload
+        if($cover = $request->file($key.'-cover')){
+            if(!$cover->mimematch || !in_array($cover->ext, ['jpg', 'jpeg', 'png']) || $cover->sizekb > 2000) {
+                throw new Exception(e('Cover image must be either a PNG or a JPEG (Max 2MB).'));
+            }
+
+            $directory = $appConfig['storage']['profile']['path'].'/'.date('Y-m-d');
+
+            if(!file_exists($directory)){
+                mkdir($directory, 0775);
+                $f = fopen($directory.'/index.html', 'w');
+                fwrite($f, '');
+                fclose($f);
+            }
+
+            $filename = date('Y-m-d')."/profile_cover".Helper::rand(6).str_replace(['#', ' '], '-', $cover->name);
+            $request->move($cover, $appConfig['storage']['profile']['path'], $filename);
+
+            if(isset($profiledata['links'][$key]['cover']) && $profiledata['links'][$key]['cover']){
+                App::delete($appConfig['storage']['profile']['path'].'/'.$profiledata['links'][$key]['cover']);
+            }
+
+            $data['cover'] = $filename;
+        } else {
+            if(isset($profiledata['links'][$key]['cover'])) $data['cover'] = $profiledata['links'][$key]['cover'];
+        }
+
+        return $data;
+    }
+
+    /**
+     * Audio Block
+     *
+     * @author GemPixel <https://gempixel.com>
+     * @version 7.6
+     * @param [type] $id
+     * @param [type] $value
+     * @return void
+     */
+    public static function audioBlock($id, $value){
+        if(!isset($value['audio']) || !$value['audio']) return;
+
+        $cover = isset($value['cover']) && $value['cover'] ? 
+            '<div class="col-auto">
+                <img src="'.uploads($value['cover'], 'profile').'" class="img-fluid rounded shadow" style="width: 100px; height: 100px; object-fit: cover;">
+            </div>' : '';
+        
+        $title = isset($value['title']) && $value['title'] ? 
+            '<div class="fw-bolder fs-6 pt-2">'.Helper::clean($value['title']).'</div>' : '';
+        $artist = isset($value['artist']) && $value['artist'] ? 
+            '<div class="text-muted fs-6">'.Helper::clean($value['artist']).'</div>' : '';
+
+        return '<div class="card p-3 text-start text-left">
+            <div class="row align-items-center">
+                '.$cover.'
+                <div class="col">
+                    '.$title.$artist.'
+                    <audio class="w-100" controlsList="nodownload" controls>
+                        <source src="'.uploads($value['audio'], 'profile').'" type="audio/mp3">
+                        '.e('Your browser does not support the audio element.').'
+                    </audio>
+                </div>
+            </div>
+        </div>';
+    }
+
+    /**
+     * Delete Audio
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     * @param [type] $id
+     * @param [type] $value
+     * @return void
+     */
+    public static function audioDelete($id, $value){
+        if(isset($value['audio']) && $value['audio']){
+            App::delete(appConfig('app')['storage']['profile']['path'].'/'.$value['audio']);
+        }
+        if(isset($value['cover']) && $value['cover']){
+            App::delete(appConfig('app')['storage']['profile']['path'].'/'.$value['cover']);
+        }
     }
 }

@@ -27,7 +27,7 @@ class Setup {
      *
      * @author GemPixel <https://gempixel.com>
      */
-    private $version = '7.5.4';
+    private $version = '7.6';
 
     /**
      * Error
@@ -563,6 +563,40 @@ class Setup {
 			DBprefix.'settings'  => 'config'
 		));        
 
+        DB::schema('oauth_clients', function($table) {
+            $table->charset("utf8mb4");
+            $table->increment('id');
+            $table->bigint('user_id')->index();
+            $table->string('name', 191);
+            $table->string('client_id', 80)->unique();
+            $table->string('client_secret', 100);
+            $table->text('redirect_uri');
+            $table->timestamp('created_at');
+        });
+
+        DB::schema('oauth_access_tokens', function($table) {
+            $table->charset("utf8mb4");
+            $table->increment('id');
+            $table->bigint('user_id')->index();
+            $table->integer('client_id');
+            $table->string('name', 191);
+            $table->string('code', 191);
+            $table->string('token', 191);
+            $table->text('scopes');
+            $table->timestamp('created_at');
+            $table->timestamp('expires_at');
+        });
+
+        DB::schema('apikeys', function($table){
+            $table->charset("utf8mb4");
+            $table->increment('id');
+            $table->bigint('userid')->index();
+            $table->string('apikey',  191, null)->index();
+            $table->string('description',  191, null);
+            $table->text('permissions');
+            $table->timestamp('created_at');
+        });
+
         DB::schema('ads', function($table){
             $table->charset("utf8mb4");
             $table->increment('id');
@@ -843,7 +877,7 @@ class Setup {
             $table->int("status", null, '0');
         });
 
-        $settings = ['url' => '','title' => '','description' => '','api' => '1','user' => '1','sharing' => '1','geotarget' => '1','adult' => '1','maintenance' => '0','keywords' => '','theme' => 'the23','apikey' => '','ads' => '1','captcha' => '0','ad728' => '','ad468' => '','ad300' => '','frame' => '0','facebook' => '','twitter' => '','email' => '','fb_connect' => '0','analytic' => '','private' => '0','facebook_app_id' => '','facebook_secret' => '','twitter_key' => '','twitter_secret' => '','safe_browsing' => '','captcha_public' => '','captcha_private' => '','tw_connect' => '0','multiple_domains' => '0','domain_names' => '','tracking' => '1','update_notification' => '1','default_lang' => '','user_activate' => '0','domain_blacklist' => '','keyword_blacklist' => '','user_history' => '0','show_media' => '0','paypal_email' => '','logo' => '','timer' => '','smtp' => '','style' => '','font' => '','currency' => 'USD','gl_connect' => '0','require_registration' => '0','phish_api' => '','aliases' => '','pro' => '0','google_cid' => '','google_cs' => '','public_dir' => '0','devicetarget' => '1','homepage_stats' => '1','home_redir' => '','detectadblock' => '0','timezone' => '','freeurls' => '10','allowdelete' => '1','serverip' => '','favicon' => '','advanced' => '0','purchasecode' => '','alias_length' => '5','theme_config' => '{"homeheader":"","homedescription":"","homestyle":"dark"}','schemes' => 'https,ftp,http','blog' => '1','root_domain' => '1','slackclientid' => '','slacksecretid' => '','slackcommand' => '','slacksigningsecret' => '','contact' => '1','report' => '1','customheader' => '','customfooter' => '','saleszapier' => '','pppublic' => '','ppprivate' => '','manualapproval' => '0','version' => $this->version,'faqcategories' => '{}','invoice' => '{"header":"","footer":""}','virustotal' => '{"key":"","limit":"2"}','affiliate' => '{"enabled":"0","rate":"30","payout":"10","terms":"terms of affiliate","freq":"once","type":"percent"}','paypal' => '{"enabled":"0","email":""}','testimonials' => '[]', 'cookieconsent' => '{"enabled":"0","message":"", "link":""}', 'plugins' => '{}', 'sociallinks' => '{"instagram":"","linkedin":""}', 'deepl' => '{"enabled":"0","key":"", "limit":""}', 'verification' => '0', 'gravatar' => 1, 'helpcenter' => '1', 'cdn' => json_encode(['enabled' => false, 'provider' => null, 'key' => null, 'secret' => null, 'region' => null, 'bucket' => null, 'url' => null]), 'customplan' => 1, "system_registration" => 1, 'altlogo' => '', 'publicqr' => false, 'qrlogo' => '', 'userlogging' => '0', 'bio' => json_encode(['blocked' => []]), 'verifylink' => '0'];
+        $settings = ['url' => '','title' => '','description' => '','api' => '1','user' => '1','sharing' => '1','geotarget' => '1','adult' => '1','maintenance' => '0','keywords' => '','theme' => 'the23','apikey' => '','ads' => '1','captcha' => '0','ad728' => '','ad468' => '','ad300' => '','frame' => '0','facebook' => '','twitter' => '','email' => '','fb_connect' => '0','analytic' => '','private' => '0','facebook_app_id' => '','facebook_secret' => '','twitter_key' => '','twitter_secret' => '','safe_browsing' => '','captcha_public' => '','captcha_private' => '','tw_connect' => '0','multiple_domains' => '0','domain_names' => '','tracking' => '1','update_notification' => '1','default_lang' => '','user_activate' => '0','domain_blacklist' => '','keyword_blacklist' => '','user_history' => '0','show_media' => '0','paypal_email' => '','logo' => '','timer' => '','smtp' => '','style' => '','font' => '','currency' => 'USD','gl_connect' => '0','require_registration' => '0','phish_api' => '','aliases' => '','pro' => '0','google_cid' => '','google_cs' => '','public_dir' => '0','devicetarget' => '1','homepage_stats' => '1','home_redir' => '','detectadblock' => '0','timezone' => '','freeurls' => '10','allowdelete' => '1','serverip' => '','favicon' => '','advanced' => '0','purchasecode' => '','alias_length' => '5','theme_config' => '{"homeheader":"","homedescription":"","homestyle":"dark"}','schemes' => 'https,ftp,http','blog' => '1','root_domain' => '1','slackclientid' => '','slacksecretid' => '','slackcommand' => '','slacksigningsecret' => '','contact' => '1','report' => '1','customheader' => '','customfooter' => '','saleszapier' => '','pppublic' => '','ppprivate' => '','manualapproval' => '0','version' => $this->version,'faqcategories' => '{}','invoice' => '{"header":"","footer":""}','virustotal' => '{"key":"","limit":"2"}','affiliate' => '{"enabled":"0","rate":"30","payout":"10","terms":"terms of affiliate","freq":"once","type":"percent"}','paypal' => '{"enabled":"0","email":""}','testimonials' => '[]', 'cookieconsent' => '{"enabled":"0","message":"", "link":""}', 'plugins' => '{}', 'sociallinks' => '{"instagram":"","linkedin":""}', 'deepl' => '{"enabled":"0","key":"", "limit":""}', 'verification' => '0', 'gravatar' => 1, 'helpcenter' => '1', 'cdn' => json_encode(['enabled' => false, 'provider' => null, 'key' => null, 'secret' => null, 'region' => null, 'bucket' => null, 'url' => null]), 'customplan' => 1, "system_registration" => 1, 'altlogo' => '', 'publicqr' => false, 'qrlogo' => '', 'userlogging' => '0', 'bio' => json_encode(['blocked' => []]), 'verifylink' => '0', 'sizes' => json_encode(['avatar' => 500,'bio' => ['avatar' => 500,'background' => 1024,'image' => 500,'link' => 500,],'splash' => ['avatar' => 500,'banner' => 1024,],'qrfile' => 2048,'qrcsv' => 1024]), 'extensions' => json_encode(['avatar' => ['jpg', 'png'],'bio' => ['avatar' => implode(',', ['jpg', 'png', 'jpeg']),'background' => implode(',',['jpg', 'png', 'jpeg']),'image' => implode(',',['jpg', 'png', 'jpeg']),'link' => implode(',',['jpg', 'png', 'jpeg', 'gif']), 'banner' => implode(',', ['jpg', 'png', 'jpeg'])],'splash' => ['avatar' => implode(',',['jpg', 'png', 'jpeg', 'gif']),'banner' => implode(',',['jpg', 'png', 'jpeg'])]])];
 
         foreach($settings as $config => $var){
             $query = DB::settings()->create();

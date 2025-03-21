@@ -59,7 +59,7 @@
                     <?php endif ?>
                     <?php foreach(\Helpers\App::pages('main') as $page): ?>
                         <li class="mb-2"><a class="nav-link" href="<?php echo route('page', [$page->seo]) ?>"><?php ee($page->name) ?></a></li>
-                    <?php endforeach ?>                                        
+                    <?php endforeach ?>
                 </ul>
             </div>
             <div class="col-lg-4 col-6 col-sm-6 mb-5 mb-lg-0">

@@ -48,6 +48,14 @@
                         <?php message() ?>
                         <?php if(config('system_registration')): ?>
                         <form method="post" action="<?php echo route('register.validate')?>">
+                            <?php if($bioalias = request()->bioalias): ?>
+                                <div class="my-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="bioalias" value="<?php echo $bioalias ?>" id="input-bioalias" placeholder="<?php ee('Please enter a username') ?>" readonly="readonly">
+                                    <label><?php ee('Bio Page Alias') ?></label>
+                                </div>
+							</div>
+                            <?php endif ?>                            
                             <div class="my-4">
                                 <div class="form-floating">
                                     <input type="text" class="form-control" name="username" value="<?php echo old('username') ?>" id="input-username" placeholder="<?php ee('Please enter a username') ?>">

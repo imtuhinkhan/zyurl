@@ -22,7 +22,7 @@
                             <?php foreach($processors as $name => $processor): ?>
                                 <?php if(!config($name) || !config($name)->enabled) continue ?>
                                 <?php if($processor['checkout']): ?>
-                                    <?php call_user_func($processor['checkout']) ?>
+                                    <?php call_user_func($processor['checkout'], $plan) ?>
                                 <?php endif ?>
                             <?php endforeach ?>
                         </div>

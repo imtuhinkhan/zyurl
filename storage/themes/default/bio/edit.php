@@ -1,30 +1,28 @@
 <div data-action="<?php echo route('bio.update', [$bio->id]) ?>">
     <div class="card card-body shadow-sm">
         <div class="d-block d-md-flex align-items-center">
-            <div>
-                <ul class="nav nav-pills overflow-x">
-                    <li class="nav-item mb-3 mb-md-0">
-                        <a href="#links" class="nav-link text-muted active" data-trigger="switcher"><i class="fa fa-layer-group me-2"></i> <span><?php ee('Content') ?></span></a>
-                    </li>
-                    <li class="nav-item mb-3 mb-md-0">
-                        <a href="#social" class="nav-link text-muted" data-trigger="switcher"><i class="fa fa-share me-2"></i>  <span><?php ee('Social Links') ?></span></a>
-                    </li>
-                    <li class="nav-item mb-3 mb-md-0">
-                        <a href="#appearance" class="nav-link text-muted" data-trigger="switcher"><i class="fa fa-desktop me-2"></i>  <span><?php ee('Design') ?></span></a>
-                    </li>
-                    <li class="nav-item mb-3 mb-md-0">
-                        <a href="#advanced" class="nav-link text-muted" data-trigger="switcher"><i class="fa fa-cogs me-2"></i>  <span><?php ee('Settings') ?></span></a>
-                    </li>
-                    <li class="nav-item mb-3 mb-md-0">
-                        <a href="#data" class="nav-link text-muted" data-trigger="switcher"><i class="fa fa-download me-2"></i>  <span><?php ee('Data') ?></span></a>
-                    </li>
-                    <li class="nav-item mb-3 mb-md-0">
-                        <a href="<?php echo route('stats', [$bio->urlid]) ?>" class="nav-link text-muted"><i class="fa fa-chart-area me-2"></i>  <span><?php ee('Statistics') ?></span></a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="nav nav-pills flex-fill nav-fill overflow-x">
+                <li class="nav-item mb-3 mb-md-0">
+                    <a href="#links" class="nav-link text-muted active" data-trigger="switcher"><i class="fa fa-layer-group me-2"></i> <span><?php ee('Content') ?></span></a>
+                </li>
+                <li class="nav-item mb-3 mb-md-0">
+                    <a href="#social" class="nav-link text-muted" data-trigger="switcher"><i class="fa fa-share me-2"></i>  <span><?php ee('Social Links') ?></span></a>
+                </li>
+                <li class="nav-item mb-3 mb-md-0">
+                    <a href="#appearance" class="nav-link text-muted" data-trigger="switcher"><i class="fa fa-desktop me-2"></i>  <span><?php ee('Design') ?></span></a>
+                </li>
+                <li class="nav-item mb-3 mb-md-0">
+                    <a href="#advanced" class="nav-link text-muted" data-trigger="switcher"><i class="fa fa-cogs me-2"></i>  <span><?php ee('Settings') ?></span></a>
+                </li>
+                <li class="nav-item mb-3 mb-md-0">
+                    <a href="#data" class="nav-link text-muted" data-trigger="switcher"><i class="fa fa-download me-2"></i>  <span><?php ee('Data') ?></span></a>
+                </li>
+                <li class="nav-item mb-3 mb-md-0">
+                    <a href="<?php echo route('stats', [$bio->urlid]) ?>" class="nav-link text-muted"><i class="fa fa-chart-area me-2"></i>  <span><?php ee('Statistics') ?></span></a>
+                </li>
+            </ul>
             <div class="ms-auto">
-                <button type="button" data-bs-toggle="modal" data-trigger="shortinfo" data-shorturl="<?php echo Helpers\App::shortRoute($url->domain, $bio->alias) ?>" class="btn btn-light border"><i class="text-black" data-feather="info"></i></button>
+                <button type="button" data-bs-toggle="modal" data-trigger="shortinfo" data-shorturl="<?php echo Helpers\App::shortRoute($url->domain, $bio->alias) ?>" class="btn btn-light border"><i class="text-black" data-feather="share"></i></button>
                 <a href="<?php echo \Helpers\App::shortRoute($url->domain, $bio->alias) ?>" class="btn btn-success" id="viewbio" target="_blank"><?php ee('View Bio') ?></a>
             </div>
         </div>
@@ -93,7 +91,7 @@
                                         <select name="platform" class="form-select p-2 ignore" data-toggle="select">
                                             <?php foreach($platforms as $key => $array): ?>
                                                 <?php if(!isset($bio->data->social->{$key}) || empty($bio->data->social->{$key})): ?>
-                                                    <option value="<?php echo $key ?>" data-icon="<?php echo urlencode($array['icon']) ?>"><?php echo $array['name'] ?></option>
+                                                    <option value="<?php echo $key ?>" data-icon="<?php echo urlencode($array['icon']) ?>"  data-icon-square="<?php echo urlencode($array['square'] ?? $array['icon']) ?>"><?php echo $array['name'] ?></option>
                                                 <?php endif ?>
                                             <?php endforeach ?>
                                         </select>
@@ -106,11 +104,11 @@
                             <button type="button" data-trigger="addsocial" class="btn btn-primary mt-3" data-error="<?php ee('Please enter a valid link') ?>" data-error-alt="<?php ee('You have already added a link to this platform') ?>"><?php ee('Add') ?></button>
                         </div>
                     </div>
-                    <div class="card card-body shadow-sm" id="sociallinksholder" data-autosave>
+                    <div class="border rounded p-2" id="sociallinksholder" data-autosave>
                         <?php if(isset($bio->data->social)): ?>
                             <?php foreach($bio->data->social as $name => $sociallink): ?>
                                 <?php if(empty($sociallink) || !isset($platforms[$name])) continue ?>
-                                <div class="border rounded p-2 mb-3 socialsortable">
+                                <div class="card card-body shadow-sm border rounded p-2 mb-3 socialsortable">
                                     <div class="mb-3 d-flex align-items-center">                                    
                                         <i class="fs-4 fa fa-align-justify handle ms-1" data-bs-toggle="tooltip" title="<?php ee('Move') ?>"></i>
                                         <span class="ms-2 fw-bold"><?php echo $platforms[$name]['name'] ?></span>
@@ -119,12 +117,31 @@
                                         </div>                                    
                                     </div>
                                     <div class="input-group">
-                                        <div class="input-group-text bg-white"><?php echo $platforms[$name]['icon'] ?></div>
+                                        <div class="input-group-text bg-white text-dark"><?php echo $platforms[$name]['icon'] ?></div>
                                         <input type="text" class="form-control p-2" name="social[<?php echo $name ?>]" value="<?php echo $sociallink ?>" placeholder="https://" data-error="<?php ee('Please enter a valid link') ?>">
                                     </div>
                                 </div>
                             <?php endforeach ?>
                         <?php endif ?>
+                    </div>
+
+                    <h4 class="fw-bold mb-3 mt-5"><?php ee('Design') ?></h4>
+                    <div class="card card-body shadow-sm" data-autosave>                    
+                        <h5 class="fw-bold"><?php ee('Style') ?></h5>
+                        <div class="row">
+                            <div class="col-4 mb-2" data-bs-toggle="tooltip">
+                                <label data-trigger="chooseiconstyle" class="btn text-center border bg-white rounded p-2 h-100 me-1 fs-1 w-100 <?php echo isset($bio->data->style->iconstyle) && $bio->data->style->iconstyle == "normal" ? 'border-secondary': '' ?>">
+                                    <span class="d-block"><i class="me-2 fab fa-facebook"></i> <i class="me-2 fab fa-x-twitter"></i> <i class="me-2 fab fa-youtube"></i> <i class="me-2 fab fa-instagram"></i></span>
+                                    <input type="radio" name="iconstyle" value="normal" class="d-none" <?php echo isset($bio->data->style->iconstyle) && $bio->data->style->iconstyle == "normal" ? 'checked': '' ?>>
+                                </label>
+                            </div>
+                            <div class="col-4 mb-2" data-bs-toggle="tooltip">
+                                <label data-trigger="chooseiconstyle" class="btn text-center border bg-white rounded p-2 h-100 me-1 fs-1 w-100 <?php echo isset($bio->data->style->iconstyle) && $bio->data->style->iconstyle == "square" ? 'border-secondary': '' ?>">
+                                    <span class="d-block"><i class="me-2 fab fa-square-facebook"></i> <i class="me-2 fab fa-square-x-twitter"></i> <i class="me-2 fab fa-square-youtube"></i> <i class="me-2 fab fa-square-instagram"></i></span>
+                                    <input type="radio" name="iconstyle" value="square" class="d-none" <?php echo isset($bio->data->style->iconstyle) && $bio->data->style->iconstyle == "square" ? 'checked': '' ?>>
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
                     <h4 class="fw-bold mb-3 mt-5"><?php ee('Settings') ?></h4>

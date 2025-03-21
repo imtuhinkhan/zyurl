@@ -9,29 +9,39 @@
                 <p class="lead opacity-8 pe-5">
                     <?php ee('Convert your followers by creating beautiful pages that group all of your important links on the single page.') ?>
                 </p>
-                <div class="border rounded p-3 shadow-sm card mt-3 col-md-8">
-                    <h5 class="fw-bolder mb-0"><?php echo url() ?><span class="gradient-primary clip-text" data-toggle="typed" data-list="<?php echo implode(',', [e('company'),e('shop'), e('name')]) ?>"></span></h5>
-                </div>
+                <form action="<?php echo route('register') ?>" class="border rounded p-3 shadow-sm card mt-3 col-md-8">
+                    <div class="fw-bolder mb-0">
+                        <?php echo url() ?>
+                        <input type="text" class="form-control d-inline-block w-auto ps-0 border-0 align-middle" name="bioalias" placeholder="<?php ee('Type your alias') ?>">
+                        <button class="btn btn-primary btn-sm float-end"><?php ee('Reserve') ?></button>
+                    </div>
+                    <div class="alias-feedback"></div>
+                </form>
                 <p class="my-5">
                     <a href="<?php echo route('register') ?>" class="btn btn-primary px-5 py-3 fw-bold"><?php ee('Get Started') ?></a>
                     <a href="<?php echo route('contact', ['subject' => 'Contact Sales']) ?>" class="btn btn-transparent text-dark fw-bold"><?php ee('Contact sales') ?></a>
                 </p>
             </div>
             <div class="col-md-5 text-center">
-                <div class="card gradient-primary border-0 shadow p-5">
-                    <span class="rounded-circle mb-3 d-block bg-white mx-auto opacity-8" style="width:100px;height:100px"><img src="<?php echo assets('images/avatar-f1.svg') ?>" class="img-fluid rounded-circle"></span>
-                    <h3 class="text-white fw-bold"><span><?php echo config('title') ?></span></h3></em>
-                    <div id="social" class="text-center mt-2">
-                        <a href="<?php echo config('facebook') ?>" class="mx-2 text-white" data-bs-toggle="tooltip" title="Facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="<?php echo config('twitter') ?>" class="mx-2 text-white" data-bs-toggle="tooltip" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+                <div class="card gradient-primary border-0 shadow overflow-hidden">
+                    <div class="bg-white text-start border ps-3 d-flex align-items-center">
+                        <i class="fa fa-home me-2"></i> <span class="fw-bolder bg-primary rounded-pill m-2 px-3 py-2 border flex-fill"><i class="fa fa-lock text-success me-2"></i> <?php echo url() ?><span class="gradient-primary clip-text" data-toggle="typed" data-list="<?php echo implode(',', [e('company'),e('shop'), e('name')]) ?>"></span></span>
                     </div>
-                    <div id="content" class="mt-5">
-                        <div class="item mb-3">
-                            <a href="#" class="btn d-block btn-light text-primary shadow-sm py-3">🛒 <?php ee('New Merch') ?></a>
+                    <div class="p-5">
+                        <span class="rounded-circle mb-3 d-block bg-white mx-auto opacity-8" style="width:100px;height:100px"><img src="<?php echo assets('images/avatar-f1.jpg') ?>" class="img-fluid rounded-circle"></span>
+                        <h3 class="text-white fw-bold"><span>Madison</span></h3></em>
+                        <div id="social" class="text-center mt-2">
+                            <a href="<?php echo config('facebook') ?>" class="mx-2 text-white" data-bs-toggle="tooltip" title="Facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="<?php echo config('twitter') ?>" class="mx-2 text-white" data-bs-toggle="tooltip" title="Twitter"><i class="fab fa-x-twitter"></i></a>
                         </div>
-                        <div class="item mb-3">
-                            <a href="#" class="btn d-block btn-light text-primary shadow-sm py-3">🔥 <?php ee('Shop') ?></a>
-                        </div>
+                        <div id="content" class="mt-3">
+                            <div class="item mb-3">
+                                <a href="#" class="btn d-block btn-light text-primary shadow-sm py-3">🛒 <?php ee('New Merch') ?></a>
+                            </div>
+                            <div class="item mb-3">
+                                <a href="#" class="btn d-block btn-light text-primary shadow-sm py-3">🔥 <?php ee('Shop') ?></a>
+                            </div>
+                        </div>                        
                     </div>
                 </div>
             </div>
@@ -92,8 +102,8 @@
             <div class="col-lg-6 order-lg-1">
                 <div class="position-relative d-none d-sm-block">
                     <div class="card bg-danger border-0 shadow p-5 position-absolute w-50 h-80 start-0 my-5">
-                        <span class="rounded-circle mb-3 d-block bg-white mx-auto opacity-8" style="width:100px;height:100px"><img src="<?php echo assets('images/avatar-m2.svg') ?>" class="img-fluid rounded-circle"></span>
-                        <h3 class="text-white fw-bold text-center"><span><?php ee('Bio Page') ?></span></h3></em>
+                        <span class="rounded-circle mb-3 d-block bg-white mx-auto opacity-8" style="width:100px;height:100px"><img src="<?php echo assets('images/avatar-f2.jpg') ?>" class="img-fluid rounded-circle"></span>
+                        <h3 class="text-white fw-bold text-center"><span>Laura</span></h3></em>
                         <div id="social" class="text-center mt-2">
                             <a href="<?php echo config('facebook') ?>" class="mx-2 text-white" data-bs-toggle="tooltip" title="Facebook"><i class="fab fa-facebook"></i></a>
                             <a href="<?php echo config('twitter') ?>" class="mx-2 text-white" data-bs-toggle="tooltip" title="Twitter"><i class="fab fa-x-twitter"></i></a>
@@ -102,11 +112,11 @@
                             <div class="item mb-3">
                                 <a href="#" class="btn d-block btn-light text-primary shadow-sm py-3 position-relative rounded-pill"><i class="fa fa-music position-absolute start-0 left-0 fs-4 ms-3 ml-3"></i> <?php ee('Listen') ?></a>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                     <div class="card gradient-secondary border-0 shadow p-5 position-absolute w-50 h-80 my-5 end-0 top-0">
-                        <span class="rounded-circle mb-3 d-block bg-white mx-auto opacity-8" style="width:100px;height:100px"><img src="<?php echo assets('images/avatar-m1.svg') ?>" class="img-fluid rounded-circle"></span>
-                        <h3 class="text-white fw-bold text-center"><span><?php ee('Bio Page') ?></span></h3></em>
+                        <span class="rounded-circle mb-3 d-block bg-white mx-auto opacity-8" style="width:100px;height:100px"><img src="<?php echo assets('images/avatar-m2.jpg') ?>" class="img-fluid rounded-circle"></span>
+                        <h3 class="text-white fw-bold text-center"><span>Sam</span></h3></em>
                         <div id="social" class="text-center mt-2">
                             <a href="<?php echo config('facebook') ?>" class="mx-2 text-white" data-bs-toggle="tooltip" title="Facebook"><i class="fab fa-facebook"></i></a>
                             <a href="<?php echo config('twitter') ?>" class="mx-2 text-white" data-bs-toggle="tooltip" title="Twitter"><i class="fab fa-x-twitter"></i></a>
@@ -118,8 +128,8 @@
                         </div>
                     </div>
                     <div class="card shadow-lg gradient-primary border-0 shadow p-4 w-50 position-relative ms-auto me-auto">
-                        <span class="rounded-circle mb-3 d-block bg-white mx-auto opacity-8" style="width:100px;height:100px"><img src="<?php echo assets('images/avatar-f1.svg') ?>" class="img-fluid rounded-circle"></span>
-                        <h3 class="text-white fw-bold text-center"><span><?php ee('Bio Page') ?></span></h3></em>
+                        <span class="rounded-circle mb-3 d-block bg-white mx-auto opacity-8" style="width:100px;height:100px"><img src="<?php echo assets('images/avatar-m1.jpg') ?>" class="img-fluid rounded-circle"></span>
+                        <h3 class="text-white fw-bold text-center"><span>Steve</span></h3></em>
                         <div id="social" class="text-center mt-2">
                             <a href="<?php echo config('facebook') ?>" class="mx-2 text-white" data-bs-toggle="tooltip" title="Facebook"><i class="fab fa-facebook"></i></a>
                             <a href="<?php echo config('twitter') ?>" class="mx-2 text-white" data-bs-toggle="tooltip" title="Twitter"><i class="fab fa-x-twitter"></i></a>

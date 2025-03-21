@@ -455,7 +455,7 @@ class PaypalApi{
 
         $paypalplan->setName($plan->name)
             ->setDescription($plan->name)
-            ->setType('fixed'); 
+            ->setType('INFINITE');
 
         if($type == 'yearly'){
             $paymentDefinition = new \PayPal\Api\PaymentDefinition();
@@ -469,8 +469,7 @@ class PaypalApi{
             $paymentDefinition->setName('Regular Yearly Payments')
                 ->setType('REGULAR')
                 ->setFrequency('Year')
-                ->setFrequencyInterval("1")
-                ->setCycles("12")
+                ->setFrequencyInterval("1")                
                 ->setAmount(new \PayPal\Api\Currency(['value' => $price, 'currency' => config('currency')]));
 
         } else {
@@ -486,7 +485,6 @@ class PaypalApi{
                 ->setType('REGULAR')
                 ->setFrequency('Month')
                 ->setFrequencyInterval("1")
-                ->setCycles("12")
                 ->setAmount(new \PayPal\Api\Currency(['value' =>  $price, 'currency' => config('currency')]));            
         }          
 

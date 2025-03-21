@@ -429,9 +429,9 @@ class Account {
         // Update Avatar
         if($image = $request->file('avatar')){
             
-            if(!$image->mimematch || !in_array($image->ext, $appconfig['extensions']['avatar'])) return Helper::redirect()->back()->with('danger', e('Avatar must be either a PNG or a JPEG (Max 500kb).'));
+            if(!$image->mimematch || !in_array($image->ext, explode(',', config('extensions')->avatar))) return Helper::redirect()->back()->with('danger', e('Avatar must be the one of the following formats and size: {f} - {s}kb.', null, ['f' => config('extensions')->avatar, 's' => config('sizes')->avatar]));
 
-            if($image->sizekb >=  $appconfig['sizes']['avatar']) $errors .= e('Avatar must be either a PNG or a JPEG (Max 500kb).');
+            if($image->sizekb >=  config('sizes')->avatar) $errors .= e('Avatar must be the one of the following formats and size: {f} - {s}kb.', null, ['f' => config('extensions')->avatar, 's' => config('sizes')->avatar]);
 
             [$width, $height] = getimagesize($image->location);
             

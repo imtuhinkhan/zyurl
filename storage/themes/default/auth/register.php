@@ -49,6 +49,17 @@
                     <?php message() ?>
                     <?php if(config('system_registration')): ?>
                     <form method="post" action="<?php echo route('register.validate')?>" autocomplete="off">
+                        <?php if($bioalias = request()->bioalias): ?>
+                            <div class="form-group">
+                                <label class="form-control-label" for="bioalias"><?php ee('Bio Page Alias') ?></label>
+                                <div class="input-group input-group-merge">
+                                    <input type="text" class="form-control form-control-prepend" id="bioalias" name="bioalias" placeholder="<?php ee('Please enter a username') ?>" value="<?php echo $bioalias ?>" readonly="readonly">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i data-feather="user"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif ?>
                         <div class="form-group">
                             <label class="form-control-label" for="user-name"><?php ee('Username') ?></label>
                             <div class="input-group input-group-merge">

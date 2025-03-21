@@ -656,14 +656,13 @@ class Users {
 
         $data = ['name' => Helper::RequestClean($request->name), 'email' => clean($request->email), 'job' => clean($request->job), 'testimonial' => Helper::RequestClean($request->testimonial)];
 
-
         $appconfig = appConfig('app');
 
         if($image = $request->file('avatar')){
             
-            if(!$image->mimematch || !in_array($image->ext, $appconfig['extensions']['avatar'])) return Helper::redirect()->back()->with('danger', e('Avatar must be either a PNG or a JPEG (Max 500kb).'));
+            if(!$image->mimematch || !in_array($image->ext, explode(',', config('extensions')->avatar))) return Helper::redirect()->back()->with('danger', e('Avatar must be the one of the following formats and size: {f} - {s}kb.', null, ['f' => config('extensions')->avatar, 's' => config('sizes')->avatar]));
 
-            if($image->sizekb >=  $appconfig['sizes']['avatar'])  return Helper::redirect()->back()->with('danger', e('Avatar must be either a PNG or a JPEG (Max 500kb).'));
+            if($image->sizekb >=  config('sizes')['avatar'])  return Helper::redirect()->back()->with('danger', e('Avatar must be the one of the following formats and size: {f} - {s}kb.', null, ['f' => config('extensions')->avatar, 's' => config('sizes')->avatar]));
 
             [$width, $height] = getimagesize($image->location);
             
@@ -1040,11 +1039,10 @@ class Users {
      */
     public function list(Request $request){
 
-        if(is_numeric($request->q)){
+        if($request->q && is_numeric($request->q)){
             $users = DB::user()->where('id', (int) $request->q)->findMany();
         } else {
-            if(strlen($request->q) > 3){
-
+            if($request->q && strlen($request->q) > 3){
                 $users = DB::user()->whereAnyIs([
                     ['username' => "%{$request->q}%"],
                     ['email' => "%{$request->q}%"],

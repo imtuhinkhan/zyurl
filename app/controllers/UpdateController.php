@@ -27,7 +27,7 @@ class Update {
      *
      * @author GemPixel <https://gempixel.com>
      */
-    private $latest = "7.5.4";
+    private $latest = "7.6";
 
     /**
      * Constructor
@@ -200,8 +200,12 @@ class Update {
             if(!$version || $advanced || version_compare($version, '7.5') < 0) {
                 $this->update75();
             }
-            if(!$version || $advanced || version_compare($version, '7.5.1') < 0) {
+            if(!$version || $advanced || version_compare($version, '7.6') < 0) {
                 $this->update751();
+            }
+
+            if(!$version || $advanced || version_compare($version, '7.6') < 0) {
+                $this->update76();
             }
 
             $this->updateversion();
@@ -224,7 +228,73 @@ class Update {
         }
         return \Core\Helper::redirect()->to(route('admin'))->with('success', 'Updated was successfully completed.');
     }
+    /**
+     * Update 7.6
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     * @return void
+     */
+    private function update76(){
 
+
+        DB::schema('oauth_clients', function($table) {
+            $table->charset("utf8mb4");
+            $table->increment('id');
+            $table->bigint('user_id')->index();
+            $table->string('name', 191);
+            $table->string('client_id', 80)->unique();
+            $table->string('client_secret', 100);
+            $table->text('redirect_uri');
+            $table->timestamp('created_at');
+        });
+
+        DB::schema('oauth_access_tokens', function($table) {
+            $table->charset("utf8mb4");
+            $table->increment('id');
+            $table->bigint('user_id')->index();
+            $table->integer('client_id');
+            $table->string('name', 191);
+            $table->string('code', 191);
+            $table->string('token', 191);
+            $table->text('scopes');
+            $table->timestamp('created_at');
+            $table->timestamp('expires_at');
+        });
+
+        DB::schema('apikeys', function($table){
+            $table->charset("utf8mb4");
+            $table->increment('id');
+            $table->bigint('userid')->index();
+            $table->string('apikey',  191, null)->index();
+            $table->string('description',  191, null);
+            $table->text('permissions');
+            $table->timestamp('created_at');
+        });
+
+        $allConfig = config();
+
+        if(!isset($allConfig->sizes)){
+            $query = DB::settings()->create();
+            $query->config = 'sizes';
+            $query->var = json_encode(['avatar' => 500,'bio' => ['avatar' => 500,'background' => 1024,'image' => 500,'link' => 500,],'splash' => ['avatar' => 500,'banner' => 1024,],'qrfile' => 2048,'qrcsv' => 1024]);
+            $query->save();
+        }
+
+        if(!isset($allConfig->extensions)){
+            $query = DB::settings()->create();
+            $query->config = 'extensions';
+            $query->var = json_encode(['avatar' => ['jpg', 'png'],'bio' => ['avatar' => implode(',', ['jpg', 'png', 'jpeg']),'background' => implode(',',['jpg', 'png', 'jpeg']),'image' => implode(',',['jpg', 'png', 'jpeg']),'link' => implode(',',['jpg', 'png', 'jpeg', 'gif']), 'banner' => implode(',', ['jpg', 'png', 'jpeg'])],'splash' => ['avatar' => implode(',',['jpg', 'png', 'jpeg', 'gif']),'banner' => implode(',',['jpg', 'png', 'jpeg'])]]);
+            $query->save();
+        }
+    }
+    /**
+     * Update 7.5.1
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.5.1
+     * @return void
+     */
     private function update751(){
 
         if(DB::columnExists('plans', 'qrcounttype') === false){

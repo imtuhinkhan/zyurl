@@ -260,8 +260,9 @@ $(document).ready(function(){
 
             $.ajax({
                 type: "GET",
-                url: $("#deeplink\\[enabled\\]").data('server')+'?url='+$('#url').val(),
+                url: $("#deeplink\\[enabled\\]").data('server')+'?url='+encodeURIComponent($('#url').val()),
                 success: function (response) {
+
                     if(response.error){
                         return $.notify({message: response.message},{type: 'danger',placement: {from: "top",align: "left"}});
                     } else {
@@ -280,6 +281,35 @@ $(document).ready(function(){
 			$('.deeplinked').remove();
 		}
 	});
+
+    $('input[name=bioalias]').on('input', function(){
+        let alias = $(this).val();
+        let check = $(this).data('check');
+
+        if(alias.length >= 3) {
+            $.ajax({
+                type: 'get',
+                url: check, 
+                data: 'alias='+alias,
+                success: function(response){
+                    if(response.available) {
+                        $('input[name=bioalias]').removeClass('is-invalid').addClass('is-valid');
+                        $('.alias-feedback').removeClass('invalid-feedback').addClass('valid-feedback').text('This alias is available');
+                        $('input[name=bioalias]').next('.btn').removeAttr('disabled', 'disabled');
+                    } else {
+                        $('input[name=bioalias]').removeClass('is-valid').addClass('is-invalid');
+                        $('.alias-feedback').removeClass('valid-feedback').addClass('invalid-feedback').text('This alias is already taken');
+                        $('input[name=bioalias]').next('.btn').attr('disabled', 'disabled');
+                    }
+                }
+            });
+        } else {
+            $('input[name=bioalias]').removeClass('is-valid is-invalid');
+            $('.alias-feedback').text('');
+            $('input[name=bioalias]').next('.btn').removeAttr('disabled', 'disabled');
+        }
+    });
+
 });
 
 function refreshlinks(ids = null){

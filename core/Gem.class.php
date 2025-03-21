@@ -287,8 +287,8 @@ class Gem {
 
         $function();
 
-        self::$Middleware 	= NULL;
-        self::$routePrefix 	= NULL;
+        self::$Middleware 	= null;
+        self::$routePrefix 	= null;
     }
 
     /**
@@ -296,7 +296,7 @@ class Gem {
     * @author GemPixel <https://gempixel.com>
     * @version 1.0
     */
-     public static function route(array $method, string $path, $handler, $name = NULL){
+     public static function route(array $method, string $path, $handler, ?string $name = null){
         self::$Name = $name ?: self::$routePrefix.$path;
 
         self::$controllers[self::$Name] = ["method" => $method, "path" => rtrim(self::$routePrefix.$path, "/"), "handler" => $handler, "name" => self::$Name];
@@ -313,7 +313,7 @@ class Gem {
      * @param   $handler Class callback
      * @param   string $name    Group name
      */
-    public static function get(string $path, $handler, string $name = NULL){
+    public static function get(string $path, $handler, ?string $name = null){
 
         self::$Name = $name ?: self::$routePrefix.$path;
 
@@ -331,7 +331,7 @@ class Gem {
      * @param   $handler Class callback
      * @param   string $name    Group name
      */
-    public static function post(string $path, $handler, string $name = NULL){
+    public static function post(string $path, $handler, ?string $name = null){
 
         self::$Name = $name ?: self::$routePrefix.$path;
 
@@ -351,7 +351,7 @@ class Gem {
      * @param   $handler Class callback
      * @param   string $name    Group name
      */
-    public static function put(string $path, $handler, string $name = NULL){
+    public static function put(string $path, $handler, ?string $name = null){
 
         self::$Name = $name ?: self::$routePrefix.$path;
 
@@ -369,7 +369,7 @@ class Gem {
      * @param   $handler Class callback
      * @param   string $name    Group name
      */
-    public static function delete(string $path, $handler, string $name = NULL){
+    public static function delete(string $path, $handler, ?string $name = null){
 
         self::$Name = $name ?: self::$routePrefix.$path;
 
@@ -434,7 +434,7 @@ class Gem {
       * @author GemPixel <https://gempixel.com>
       * @version 1.0
       */
-    public static function href($name, $param = NULL, $lang = NULL){
+    public static function href($name, $param = null, $lang = null){
 
         if(isset(self::$controllers[$name])){
 

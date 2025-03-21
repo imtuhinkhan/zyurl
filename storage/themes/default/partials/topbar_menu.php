@@ -114,6 +114,9 @@
                 <?php if(config('userlogging')): ?>
                     <a class="dropdown-item" href="<?php echo route('user.security') ?>"><i class="align-middle me-1" data-feather="shield"></i> <?php ee('Security') ?></a>
                 <?php endif ?>
+                <?php if(config('api') && $user->has('api') && $user->teamPermission('api.create')): ?>
+                    <a class="dropdown-item" href="<?php echo route('apikeys') ?>"><i class="align-middle me-1" data-feather="key"></i> <?php ee('API Keys') ?></a>
+                <?php endif ?>
                 <a class="dropdown-item" href="<?php echo route('settings') ?>"><i class="align-middle me-1" data-feather="settings"></i> <?php ee('Settings') ?></a>
                 <?php if(config('helpcenter')): ?>
                 <div class="dropdown-divider"></div>

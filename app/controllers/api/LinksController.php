@@ -28,6 +28,18 @@ use \Models\User;
 class Links {
 
     use \Traits\Links;
+    
+    /**
+     * Check if key has access
+     *
+     * @author GemPixel <https://gempixel.com> 
+     * @version 7.6
+     */
+    public function __construct(){
+        $user = Auth::ApiUser();
+
+        if(!$user->keyCan('links')) return die(Response::factory(['error' => true, 'message' => 'You do not have access to this endpoint with this API key.'])->json());
+    }
     /**
      * List All Links
      *
@@ -323,9 +335,9 @@ class Links {
 
                 $image = appConfig('app.storage')['images']['path'].'/'.$name;
 
-                $imagedata = getimagesize($image);
-
                 copy($data->metaimage, $image);
+                
+                $imagedata = getimagesize($image);
 
                 if(config('cdn') && config('cdn')->enabled){
                     \Helpers\CDN::factory()->upload(str_replace(PUB.'/', '', $image), $image, $imagedata['mime']);

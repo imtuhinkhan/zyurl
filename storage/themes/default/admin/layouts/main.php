@@ -110,7 +110,8 @@
         <script src="<?php echo assets('backend/js/app.js') ?>?v=1.0"></script>
         <script src="<?php echo assets('frontend/libs/jquery/dist/jquery.min.js') ?>"></script>
         <script src="<?php echo assets('frontend/libs/select2/dist/js/select2.min.js') ?>"></script> 
-        <script src="<?php echo assets('frontend/libs/bootstrap-notify/bootstrap-notify.min.js') ?>"></script>               
+        <script src="<?php echo assets('frontend/libs/bootstrap-notify/bootstrap-notify.min.js') ?>"></script>    
+        <script src="<?php echo assets('frontend/libs/clipboard/dist/clipboard.min.js') ?>"></script>               
         <?php block('footer') ?>
         <script src="<?php echo assets('custom.min.js') ?>"></script>
     </body>

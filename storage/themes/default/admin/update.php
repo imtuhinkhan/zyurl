@@ -51,7 +51,16 @@
             <div class="card-header fw-bold"><?php ee('Script Information') ?></div>
             <div class="card-body">             
                 <div class="p-2 border rounded-3 mb-3">
-                    <p><strong><?php ee('Current Script Version') ?>:</strong> <?php echo config('version') ?></p>
+                    <div class="d-flex mb-2">
+                        <div>
+                            <strong><?php ee('Current Script Version') ?>:</strong> <?php echo config('version') ?>
+                        </div>
+                        <form action="<?php echo route('admin.update.process') ?>" method="post" class="ms-auto">
+                            <?php echo csrf() ?>
+                            <input type="hidden" class="form-control p-2" id="code" name="code" placeholder="Envato Purchase Code"  value="<?php echo config('purchasecode') ?>" autocomplete="off">
+                            <button type="submit" class="btn badge bg-primary text-white rounded" data-bs-toggle="modal" data-bs-target="#updating"><?php ee('Re-Update') ?></button>
+                        </form> 
+                    </div>
                     <div class="d-flex">
                         <div>
                             <strong><?php ee('Current PHP Version') ?>:</strong> <?php echo phpversion() ?> 
@@ -98,7 +107,7 @@
             <div class="card-header fw-bold"><?php ee('Join the Community') ?></div>            
             <div class="card-body">
                 <p><?php ee('Follow us on social media and be the first to benefit from news related to this product, new plugins and releases.') ?></p>
-                <span class="text-primary mb-2 d-block"><i data-feather="twitter"></i> <a href="https://twitter.com/kbrmedia" target="_blank">Follow us on X</a></span>
+                <span class="text-primary mb-2 d-block"><i data-feather="twitter"></i> <a href="https://x.com/kbrmedia" target="_blank">Follow us on X</a></span>
                 <span class="text-success mb-2 d-block"><i data-feather="mail"></i> <a href="https://gempixel.com/subscribe" target="_blank" class="text-success">Join our newsletter</a></span>
             </div>
         </div>

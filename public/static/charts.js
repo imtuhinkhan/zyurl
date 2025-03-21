@@ -81,7 +81,7 @@ function piechart(el, url){
                 datasets: [{
                     data: counts,
                     borderWidth: 5,
-                    backgroundColor: ['#0F87FF','#0080C0','#80FFFF','#FF0000','#C0C0C0','#000000','#F1DF03','#d40000','#4D4D4D','#464646','#7A7A7A','#a4c639','#0080FF','#FF0080','#EEEEEE']
+                    backgroundColor: ['#BAE1FF', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#FFB3BA', '#FFBAF1', '#FFABAB', '#FFC3A0', '#FF677D', '#D4A5A5', '#392F5A', '#B9FBC0', '#A0E7E5', '#F9FBCB', '#F6B93B']
                 }]
             },
             options: {
@@ -97,15 +97,21 @@ function piechart(el, url){
             }
         });
         if(data['top']){
-        $('#top-'+el.data('type')).html('');
-            for (const [key, value] of Object.entries(data['top'])) {        
-
+            $('#top-'+el.data('type')).html('');
+            let totalCount = 0;
+            for (const [key, value] of Object.entries(data['top'])) {
+                totalCount += value;
+            }
+            
+            for (const [key, value] of Object.entries(data['top'])) {
                 if(el.data('type') == 'languages'){
-                    $('#top-'+el.data('type')).append('<li class="d-block mb-2 w-100 border-bottom pb-2 fw-bold"><span class="align-middle">'+key+'</span> <small class="badge bg-dark text-white float-right float-end">'+value+'</small></li>');
+                    let percentage = ((value / totalCount) * 100).toFixed(2);
+                    $('#top-'+el.data('type')).append('<li class="position-relative d-block mb-2 w-100 border-bottom pb-2 fw-bold"><div class="bg-primary position-absolute d-block h-100 rounded" style="z-index:0;opacity:0.1;width:'+percentage+'%;min-height:30px;"></div><div class="position-relative px-1 pt-1"><span class="align-middle">'+key+'</span> <span class="float-end float-right"><span class="fw-bold">'+value+' ('+percentage+'%)</span></span></div></li>');percentage
                 } else {                
                     let thumb = appurl+'static/images/'+el.data('type')+'/'+key.split(' ')[0].toLowerCase()+'.svg';
                     if(key.split(' ')[0] == 'Unknown') thumb = appurl+'static/images/unknown.svg';                
-                    $('#top-'+el.data('type')).append('<li class="d-block mb-2 w-100 border-bottom pb-2 fw-bold"><img src="'+thumb+'" width="16" class="mr-1 me-1"> <span class="align-middle">'+key+'</span> <small class="badge bg-dark text-white float-right float-end">'+value+'</small></li>');
+                    let percentage = ((value / totalCount) * 100).toFixed(2);
+                    $('#top-'+el.data('type')).append('<li class="position-relative d-block mb-2 w-100 border-bottom pb-2 fw-bold"><div class="bg-primary position-absolute d-block h-100 rounded" style="z-index:0;opacity:0.1;width:'+percentage+'%;min-height:30px;"></div><div class="position-relative px-1 pt-1"><img src="'+thumb+'" width="16" class="mr-1 me-1"><span class="align-middle">'+key+'</span> <span class="float-end float-right"><span class="fw-bold">'+value+' ('+percentage+'%)</span></span></div></li>');
                 }
             }
         }
@@ -129,15 +135,23 @@ function charts(el, url){
         let datay = [];			
         let gradient = el.get()[0].getContext('2d').createLinearGradient(0, 0, 0, 225);
         gradient.addColorStop(0, el.data('color-start') ? el.data('color-start') : 'rgba(0, 138, 255, 1)');
-        gradient.addColorStop(1, el.data('color-start') ? el.data('color-stop') : 'rgba(255,255,255,0)');
+        //gradient.addColorStop(1, el.data('color-start') ? el.data('color-stop') : 'rgba(255,255,255,0)');
+         
 
         for(var x in data['data']){
             datax.push(x);
             datay.push(data['data'][x]);
         }
+        
+        if(data['count']){
+            for(var id in data['count']){
+                console.log(id);
+                if($('[data-count='+id+']').length > 0) $('[data-count='+id+']').text(data['count'][id]);
+            }
+        }
 
         window.clickchart = new Chart(el, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: datax,
                 datasets: [{
@@ -145,7 +159,10 @@ function charts(el, url){
                     fill: true,
                     tension: 0.3,
                     backgroundColor: gradient,
-                    borderColor:  el.data('color-start') ? el.data('color-start') : '#008aff',
+                    borderColor:  el.data('color-border') ? el.data('color-border') : '#008aff',
+                    borderWidth: 2,
+                    borderRadius: 5,
+                    borderSkipped: 'bottom',
                     data: datay
                 }]
             },
@@ -179,7 +196,7 @@ function maps(el, url){
             selector: "#"+el.attr('id'),
             zoomButtons: true,
             visualizeData: {
-                scale: ['#D3EBFF', '#008aff'],
+                scale: ['#a6d1f5', '#008aff'],
                 values: data['list']
             },					
             regionsSelectable: true,
@@ -195,17 +212,28 @@ function maps(el, url){
             }
         });
         $('#top-countries').html('');
+        let totalCountriesCount = 0;
+        for (const [key, value] of Object.entries(data['top'])) {
+            totalCountriesCount += value.count;
+        }
+        
         for (const [key, value] of Object.entries(data['top'])) {
             let thumb = appurl+'static/images/flags/'+key.toLowerCase()+'.svg';
             if(value.name == 'Unknown') thumb = appurl+'static/images/unknown.svg';
-            $('#top-countries').append('<li class="d-block mb-2 w-100 border-bottom pb-2 fw-bold"><img src="'+thumb+'" width="16" class="mr-1 me-1"><span class="align-middle">'+value.name+'</span> <small class="badge bg-dark text-white float-right float-end">'+value.count+'</small></li>');
+            let percentage = ((value.count / totalCountriesCount) * 100).toFixed(2);
+            $('#top-countries').append('<li class="position-relative d-block mb-2 w-100 border-bottom pb-2 fw-bold"><div class="bg-primary position-absolute d-block position-absolute h-100 rounded" style="z-index:0;opacity:0.1;width:'+percentage+'%;min-height:30px;"></div><div class="position-relative px-1 pt-1"><img src="'+thumb+'" width="16" class="mr-1 me-1"><span class="align-middle">'+value.name+'</span> <span class="float-end float-right"><span class="fw-bold">'+value.count+' ('+percentage+'%)</span></span></div></li>');
         }
         if(typeof data['cities'] !== undefined && data['cities']){
             $('#top-cities').html('');
+            let totalCitiesCount = 0;
+            for (const [key, value] of Object.entries(data['cities'])) {
+                totalCitiesCount += value.count;
+            }
             for (const [key, value] of Object.entries(data['cities'])) {
                 let thumb = appurl+'static/images/flags/'+value.country.toLowerCase()+'.svg';
                 if(value.name == 'Unknown') thumb = appurl+'static/images/unknown.svg';
-                $('#top-cities').append('<li class="d-block mb-2 w-100 border-bottom pb-2 fw-bold"><img src="'+thumb+'" width="16" class="mr-1 me-1"><span class="align-middle">'+value.name+'</span> <small class="badge bg-dark text-white float-right float-end">'+value.count+'</small></li>');
+                let percentage = ((value.count / totalCitiesCount) * 100).toFixed(2);
+                $('#top-cities').append('<li class="position-relative d-block mb-2 w-100 border-bottom pb-2 fw-bold"><div class="bg-primary position-absolute d-block position-absolute h-100 rounded" style="z-index:0;opacity:0.1;width:'+percentage+'%;min-height:30px;"></div><div class="position-relative px-1 pt-1"><img src="'+thumb+'" width="16" class="mr-1 me-1"><span class="align-middle">'+value.name+'</span> <span class="float-end float-right"><span class="fw-bold">'+value.count+' ('+percentage+'%)</span></span></div></li>');
             }
         }
         window.addEventListener("resize", () => {

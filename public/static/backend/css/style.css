@@ -8,7 +8,7 @@ a:hover {
 }
 
 .handle {
-    cursor: move
+    cursor: grab
 }
 
 [data-bs-toggle] .feather-more-horizontal,[data-bs-toggle] .feather-more-vertical {
@@ -1163,9 +1163,11 @@ body.dark .btn {
 .dark .sidebar-item>.sidebar-link i,
 .dark .sidebar-item>.sidebar-link svg,
 .dark .sidebar-item.active>.sidebar-link svg {
-    color: #fff
+    color: #fff;
 }
-
+.dark .sidebar-item.active .sidebar-link:hover i, .dark .sidebar-item.active .sidebar-link:hover svg, .dark .sidebar-item.active>.sidebar-link i, .dark .sidebar-item.active>.sidebar-link svg{
+    background-color: #1a2127;
+}
 .dark li.sidebar-header {
     color: #fff;
 }

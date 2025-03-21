@@ -837,6 +837,8 @@ trait Links {
 
         if(\Core\Auth::logged() && ($url->userid == \Core\Auth::id() || \Core\Auth::user()->admin)) return false;
 
+        if(config('pro') && $user && !$user->admin && !$user->planid) return false;
+
         // @group Plugin
         if($plugged = \Core\Plugin::dispatch('link.update.stats', $url)){
             foreach($plugged as $response){
@@ -1301,7 +1303,7 @@ trait Links {
      * Alias is reserved
      *
      * @author GemPixel <https://gempixel.com>
-     * @version 6.0
+     * @version 7.5.5
      * @param string $string
      * @return void
      */
@@ -1310,7 +1312,7 @@ trait Links {
         // Check system alias
         foreach(\Gem::controllers() as $routes){
             $path = explode('/', trim($routes['path'], '/'));
-            if($string == $path[0]) return true;
+            if(strtolower($string) == strtolower($path[0])) return true;
         }
 
 		return false;

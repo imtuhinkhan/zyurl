@@ -33,12 +33,19 @@ class Dashboard {
      * User Dashboard
      *
      * @author GemPixel <https://gempixel.com> 
-     * @version 6.0
+     * @version 7.6
      * @return void
      */
     public function index(Request $request){
 
         if($request->success && $request->success == 'true') return Helper::redirect()->to(route('dashboard'))->with("info", e("Your payment was successfully made. Thank you."));
+
+        if($alias = $request->cookie('bioalias')){
+            $request->name = $alias;
+            $request->custom = $alias;
+            $request->cookieClear('bioalias');
+            return \User\Bio::saveStatic($request);
+        }
 
         $urls = [];
         
@@ -52,8 +59,8 @@ class Dashboard {
                     
         $count = new \stdClass;
 
-        $count->links = DB::url()->where('userid', Auth::user()->rID())->count();
-        $count->linksToday = DB::url()->where('userid', Auth::user()->rID())->whereRaw('`date` >= CURDATE()')->count();
+        $count->links = null;
+        $count->linksToday = null;
 
         $clicks = DB::url()->selectExpr('SUM(click) as click')->where('userid', Auth::user()->rID())->first();
         $count->clicks = $clicks->click ? $clicks->click : 0;
@@ -84,7 +91,32 @@ class Dashboard {
         CDN::load('autocomplete');
 
         View::push(assets('Chart.min.js'), "script")->toFooter();
-        View::push(assets('charts.min.js')."?v=1.0", 'script')->toFooter();
+        View::push(assets('charts.min.js')."?v=1.3", 'script')->toFooter();
+
+        View::push("<script>$(document).ready(function(){ 		
+            $('input[name=customreport]').daterangepicker({
+                locale: {
+                    'applyLabel': '".e('Apply')."',
+                    'cancelLabel': '".e('Cancel')."',
+                    'fromLabel': '".e('From')."',
+                    'toLabel': '".e('To')."',
+                    'customRangeLabel': '".e('Custom')."',
+                    'daysOfWeek': ['".e('Su')."','".e('Mo')."','".e('Tu')."','".e('We')."','".e('Th')."','".e('Fr')."','".e('Sa')."'],
+                    'monthNames': ['".e('January')."','".e('February')."','".e('March')."','".e('April')."','".e('May')."','".e('June')."','".e('July')."','".e('August')."','".e('September')."','".e('October')."','".e('November')."','".e('December')."'],
+                },
+                maxDate: moment(),
+                startDate: moment().subtract(14, 'days'),
+                endDate: moment(),
+                autoUpdateInput: true,
+                ranges: {
+                    '".e("Last 7 Days")."': [moment().subtract(6, 'days'), moment()],
+                    '".e("Last 30 Days")."': [moment().subtract(29, 'days'), moment()],
+                    '".e("This Month")."': [moment().startOf('month'), moment().endOf('month')],
+                    '".e("Last Month")."': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    '".e("Last 3 Months")."': [moment().subtract(2, 'month').startOf('month'), moment()]
+                }
+			});
+		});</script>", "custom")->toFooter();
 
         return View::with('user.index', compact('urls', 'count', 'recentActivity'))->extend('layouts.dashboard');
     }
@@ -379,30 +411,71 @@ class Dashboard {
      * @version 6.0
      * @return void
      */
-    public function statsClicks(){
+    public function statsClicks(Request $request){
 
         $response = ['label' => e('Clicks')];
 
-        $timestamp = strtotime('now');
-        for ($i = 14; $i >= 0; $i--) {
-            $d = $i;
-            $timestamp = \strtotime("-{$d} days");            
-            $response['data'][e(date('d', $timestamp)).' '.e(date('F', $timestamp))] = 0;
+        if(!$request->from || !$request->to){
+            $from = date("Y-m-d", strtotime("-14 days"));
+            $to = date("Y-m-d", strtotime("+1 day"));
+        } else {
+            $from = date("Y-m-d H:i:s", strtotime($request->from.' 00:00:00'));
+            $to = date("Y-m-d H:i:s", strtotime($request->to.' 23:59:59'));					
         }
-            
-        $results = DB::stats()
-                    ->selectExpr('COUNT(DATE(date))', 'count')
-                    ->selectExpr('DATE(date)', 'date')
-                    ->whereRaw('date >= \''.date('Y-m-d', strtotime('-14 days')).'\'')
-                    ->where('urluserid', Auth::user()->rID())
-                    ->orderByDesc('date')
-                    ->groupByExpr('DATE(date)')
-                    ->findArray();
+        $start = new \DateTime($from);
+        $end = new \DateTime($to);
 
-        foreach($results as $data){
-            $response['data'][e(Helper::dtime($data['date'], 'd')).' '.e(Helper::dtime($data['date'], 'F'))] = (int) $data['count'];
-        }   
-        
+        $diff = $end->diff($start);
+
+        if($diff->y >= 1 || $diff->m > 3){
+            $interval = \DateInterval::createFromDateString('1 month');    
+        } else {
+            $interval = \DateInterval::createFromDateString('1 day');
+        }
+
+        $interval = \DateInterval::createFromDateString('1 day');
+        $period = new \DatePeriod($start, $interval, $end);
+
+        foreach ($period as $dt) {
+            if($diff->y >= 1 || $diff->m > 3){
+                $response['data'][e($dt->format("F")).' '.e($dt->format("Y"))] = 0;		
+            } else {
+                $response['data'][e($dt->format("d")).' '.e($dt->format("F"))] = 0;
+            }
+        }  
+        $response['count']['currentPeriodClicks'] = 0;
+        if($diff->y >= 1 || $diff->m > 3){
+
+            $results = DB::stats()
+                            ->selectExpr('COUNT(DATE(date))', 'count')
+                            ->selectExpr('DATE(date)', 'date')
+                            ->where('urluserid', Auth::user()->rID())
+                            ->whereRaw("(date BETWEEN '{$from} 00:00:00' AND '{$to} 23:59:59')")
+                            ->orderByDesc('date')
+                            ->groupByExpr('YEAR(date)')
+                            ->groupByExpr('MONTH(date)')                            
+                            ->findArray();
+
+            foreach($results as $data){
+                $response['count']['currentPeriodClicks'] += (int) $data['count'];
+                $response['data'][e(Helper::dtime($data['date'], 'F')).' '.e(Helper::dtime($data['date'], 'Y'))] = (int) $data['count'];
+            }   
+        }  else {
+                $results = DB::stats()
+                                ->selectExpr('COUNT(DATE(date))', 'count')
+                                ->selectExpr('DATE(date)', 'date')
+                                ->where('urluserid', Auth::user()->rID())
+                                ->whereRaw("(date BETWEEN '{$from} 00:00:00' AND '{$to} 23:59:59')")
+                                ->orderByDesc('date')
+                                ->groupByExpr('DATE(date)')
+                                ->findArray();
+                        
+            foreach($results as $data){
+                $response['count']['currentPeriodClicks'] += (int) $data['count'];
+                $response['data'][e(Helper::dtime($data['date'], 'd')).' '.e(Helper::dtime($data['date'], 'F'))] = (int) $data['count'];
+            }
+        }
+
         return (new Response($response))->json(); 
     }
     /**

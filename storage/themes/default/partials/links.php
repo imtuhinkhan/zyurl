@@ -6,7 +6,7 @@
                 <div class="float-end">
                     <button type="button" class="btn btn-default bg-transparent btn-sm" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="more-vertical"></i></button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" data-trigger="shortinfo" data-shorturl="<?php echo Helpers\App::shortRoute($url->domain, $url->alias.$url->custom) ?>"><i data-feather="info"></i> <?php ee('More Info') ?></a></li>
+                        <li><a class="dropdown-item" data-trigger="shortinfo" data-shorturl="<?php echo Helpers\App::shortRoute($url->domain, $url->alias.$url->custom) ?>"><i data-feather="share"></i> <?php ee('Share') ?></a></li>
                         <li><a class="dropdown-item" href="<?php echo route('stats', [$url->id]) ?>"><i data-feather="bar-chart-2"></i> <?php ee('Statistics') ?></a></li>
                         <?php if(user()->teamPermission('links.edit')): ?>
                             <li><a class="dropdown-item" href="<?php echo route('links.edit', [$url->id]) ?>"><i data-feather="edit"></i> <?php ee('Edit') ?></a></li>
@@ -38,9 +38,13 @@
                 </div>
                 <div class="mb-2 d-block">
                     <input class="form-check-input me-2" type="checkbox" data-dynamic="1" value="<?php echo $url->id ?>">
-                    <img src="<?php echo route('link.ico', $url->id) ?>" width="16" height="16" class="rounded-circle me-1" alt="<?php echo $url->meta_title ?>"> <a href="<?php echo $url->url ?>" target="_blank" rel="nofollow" class="align-middle"><strong class="text-break"><?php echo \Core\Helper::clean(\Core\Helper::truncate(\Core\Helper::empty($url->meta_title, $url->url), 50), 3) ?></strong></a>
+                    <img src="<?php echo route('link.ico', $url->id) ?>" width="16" height="16" class="rounded-circle me-1" alt="<?php echo $url->meta_title ?>"> <a href="<?php echo $url->url ?>" target="_blank" rel="nofollow" class="align-middle" data-bs-toggle="tooltip" title="<?php echo $url->url ?>"><strong class="text-break"><?php echo \Core\Helper::clean(\Core\Helper::truncate(\Core\Helper::empty($url->meta_title, $url->url), 50), 3) ?></strong></a>
                 </div>
-                <div class="d-none d-sm-block">
+                <div class="d-block mt-1">
+                    <span class="text-muted" data-href="<?php echo Helpers\App::shortRoute($url->domain, $url->alias.$url->custom) ?>"><?php echo Helpers\App::shortRoute($url->domain, $url->alias.$url->custom) ?></span>
+                    <a href="#copy" class="copy inline-copy" data-lang="<?php ee('Copied') ?>" data-clipboard-text="<?php echo Helpers\App::shortRoute($url->domain, $url->alias.$url->custom) ?>"><small><?php echo e("Copy")?></small></a>
+                </div>
+                <div class="d-none d-sm-block my-2">
                 <?php if(!$url->status): ?>
                     <small class="badge bg-danger text-xs me-2"><?php ee('Disabled') ?></small>
                 <?php endif ?>
@@ -93,13 +97,9 @@
                 <?php endif ?>
                 </div>
                 <div class="d-block mt-1">
-                    <small class="text-muted" data-href="<?php echo Helpers\App::shortRoute($url->domain, $url->alias.$url->custom) ?>"><?php echo Helpers\App::shortRoute($url->domain, $url->alias.$url->custom) ?></small>
-                    <a href="#copy" class="copy inline-copy" data-lang="<?php ee('Copied') ?>" data-clipboard-text="<?php echo Helpers\App::shortRoute($url->domain, $url->alias.$url->custom) ?>"><small><?php echo e("Copy")?></small></a>
-                </div>
-                <div class="d-block mt-1">
-                    <small class="text-navy"><?php echo \Core\Helper::timeago($url->date) ?></small>
-                    - <a href="<?php echo route('stats', [$url->id]) ?>"><small class="text-navy fw-bold"><?php echo $url->click ?> <?php ee('Clicks') ?></small></a>
-                    <small class="text-navy d-none d-sm-inline fw-bold"> - <?php echo $url->uniqueclick ?> <?php ee('Unique Clicks') ?></small>
+                    <a href="<?php echo route('stats', [$url->id]) ?>"><small class="text-navy fw-bold"><?php echo $url->click ?> <?php ee('Clicks') ?></small></a>
+                    <small class="text-navy d-none d-sm-inline fw-bold"> - <?php echo $url->uniqueclick ?> <?php ee('Unique Clicks') ?></small> 
+                    - <small class="text-navy"><?php echo \Core\Helper::timeago($url->date) ?></small>
                 </div>
             </div>
         </div>
